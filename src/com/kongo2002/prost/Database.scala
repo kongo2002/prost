@@ -11,66 +11,50 @@ object DrinksDatabase {
   private final def DBVERSION = 1
   private final def DBNAME = "drinks"
 
-  class DrinksOpenHelper(context: Context) extends ProstOpenHelper(context, DBNAME, DBVERSION) {
+  private final def DRINKS_TABLE = "CREATE TABLE drinks (" +
+    "_id INTEGER PRIMARY KEY AUTOINCREMENT, drink INTEGER, date INTEGER)"
 
-    final def CREATE_TABLE = "CREATE TABLE " + DBNAME + " (" +
-      "_id INTEGER PRIMARY KEY AUTOINCREMENT, drink INTEGER, date INTEGER)"
+  private final def DRINK_TYPES_TABLE = "CREATE TABLE drink_types (" +
+    "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER)"
 
-  }
-}
+  class DrinksDatabase(context: Context)
+    extends SQLiteOpenHelper(context, DBNAME, null, DBVERSION) {
 
-object DrinkTypesDatabase {
+    override def onCreate(db: SQLiteDatabase) {
+      Log.w(Prost.LOG_TAG, "Creating database '" + DBNAME + "'")
 
-  private final def DBVERSION = 1
-  private final def DBNAME = "drink_types"
+      db.beginTransaction()
 
-  class DrinkTypesDatabase(context: Context) extends ProstOpenHelper(context, DBNAME, DBVERSION) {
-
-   final def CREATE_TABLE = "CREATE TABLE " + DBNAME + " (" +
-     "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER)"
-
-  }
-}
-
-abstract class ProstOpenHelper(context: Context, db: String, version: Int)
-  extends SQLiteOpenHelper(context, db, null, version) {
-
-  final def DBNAME = db
-  final def DBVERSION = version
-
-  protected final def DROP_TABLE = "DROP TABLE IF EXISTS " + DBNAME
-
-  def CREATE_TABLE : String
-
-  override def onCreate(db: SQLiteDatabase) {
-    Log.w(Prost.LOG_TAG, "Creating database '" + DBNAME + "'")
-
-    db.beginTransaction()
-
-    try {
-      db.execSQL(CREATE_TABLE)
-      db.setTransactionSuccessful()
-    } catch {
-      case sex: SQLException => Log.e("Error creating database '" + DBNAME + "'", sex.toString())
-    } finally {
-        db.endTransaction()
+      try {
+        executeSql(db, List(DRINKS_TABLE, DRINK_TYPES_TABLE))
+        db.setTransactionSuccessful()
+      } catch {
+        case sex: SQLException => Log.e("Error creating database '" + DBNAME + "'", sex.toString())
+      } finally {
+          db.endTransaction()
+      }
     }
-  }
 
-  override def onUpgrade(db: SQLiteDatabase, oldV: Int, newV: Int) {
-    Log.w(Prost.LOG_TAG, "Upgrading database '" + DBNAME + "' from version " + oldV +
-      " to " + newV + ", which will currently destroy all existing data!")
+    override def onUpgrade(db: SQLiteDatabase, oldV: Int, newV: Int) {
+      Log.w(Prost.LOG_TAG, "Upgrading database '" + DBNAME + "' from version " + oldV +
+        " to " + newV + ", which will currently destroy all existing data!")
 
-    db.beginTransaction()
+      db.beginTransaction()
 
-    try {
-      db.execSQL(DROP_TABLE)
-      db.execSQL(CREATE_TABLE)
-      db.setTransactionSuccessful()
-    } catch {
-      case sex: SQLException => Log.e("Error updating database '" + DBNAME + "'", sex.toString())
-    } finally {
-        db.endTransaction()
+      try {
+        executeSql(db, List(drop("drinks"), drop("drink_types"), DRINKS_TABLE, DRINK_TYPES_TABLE))
+        db.setTransactionSuccessful()
+      } catch {
+        case sex: SQLException => Log.e("Error updating database '" + DBNAME + "'", sex.toString())
+      } finally {
+          db.endTransaction()
+      }
+    }
+
+    private def drop(table: String) = "DROP TABLE IF EXISTS " + table
+
+    private def executeSql(db: SQLiteDatabase, sql: Iterable[String]) = {
+      sql.foreach(s => db.execSQL(s))
     }
   }
 }
