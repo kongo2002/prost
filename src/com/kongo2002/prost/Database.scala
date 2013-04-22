@@ -138,6 +138,38 @@ object DrinksDatabase {
     def getDrinkName = getString(getColumnIndexOrThrow("drink_types.name"))
     def getDrinkUnit = getLong(getColumnIndexOrThrow("drink_types.unit"))
     def getDrinkDate = getLong(getColumnIndexOrThrow("drink.date"))
+
+    /**
+     * Factory class to be used for 'rawQueryWithFactory()'
+     */
+    object Factory extends SQLiteDatabase.CursorFactory {
+      override def newCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery) = {
+        new DrinksCursor(db, driver, table, query)
+      }
+    }
+  }
+
+  /**
+   * Convenience cursor wrapper class to centralize all access to the
+   * 'drink_types' table.
+   */
+  class DrinkTypesCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
+    extends SQLiteCursor(db, driver, table, query) {
+
+    final def QUERY = "SELECT _id,name,unit FROM drink_types ORDER BY name ASC"
+
+    def getTypeId = getLong(getColumnIndexOrThrow("_id"))
+    def getTypeName = getString(getColumnIndexOrThrow("name"))
+    def getTypeUnit = getLong(getColumnIndexOrThrow("unit"))
+
+    /**
+     * Factory class to be used for 'rawQueryWithFactory()'
+     */
+    object Factory extends SQLiteDatabase.CursorFactory {
+      override def newCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery) = {
+        new DrinkTypesCursor(db, driver, table, query)
+      }
+    }
   }
 }
 
