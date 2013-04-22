@@ -17,7 +17,7 @@ object TR {
 
 trait TypedViewHolder {
   def view : View
-  def findView[T](tr : TypedResource[T]) = view.findViewById(tr.id).asInstanceOf[T] 
+  def findView[T](tr : TypedResource[T]) = view.findViewById(tr.id).asInstanceOf[T]
 }
 
 trait TypedView extends View with TypedViewHolder {
@@ -32,3 +32,5 @@ trait TypedActivityHolder {
 trait TypedActivity extends Activity with TypedActivityHolder {
   def activity = this
 }
+
+/* vim: set et sw=2 sts=2: */

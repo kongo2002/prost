@@ -4,6 +4,7 @@ import java.util.Date
 
 abstract class Beer {
   val date = new Date()
+
   def unitSize : Int
   def name : String
   def inLiters : Double = {
@@ -16,3 +17,5 @@ class Pint extends Beer {
   override def unitSize = 500
   override def name = "Pint"
 }
+
+/* vim: set et sw=2 sts=2: */
