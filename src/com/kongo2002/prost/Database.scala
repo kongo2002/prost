@@ -1,11 +1,24 @@
 package com.kongo2002.prost
 
+import android.content.ContentValues
 import android.content.Context
+
+import android.database.Cursor
+import android.database.sqlite.SQLiteCursor
+import android.database.sqlite.SQLiteCursorDriver
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.database.sqlite.SQLiteQuery
 import android.database.SQLException
+
 import android.util.Log
 
+import java.util.Date
+
+/**
+ * Main database class that manages all database related
+ * operations.
+ */
 object DrinksDatabase {
 
   private final def DBVERSION = 1
@@ -17,9 +30,16 @@ object DrinksDatabase {
   private final def DRINK_TYPES_TABLE = "CREATE TABLE drink_types (" +
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER)"
 
+  /**
+   * Inner database class that wraps a sqlite connection helper.
+   */
   class DrinksDatabase(context: Context)
     extends SQLiteOpenHelper(context, DBNAME, null, DBVERSION) {
 
+    /**
+     * Called when the database has to be created.
+     * @param db  sqlite database to operate on
+     */
     override def onCreate(db: SQLiteDatabase) {
       Log.w(Prost.LOG_TAG, "Creating database '" + DBNAME + "'")
 
@@ -35,6 +55,13 @@ object DrinksDatabase {
       }
     }
 
+    /**
+     * Called when the database has to be upgraded. Right now all tables are
+     * dropped and re-created.
+     * @param db    sqlite database to operate on
+     * @param oldV  old version number
+     * @param newV  new version number
+     */
     override def onUpgrade(db: SQLiteDatabase, oldV: Int, newV: Int) {
       Log.w(Prost.LOG_TAG, "Upgrading database '" + DBNAME + "' from version " + oldV +
         " to " + newV + ", which will currently destroy all existing data!")
@@ -51,11 +78,66 @@ object DrinksDatabase {
       }
     }
 
+    /**
+     * Add a new drink to the 'drinks' database table.
+     * @param drinkId   ID of the respective entry in the 'drink_types' table
+     */
+    def addDrink(drinkId: Long) {
+      val map = new ContentValues()
+      val date = new Date()
+
+      map.put("drink", java.lang.Long.valueOf(drinkId))
+      map.put("date", java.lang.Long.valueOf(date.getSeconds()))
+
+      try {
+        getWritableDatabase().insert("drinks", null, map)
+      } catch {
+        case sex: SQLException => Log.e("Error writing new drink", sex.toString())
+      }
+    }
+
+    /**
+     * Get the total count of all drinks in the database.
+     */
+    def getDrinksCount() = {
+      var c : Cursor = null
+      try {
+        c = getReadableDatabase().rawQuery(
+            "SELECT count(_id) FROM drinks", null)
+        if (c.getCount() < 1)
+          0
+        c.moveToFirst()
+        c.getInt(0)
+      } finally {
+        if (c != null) {
+          try {
+            c.close()
+          } catch { case _ => {}}
+        }
+      }
+    }
+
     private def drop(table: String) = "DROP TABLE IF EXISTS " + table
 
     private def executeSql(db: SQLiteDatabase, sql: Iterable[String]) = {
       sql.foreach(s => db.execSQL(s))
     }
+  }
+
+  /**
+   * Convenience cursor wrapper class to centralize all access to
+   * the 'drinks' table.
+   */
+  class DrinksCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
+    extends SQLiteCursor(db, driver, table, query) {
+
+    final def QUERY = "SELECT _id,name,unit,date FROM drinks,drink_types " +
+      "WHERE drinks.drink=drink_types._id ORDER BY date DESC"
+
+    def getDrinkId = getLong(getColumnIndexOrThrow("drinks._id"))
+    def getDrinkName = getString(getColumnIndexOrThrow("drink_types.name"))
+    def getDrinkUnit = getLong(getColumnIndexOrThrow("drink_types.unit"))
+    def getDrinkDate = getLong(getColumnIndexOrThrow("drink.date"))
   }
 }
 
