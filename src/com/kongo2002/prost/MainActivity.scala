@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.Toast
 import android.os.Bundle
 
+import scala.Option._
 import scala.collection.JavaConversions._
 import scala.math.Ordering
 
@@ -25,6 +26,7 @@ class MainActivity extends TypedActivity
   lazy val perHour = findView(TR.perHourTv)
   lazy val drinksTv = findView(TR.totalDrinksTv)
 
+  val db = new DrinksDatabase.DrinksDatabase(this)
   val order = Ordering.by[Beer, Date](x => x.bought)
   val drinks = new java.util.TreeSet[Beer](order)
   
@@ -41,13 +43,15 @@ class MainActivity extends TypedActivity
     
     /* connect listeners */
     newBeerBtn.setOnClickListener { v: View =>
-      val beer = new Pint()
-
-      drinks.add(beer)
-
-      update
-
-      Toast.makeText(getApplicationContext(), "Added new " + beer.name, Toast.LENGTH_SHORT).show()
+      /* determine whether a valid drink type is selected */
+      if (currentDrinkType > 0) {
+        for (name <- db.getDrinkTypeName(currentDrinkType)) {
+          val beer = new Pint()
+          drinks.add(beer)
+          update
+          longToast("Added " + name)
+        }
+      }
     }
 
     update
@@ -104,10 +108,19 @@ class MainActivity extends TypedActivity
     logI("onRestoreInstanceState")
   }
   
+  private def longToast(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+  }
+  
   private def restoreState(state: Bundle) {
+    /* read last drink type from state */
     if (state != null) {
       currentDrinkType = state.getInt("drinkType")
-      logI("restored 'drinkType=" + currentDrinkType + "'")
+      logI("restored 'drinkType=" + currentDrinkType + "' from state")
+    /* or from database */
+    } else {
+      currentDrinkType = db.getLastDrinkType.getOrElse(0)
+      logI("restored 'drinkType=" + currentDrinkType + "' from database")
     }
   }
 
@@ -134,8 +147,9 @@ class MainActivity extends TypedActivity
       val hourDiff = diff / (1000.0 * 60)
 
       hourDiff
+    } else {
+      1.0
     }
-    1.0
   }
 
   private def update {

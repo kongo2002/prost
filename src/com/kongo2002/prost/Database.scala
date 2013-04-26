@@ -110,6 +110,13 @@ object DrinksDatabase {
     def getLastDrinkType = {
       scalarInt("SELECT drink FROM drinks ORDER BY date DESC LIMIT 1;")
     }
+    
+    /**
+     * Get the name of the drink type with the specified ID
+     */
+    def getDrinkTypeName(id: Int) = {
+      scalarString("SELECT name FROM drink_types WHERE _id=" + id + ";")
+    }
 
     private def drop(table: String) = "DROP TABLE IF EXISTS " + table
 
@@ -120,11 +127,16 @@ object DrinksDatabase {
     private def query[T](sql: String, args: String*)(func: Cursor => T) = {
       val cursor = getReadableDatabase().rawQuery(sql, args.toArray[String])
       try {
-        cursor.moveToFirst
-        func(cursor)
+        if (cursor.moveToFirst)
+          Some(func(cursor))
+        else
+          None
       }
       catch {
-        case ex: SQLException => Log.e(Prost.LOG_TAG, ex.getMessage(), ex)
+        case ex: SQLException => {
+          Log.e(Prost.LOG_TAG, ex.getMessage(), ex)
+          None
+        }
       }
       finally {
         cursor.close
@@ -132,17 +144,11 @@ object DrinksDatabase {
     }
 
     private def scalarInt(sql: String, args: String*) = {
-      val cursor = getReadableDatabase().rawQuery(sql, args.toArray[String])
-      try {
-        cursor.moveToFirst
-        cursor.getInt(0)
-      }
-      catch {
-        case ex: SQLException => Log.e(Prost.LOG_TAG, ex.getMessage(), ex)
-      }
-      finally {
-        cursor.close
-      }
+      query(sql, args: _*)(c => c.getInt(0))
+    }
+    
+    private def scalarString(sql: String, args: String*) = {
+      query(sql, args: _*)(c => c.getString(0))
     }
   }
 
