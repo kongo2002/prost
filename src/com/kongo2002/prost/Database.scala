@@ -100,21 +100,34 @@ object DrinksDatabase {
     /**
      * Get the total count of all drinks in the database.
      */
-    def getDrinksCount() = {
-      var c : Cursor = null
+    def getDrinksCount = {
       try {
-        c = getReadableDatabase().rawQuery(
+        var c = getReadableDatabase().rawQuery(
             "SELECT count(_id) FROM drinks", null)
         if (c.getCount() < 1)
           0
         c.moveToFirst()
         c.getInt(0)
-      } finally {
-        if (c != null) {
-          try {
-            c.close()
-          } catch { case _ => {}}
-        }
+      }
+      catch {
+        case ex: SQLException => {}
+      }
+    }
+    
+    /**
+     * Get the type of the last drink that was recorded.
+     */
+    def getLastDrinkType = {
+      try {
+        var c = getReadableDatabase().rawQuery(
+            "SELECT drink FROM drinks ORDER BY date DESC LIMIT 1", null)
+        if (c.getCount() < 1)
+          0
+        c.moveToFirst()
+        c.getInt(0)
+      }
+      catch {
+        case ex: SQLException => {}
       }
     }
 
