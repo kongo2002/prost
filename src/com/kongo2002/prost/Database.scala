@@ -47,7 +47,7 @@ object DrinksDatabase {
       db.beginTransaction()
 
       try {
-        executeSql(db, List(DRINKS_TABLE, DRINK_TYPES_TABLE))
+        executeSql(db, DRINKS_TABLE, DRINK_TYPES_TABLE)
         db.setTransactionSuccessful()
       } catch {
         case sex: SQLException => Log.e("Error creating database '" + DBNAME + "'", sex.toString())
@@ -70,7 +70,7 @@ object DrinksDatabase {
       db.beginTransaction()
 
       try {
-        executeSql(db, List(drop("drinks"), drop("drink_types"), DRINKS_TABLE, DRINK_TYPES_TABLE))
+        executeSql(db, drop("drinks"), drop("drink_types"), DRINKS_TABLE, DRINK_TYPES_TABLE)
         db.setTransactionSuccessful()
       } catch {
         case sex: SQLException => Log.e("Error updating database '" + DBNAME + "'", sex.toString())
@@ -113,7 +113,7 @@ object DrinksDatabase {
 
     private def drop(table: String) = "DROP TABLE IF EXISTS " + table
 
-    private def executeSql(db: SQLiteDatabase, sql: Iterable[String]) = {
+    private def executeSql(db: SQLiteDatabase, sql: String*) = {
       sql.foreach(s => db.execSQL(s))
     }
 
