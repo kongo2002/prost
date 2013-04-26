@@ -1,17 +1,16 @@
 package com.kongo2002.prost;
 
-import java.util.Date
-import java.util.Calendar
+import android.app.Activity
+import android.view.View
+import android.widget.Button
+import android.widget.Toast
+import android.os.Bundle
+
 import scala.collection.JavaConversions._
 import scala.math.Ordering
 
-import android.app.Activity
-import android.view.View
-
-import android.widget.Button
-import android.widget.Toast
-
-import android.os.Bundle
+import java.util.Date
+import java.util.Calendar
 
 class MainActivity extends TypedActivity {
 
