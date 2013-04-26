@@ -12,6 +12,8 @@ import scala.math.Ordering
 import java.util.Date
 import java.util.Calendar
 
+import com.kongo2002.prost.ImplicitHelpers._
+
 class MainActivity extends TypedActivity {
 
   lazy val newBeerBtn = findView(TR.newBeerBtn)
@@ -26,17 +28,15 @@ class MainActivity extends TypedActivity {
     super.onCreate(state)
     setContentView(R.layout.activity_example)
 
-    newBeerBtn.setOnClickListener(new View.OnClickListener() {
-      def onClick(v : View) {
-        val beer = new Pint()
+    newBeerBtn.setOnClickListener { v: View =>
+      val beer = new Pint()
 
-        drinks.add(beer)
+      drinks.add(beer)
 
-        update
+      update
 
-        Toast.makeText(getApplicationContext(), "Added new " + beer.name, Toast.LENGTH_SHORT).show()
-      }
-    })
+      Toast.makeText(getApplicationContext(), "Added new " + beer.name, Toast.LENGTH_SHORT).show()
+    }
 
     update
   }
