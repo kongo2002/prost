@@ -120,6 +120,7 @@ object DrinksDatabase {
     private def query[T](sql: String, args: String*)(func: Cursor => T) = {
       val cursor = getReadableDatabase().rawQuery(sql, args.toArray[String])
       try {
+        cursor.moveToFirst
         func(cursor)
       }
       catch {
