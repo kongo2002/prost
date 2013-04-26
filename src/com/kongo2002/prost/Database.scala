@@ -101,40 +101,47 @@ object DrinksDatabase {
      * Get the total count of all drinks in the database.
      */
     def getDrinksCount = {
-      try {
-        var c = getReadableDatabase().rawQuery(
-            "SELECT count(_id) FROM drinks", null)
-        if (c.getCount() < 1)
-          0
-        c.moveToFirst()
-        c.getInt(0)
-      }
-      catch {
-        case ex: SQLException => {}
-      }
+      scalarInt("SELECT count(_id) FROM drinks;")
     }
-    
+
     /**
      * Get the type of the last drink that was recorded.
      */
     def getLastDrinkType = {
-      try {
-        var c = getReadableDatabase().rawQuery(
-            "SELECT drink FROM drinks ORDER BY date DESC LIMIT 1", null)
-        if (c.getCount() < 1)
-          0
-        c.moveToFirst()
-        c.getInt(0)
-      }
-      catch {
-        case ex: SQLException => {}
-      }
+      scalarInt("SELECT drink FROM drinks ORDER BY date DESC LIMIT 1;")
     }
 
     private def drop(table: String) = "DROP TABLE IF EXISTS " + table
 
     private def executeSql(db: SQLiteDatabase, sql: Iterable[String]) = {
       sql.foreach(s => db.execSQL(s))
+    }
+
+    private def query[T](sql: String, args: String*)(func: Cursor => T) = {
+      val cursor = getReadableDatabase().rawQuery(sql, args.toArray[String])
+      try {
+        func(cursor)
+      }
+      catch {
+        case ex: SQLException => Log.e(Prost.LOG_TAG, ex.getMessage(), ex)
+      }
+      finally {
+        cursor.close
+      }
+    }
+
+    private def scalarInt(sql: String, args: String*) = {
+      val cursor = getReadableDatabase().rawQuery(sql, args.toArray[String])
+      try {
+        cursor.moveToFirst
+        cursor.getInt(0)
+      }
+      catch {
+        case ex: SQLException => Log.e(Prost.LOG_TAG, ex.getMessage(), ex)
+      }
+      finally {
+        cursor.close
+      }
     }
   }
 
