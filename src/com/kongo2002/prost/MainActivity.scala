@@ -14,7 +14,11 @@ import java.util.Calendar
 
 import com.kongo2002.prost.ImplicitHelpers._
 
-class MainActivity extends TypedActivity {
+/**
+ * Main activity of the 'prost' application
+ */
+class MainActivity extends TypedActivity
+  with Loggable {
 
   lazy val newBeerBtn = findView(TR.newBeerBtn)
   lazy val totalTv = findView(TR.totalCountTv)
@@ -39,6 +43,49 @@ class MainActivity extends TypedActivity {
     }
 
     update
+    
+    logI("onCreate")
+  }
+  
+  override def onRestart {
+    super.onRestart
+    logI("onRestart")
+  }
+  
+  override def onResume {
+    super.onResume
+    logI("onResume")
+  }
+  
+  override def onPause {
+    super.onPause
+    logI("onPause")
+  }
+  
+  override def onStop {
+    super.onStop
+    logI("onStop")
+  }
+  
+  override def onDestroy {
+    super.onDestroy
+    logI("onDestroy")
+  }
+  
+  override def onSaveInstanceState(state: Bundle) {
+    super.onSaveInstanceState(state)
+    logI("onSaveInstanceState")
+  }
+  
+  override def onRetainNonConfigurationInstance() = {
+    logI("onRetainNonConfigurationInstance")
+    
+    new Integer(getTaskId())
+  }
+  
+  override def onRestoreInstanceState(state: Bundle) {
+    super.onRestoreInstanceState(state)
+    logI("onRestoreInstanceState")
   }
 
   private def getLiters = {

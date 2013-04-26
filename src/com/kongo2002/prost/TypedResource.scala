@@ -1,8 +1,8 @@
 package com.kongo2002.prost;
 
 import android.app.Activity
+import android.util.Log
 import android.view.View
-
 import android.widget.Button
 import android.widget.TextView
 
@@ -31,6 +31,15 @@ trait TypedActivityHolder {
 
 trait TypedActivity extends Activity with TypedActivityHolder {
   def activity = this
+}
+
+trait Loggable {
+  val tag = this.getClass().getSimpleName()
+  def TAG = tag
+  
+  def logI(msg: String) {
+    if (Prost.DEBUG) Log.i(tag, msg)
+  }
 }
 
 /* vim: set et sw=2 sts=2: */
