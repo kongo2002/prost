@@ -27,11 +27,19 @@ class MainActivity extends TypedActivity
 
   val order = Ordering.by[Beer, Date](x => x.bought)
   val drinks = new java.util.TreeSet[Beer](order)
+  
+  var currentDrinkType = 0
 
   override def onCreate(state: Bundle) {
     super.onCreate(state)
+    
+    /* load view */
     setContentView(R.layout.activity_example)
 
+    /* restore state */
+    restoreState(state)
+    
+    /* connect listeners */
     newBeerBtn.setOnClickListener { v: View =>
       val beer = new Pint()
 
@@ -74,6 +82,11 @@ class MainActivity extends TypedActivity
   
   override def onSaveInstanceState(state: Bundle) {
     super.onSaveInstanceState(state)
+    
+    /* save state */
+    state.putInt("drinkType", currentDrinkType)
+    logI("onSaveInstanceState: stored 'drinkType=" + currentDrinkType + "'")
+    
     logI("onSaveInstanceState")
   }
   
@@ -85,7 +98,17 @@ class MainActivity extends TypedActivity
   
   override def onRestoreInstanceState(state: Bundle) {
     super.onRestoreInstanceState(state)
+    
+    restoreState(state)
+    
     logI("onRestoreInstanceState")
+  }
+  
+  private def restoreState(state: Bundle) {
+    if (state != null) {
+      currentDrinkType = state.getInt("drinkType")
+      logI("restored 'drinkType=" + currentDrinkType + "'")
+    }
   }
 
   private def getLiters = {
