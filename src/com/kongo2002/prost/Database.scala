@@ -13,6 +13,7 @@ import android.database.SQLException
 
 import android.util.Log
 
+import java.lang.Long
 import java.util.Date
 
 /**
@@ -86,8 +87,8 @@ object DrinksDatabase {
       val map = new ContentValues()
       val date = new Date()
 
-      map.put("drink", java.lang.Long.valueOf(drinkId))
-      map.put("date", java.lang.Long.valueOf(date.getSeconds()))
+      map.put("drink", Long.valueOf(drinkId))
+      map.put("date", Long.valueOf(date.getSeconds()))
 
       try {
         getWritableDatabase().insert("drinks", null, map)
