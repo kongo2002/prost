@@ -29,7 +29,7 @@ class MainActivity extends TypedActivity
   val db = new DrinksDatabase.DrinksDatabase(this)
   val order = Ordering.by[Beer, Date](x => x.bought)
   val drinks = new java.util.TreeSet[Beer](order)
-  
+
   var currentDrinkType = 0
 
   override def onCreate(state: Bundle) {
@@ -37,7 +37,7 @@ class MainActivity extends TypedActivity
     
     /* load view */
     setContentView(R.layout.activity_example)
-
+    
     /* restore state */
     restoreState(state)
     
@@ -81,6 +81,7 @@ class MainActivity extends TypedActivity
   
   override def onDestroy {
     super.onDestroy
+    db.close
     logI("onDestroy")
   }
   

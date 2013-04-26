@@ -26,10 +26,13 @@ object DrinksDatabase {
   private final def DBNAME = "drinks"
 
   private final def DRINKS_TABLE = "CREATE TABLE drinks (" +
-    "_id INTEGER PRIMARY KEY AUTOINCREMENT, drink INTEGER, date INTEGER)"
+    "_id INTEGER PRIMARY KEY AUTOINCREMENT, drink INTEGER, date INTEGER);"
 
   private final def DRINK_TYPES_TABLE = "CREATE TABLE drink_types (" +
-    "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER)"
+    "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER);"
+
+  private final def DEFAULT_TYPES = "INSERT INTO drink_types " +
+    "(name,unit) VALUES ('Pint', 500);"
 
   /**
    * Inner database class that wraps a sqlite connection helper.
@@ -47,7 +50,7 @@ object DrinksDatabase {
       db.beginTransaction()
 
       try {
-        executeSql(db, DRINKS_TABLE, DRINK_TYPES_TABLE)
+        executeSql(db, DRINKS_TABLE, DRINK_TYPES_TABLE, DEFAULT_TYPES)
         db.setTransactionSuccessful()
       } catch {
         case sex: SQLException => Log.e("Error creating database '" + DBNAME + "'", sex.toString())
@@ -70,7 +73,7 @@ object DrinksDatabase {
       db.beginTransaction()
 
       try {
-        executeSql(db, drop("drinks"), drop("drink_types"), DRINKS_TABLE, DRINK_TYPES_TABLE)
+        executeSql(db, drop("drinks"), drop("drink_types"), DRINKS_TABLE, DRINK_TYPES_TABLE, DEFAULT_TYPES)
         db.setTransactionSuccessful()
       } catch {
         case sex: SQLException => Log.e("Error updating database '" + DBNAME + "'", sex.toString())
@@ -110,7 +113,7 @@ object DrinksDatabase {
     def getLastDrinkType = {
       scalarInt("SELECT drink FROM drinks ORDER BY date DESC LIMIT 1;")
     }
-    
+
     /**
      * Get the name of the drink type with the specified ID
      */
@@ -118,7 +121,7 @@ object DrinksDatabase {
       scalarString("SELECT name FROM drink_types WHERE _id=" + id + ";")
     }
 
-    private def drop(table: String) = "DROP TABLE IF EXISTS " + table
+    private def drop(table: String) = "DROP TABLE IF EXISTS " + table + ";"
 
     private def executeSql(db: SQLiteDatabase, sql: String*) = {
       sql.foreach(s => db.execSQL(s))
@@ -146,7 +149,7 @@ object DrinksDatabase {
     private def scalarInt(sql: String, args: String*) = {
       query(sql, args: _*)(c => c.getInt(0))
     }
-    
+
     private def scalarString(sql: String, args: String*) = {
       query(sql, args: _*)(c => c.getString(0))
     }
