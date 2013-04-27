@@ -141,17 +141,9 @@ class MainActivity extends TypedActivity
   
   private def loadDrinks {
     drinks.clear
-    val cursor = db.getDrinks
-    
-    try {
-      while (cursor.moveToNext()) {
-        val drink = cursor.get
-      
-        drinks.add(drink)
-        logI(drink.toString())
-      }
-    } finally {
-      cursor.close
+    db.iterAllDrinks { d =>
+      drinks.add(d)
+      logI(d.toString())
     }
   }
   

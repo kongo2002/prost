@@ -150,9 +150,23 @@ object DrinksDatabase {
     /**
      * Get all drinks stored in the database.
      */
-    def getDrinks = {
+    def getAllDrinks = {
       val db = getReadableDatabase()
       db.rawQueryWithFactory(new DrinksCursor.Factory(), DrinksCursor.QUERY, null, null).asInstanceOf[DrinksCursor]
+    }
+    
+    /**
+     * Iterate all Drinks using the specified function.
+     */
+    def iterAllDrinks(func: Drink => Unit) {
+      val cursor = getAllDrinks
+      try {
+        while (cursor.moveToNext) {
+          func(cursor.get)
+        }
+      } finally {
+        cursor.close
+      }
     }
 
     private def drop(table: String) = "DROP TABLE IF EXISTS " + table + ";"
