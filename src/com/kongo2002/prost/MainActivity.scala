@@ -47,9 +47,11 @@ class MainActivity extends TypedActivity
       if (currentDrinkType > 0) {
         for (dtype <- db.getDrinkType(currentDrinkType)) {
           val drink = dtype.newDrink
-          drinks.add(drink)
-          update
-          longToast("Added " + dtype.name)
+          
+          if (addDrink(drink)) {
+            update
+            longToast("Added " + dtype.name)
+          }
         }
       }
     }
@@ -125,6 +127,15 @@ class MainActivity extends TypedActivity
    * Create and show a Toast for a short period of time.
    */
   private def shortToast(msg: String) = toast(Toast.LENGTH_SHORT) _
+  
+  private def addDrink(drink: Drink) = {
+    if (db.addDrink(drink.drinkType.id)) {
+      drinks.add(drink)
+      true
+    } else {
+      false
+    }
+  }
   
   private def restoreState(state: Bundle) {
     /* read last drink type from state */

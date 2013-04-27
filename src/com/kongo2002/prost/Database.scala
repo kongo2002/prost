@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteQuery
 import android.database.SQLException
 import android.util.Log
-import java.lang.Long
+
 import java.util.Date
 
 /**
@@ -29,7 +29,7 @@ object DrinksDatabase {
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER, type INTEGER);"
 
   private final def DEFAULT_TYPES = "INSERT INTO drink_types " +
-    "(name,unit) VALUES ('Pint', 500, 1);"
+    "(name,unit,type) VALUES ('Pint', 500, 1);"
 
   /**
    * Inner database class that wraps a sqlite connection helper.
@@ -83,17 +83,26 @@ object DrinksDatabase {
      * Add a new drink to the 'drinks' database table.
      * @param drinkId   ID of the respective entry in the 'drink_types' table
      */
-    def addDrink(drinkId: Long) {
-      val map = new ContentValues()
-      val date = new Date()
+    def addDrink(drinkId: Long) = {
+      val drinkName = getDrinkTypeName(drinkId)
+      if (drinkName.isDefined) {
+        val map = new ContentValues()
+        val date = new Date()
 
-      map.put("drink", Long.valueOf(drinkId))
-      map.put("date", Long.valueOf(date.getSeconds()))
+        map.put("drink", java.lang.Long.valueOf(drinkId))
+        map.put("date", java.lang.Long.valueOf(date.getSeconds()))
 
-      try {
-        getWritableDatabase().insert("drinks", null, map)
-      } catch {
-        case sex: SQLException => Log.e("Error writing new drink", sex.toString())
+        try {
+          getWritableDatabase().insert("drinks", null, map)
+          true
+        } catch {
+          case sex: SQLException => {
+            Log.e("Error writing new drink", sex.toString())
+            false
+          }
+        }
+      } else {
+        false
       }
     }
 
@@ -114,14 +123,14 @@ object DrinksDatabase {
     /**
      * Get the name of the drink type with the specified ID
      */
-    def getDrinkTypeName(id: Int) = {
+    def getDrinkTypeName(id: Long) = {
       scalarString("SELECT name FROM drink_types WHERE _id=" + id + ";")
     }
     
     /**
      * Get a DrinkType with the specified ID.
      */
-    def getDrinkType(id: Int) = {
+    def getDrinkType(id: Long) = {
       val query = DrinkTypesCursor.QUERY_ONE + id + ";"
       val db = getReadableDatabase()
       val cursor = db.rawQueryWithFactory(new DrinkTypesCursor.Factory(), query, null, null).asInstanceOf[DrinkTypesCursor]
