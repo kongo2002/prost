@@ -2,7 +2,6 @@ package com.kongo2002.prost
 
 import android.content.ContentValues
 import android.content.Context
-
 import android.database.Cursor
 import android.database.sqlite.SQLiteCursor
 import android.database.sqlite.SQLiteCursorDriver
@@ -10,9 +9,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteQuery
 import android.database.SQLException
-
 import android.util.Log
-
 import java.lang.Long
 import java.util.Date
 
@@ -29,10 +26,10 @@ object DrinksDatabase {
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, drink INTEGER, date INTEGER);"
 
   private final def DRINK_TYPES_TABLE = "CREATE TABLE drink_types (" +
-    "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER);"
+    "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER, type INTEGER);"
 
   private final def DEFAULT_TYPES = "INSERT INTO drink_types " +
-    "(name,unit) VALUES ('Pint', 500);"
+    "(name,unit) VALUES ('Pint', 500, 1);"
 
   /**
    * Inner database class that wraps a sqlite connection helper.
@@ -120,6 +117,24 @@ object DrinksDatabase {
     def getDrinkTypeName(id: Int) = {
       scalarString("SELECT name FROM drink_types WHERE _id=" + id + ";")
     }
+    
+    /**
+     * Get a DrinkType with the specified ID.
+     */
+    def getDrinkType(id: Int) = {
+      val query = DrinkTypesCursor.QUERY_ONE + id + ";"
+      val db = getReadableDatabase()
+      val cursor = db.rawQueryWithFactory(new DrinkTypesCursor.Factory(), query, null, null).asInstanceOf[DrinkTypesCursor]
+      
+      try {
+        if (cursor.moveToFirst)
+          Some(cursor.get)
+        else
+          None
+      } finally {
+        cursor.close
+      }
+    }
 
     private def drop(table: String) = "DROP TABLE IF EXISTS " + table + ";"
 
@@ -179,6 +194,20 @@ object DrinksDatabase {
       }
     }
   }
+  
+  object DrinkTypesCursor {
+    final def QUERY_ALL = "SELECT _id,name,unit,type FROM drink_types ORDER BY name ASC;"
+    final def QUERY_ONE = "SELECT _id,name,unit,type FROM drink_types WHERE _id="
+      
+    /**
+     * Factory class to be used for 'rawQueryWithFactory()'
+     */
+    class Factory extends SQLiteDatabase.CursorFactory {
+      override def newCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery) = {
+        new DrinkTypesCursor(db, driver, table, query)
+      }
+    }
+  }
 
   /**
    * Convenience cursor wrapper class to centralize all access to the
@@ -186,21 +215,13 @@ object DrinksDatabase {
    */
   class DrinkTypesCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
     extends SQLiteCursor(db, driver, table, query) {
-
-    final def QUERY = "SELECT _id,name,unit FROM drink_types ORDER BY name ASC"
-
+    
     def getTypeId = getLong(getColumnIndexOrThrow("_id"))
     def getTypeName = getString(getColumnIndexOrThrow("name"))
-    def getTypeUnit = getLong(getColumnIndexOrThrow("unit"))
-
-    /**
-     * Factory class to be used for 'rawQueryWithFactory()'
-     */
-    object Factory extends SQLiteDatabase.CursorFactory {
-      override def newCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery) = {
-        new DrinkTypesCursor(db, driver, table, query)
-      }
-    }
+    def getTypeUnit = getInt(getColumnIndexOrThrow("unit"))
+    def getType = Drinks(getInt(getColumnIndexOrThrow("type")))
+    
+    def get = DrinkType(getTypeId, getTypeName, getTypeUnit, getType)
   }
 }
 

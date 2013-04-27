@@ -27,8 +27,8 @@ class MainActivity extends TypedActivity
   lazy val drinksTv = findView(TR.totalDrinksTv)
 
   val db = new DrinksDatabase.DrinksDatabase(this)
-  val order = Ordering.by[Beer, Date](x => x.bought)
-  val drinks = new java.util.TreeSet[Beer](order)
+  val order = Ordering.by[Drink, Date](x => x.bought)
+  val drinks = new java.util.TreeSet[Drink](order)
 
   var currentDrinkType = 0
 
@@ -45,11 +45,11 @@ class MainActivity extends TypedActivity
     newBeerBtn.setOnClickListener { v: View =>
       /* determine whether a valid drink type is selected */
       if (currentDrinkType > 0) {
-        for (name <- db.getDrinkTypeName(currentDrinkType)) {
-          val beer = new Pint()
-          drinks.add(beer)
+        for (dtype <- db.getDrinkType(currentDrinkType)) {
+          val drink = dtype.newDrink
+          drinks.add(drink)
           update
-          longToast("Added " + name)
+          longToast("Added " + dtype.name)
         }
       }
     }
@@ -109,9 +109,22 @@ class MainActivity extends TypedActivity
     logI("onRestoreInstanceState")
   }
   
-  private def longToast(msg: String) {
-    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+  /**
+   * Create and show a Toast for a specified period of time.
+   */
+  private def toast(duration: Int)(msg: String) {
+    Toast.makeText(this, msg, duration).show()
   }
+  
+  /**
+   * Create and show a Toast for a long period of time.
+   */
+  private def longToast(msg: String) = toast(Toast.LENGTH_LONG) _
+  
+  /**
+   * Create and show a Toast for a short period of time.
+   */
+  private def shortToast(msg: String) = toast(Toast.LENGTH_SHORT) _
   
   private def restoreState(state: Bundle) {
     /* read last drink type from state */
@@ -126,7 +139,7 @@ class MainActivity extends TypedActivity
   }
 
   private def getLiters = {
-    val liters = drinks.foldLeft(0.0)((a, d) => a + d.unitSize)
+    val liters = drinks.foldLeft(0.0)((a, d) => a + d.drinkType.unit)
     liters / 1000.0
   }
 
