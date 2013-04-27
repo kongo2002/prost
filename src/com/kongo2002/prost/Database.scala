@@ -20,10 +20,10 @@ import java.util.Date
 object DrinksDatabase {
 
   private final def DBVERSION = 1
-  private final def DBNAME = "drinks"
+  private final def DBNAME = "drinks.db"
 
   private final def DRINKS_TABLE = "CREATE TABLE drinks (" +
-    "_id INTEGER PRIMARY KEY AUTOINCREMENT, drink INTEGER, date INTEGER);"
+    "_id INTEGER PRIMARY KEY AUTOINCREMENT, drink INTEGER, date TIMESTAMP NOT NULL DEFAULT current_timestamp);"
 
   private final def DRINK_TYPES_TABLE = "CREATE TABLE drink_types (" +
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER, type INTEGER);"
@@ -87,10 +87,12 @@ object DrinksDatabase {
       val drinkName = getDrinkTypeName(drinkId)
       if (drinkName.isDefined) {
         val map = new ContentValues()
-        val date = new Date()
 
+        /* we don't have to insert the 'date' value in here
+         * because the column 'date' defaults to 'current_timestamp'
+         * and will therefore be inserted by sqlite
+         */
         map.put("drink", java.lang.Long.valueOf(drinkId))
-        map.put("date", java.lang.Long.valueOf(date.getSeconds()))
 
         try {
           getWritableDatabase().insert("drinks", null, map)
@@ -186,13 +188,15 @@ object DrinksDatabase {
   class DrinksCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
     extends SQLiteCursor(db, driver, table, query) {
 
-    final def QUERY = "SELECT _id,name,unit,date FROM drinks,drink_types " +
+    final def QUERY = "SELECT _id,name,unit," +
+      "(strftime('%s', date, 'unixepoch') * 1000) AS date " +
+      "FROM drinks,drink_types " +
       "WHERE drinks.drink=drink_types._id ORDER BY date DESC"
 
     def getDrinkId = getLong(getColumnIndexOrThrow("drinks._id"))
-    def getDrinkName = getString(getColumnIndexOrThrow("drink_types.name"))
-    def getDrinkUnit = getLong(getColumnIndexOrThrow("drink_types.unit"))
-    def getDrinkDate = getLong(getColumnIndexOrThrow("drink.date"))
+    def getDrinkName = getString(getColumnIndexOrThrow("name"))
+    def getDrinkUnit = getLong(getColumnIndexOrThrow("unit"))
+    def getDrinkDate = new Date(getLong(getColumnIndexOrThrow("date")))
 
     /**
      * Factory class to be used for 'rawQueryWithFactory()'
