@@ -55,7 +55,9 @@ class MainActivity extends TypedActivity
         }
       }
     }
-
+    
+    /* load drinks and update the view */
+    loadDrinks
     update
     
     logI("onCreate")
@@ -134,6 +136,22 @@ class MainActivity extends TypedActivity
       true
     } else {
       false
+    }
+  }
+  
+  private def loadDrinks {
+    drinks.clear
+    val cursor = db.getDrinks
+    
+    try {
+      while (cursor.moveToNext()) {
+        val drink = cursor.get
+      
+        drinks.add(drink)
+        logI(drink.toString())
+      }
+    } finally {
+      cursor.close
     }
   }
   

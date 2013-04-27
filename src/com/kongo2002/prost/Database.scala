@@ -146,6 +146,14 @@ object DrinksDatabase {
         cursor.close
       }
     }
+    
+    /**
+     * Get all drinks stored in the database.
+     */
+    def getDrinks = {
+      val db = getReadableDatabase()
+      db.rawQueryWithFactory(new DrinksCursor.Factory(), DrinksCursor.QUERY, null, null).asInstanceOf[DrinksCursor]
+    }
 
     private def drop(table: String) = "DROP TABLE IF EXISTS " + table + ";"
 
@@ -180,6 +188,22 @@ object DrinksDatabase {
       query(sql, args: _*)(c => c.getString(0))
     }
   }
+  
+  object DrinksCursor {
+    final def QUERY = "SELECT drinks._id AS id,name,unit,type,drink_types._id AS tid," +
+      "(strftime('%s', date) * 1000) AS date " +
+      "FROM drinks INNER JOIN drink_types ON " +
+      "drinks.drink=drink_types._id ORDER BY id DESC;"
+      
+    /**
+     * Factory class to be used for 'rawQueryWithFactory()'
+     */
+    class Factory extends SQLiteDatabase.CursorFactory {
+      override def newCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery) = {
+        new DrinksCursor(db, driver, table, query)
+      }
+    }
+  }
 
   /**
    * Convenience cursor wrapper class to centralize all access to
@@ -188,24 +212,15 @@ object DrinksDatabase {
   class DrinksCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
     extends SQLiteCursor(db, driver, table, query) {
 
-    final def QUERY = "SELECT _id,name,unit," +
-      "(strftime('%s', date, 'unixepoch') * 1000) AS date " +
-      "FROM drinks,drink_types " +
-      "WHERE drinks.drink=drink_types._id ORDER BY date DESC"
-
-    def getDrinkId = getLong(getColumnIndexOrThrow("drinks._id"))
+    def getDrinkId = getLong(getColumnIndexOrThrow("id"))
     def getDrinkName = getString(getColumnIndexOrThrow("name"))
     def getDrinkUnit = getLong(getColumnIndexOrThrow("unit"))
+    def getDrinkTypeId = getLong(getColumnIndexOrThrow("tid"))
+    def getDrinkBaseType = Drinks(getInt(getColumnIndexOrThrow("type")))
     def getDrinkDate = new Date(getLong(getColumnIndexOrThrow("date")))
-
-    /**
-     * Factory class to be used for 'rawQueryWithFactory()'
-     */
-    object Factory extends SQLiteDatabase.CursorFactory {
-      override def newCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery) = {
-        new DrinksCursor(db, driver, table, query)
-      }
-    }
+    
+    def getDrinkType = DrinkType(getDrinkTypeId, getDrinkName, getDrinkUnit, getDrinkBaseType)
+    def get = getDrinkType.newDrink(getDrinkDate)
   }
   
   object DrinkTypesCursor {
