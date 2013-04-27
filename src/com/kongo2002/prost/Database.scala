@@ -33,6 +33,7 @@ object DrinksDatabase {
 
   /**
    * Inner database class that wraps a sqlite connection helper.
+   * @param context   Context the database operates on
    */
   class DrinksDatabase(context: Context)
     extends SQLiteOpenHelper(context, DBNAME, null, DBVERSION) {
@@ -124,6 +125,7 @@ object DrinksDatabase {
 
     /**
      * Get the name of the drink type with the specified ID
+     * @param id  ID of the 'DrinkType' to get the name for
      */
     def getDrinkTypeName(id: Long) = {
       scalarString("SELECT name FROM drink_types WHERE _id=" + id + ";")
@@ -131,6 +133,7 @@ object DrinksDatabase {
     
     /**
      * Get a DrinkType with the specified ID.
+     * @param id  ID of the 'DrinkType' to retrieve
      */
     def getDrinkType(id: Long) = {
       val query = DrinkTypesCursor.QUERY_ONE + id + ";"
@@ -148,7 +151,7 @@ object DrinksDatabase {
     }
     
     /**
-     * Get all drinks stored in the database.
+     * Get a cursor accessing all drinks stored in the database.
      */
     def getAllDrinks = {
       val db = getReadableDatabase()
@@ -157,6 +160,7 @@ object DrinksDatabase {
     
     /**
      * Iterate all Drinks using the specified function.
+     * @param func   Function that should be executed for every single 'Drink'
      */
     def iterAllDrinks(func: Drink => Unit) {
       val cursor = getAllDrinks
