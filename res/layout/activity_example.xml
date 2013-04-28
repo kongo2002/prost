@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#009933"
+    android:stretchColumns="*"
     tools:context=".MainActivity" >
 
     <TableRow
@@ -13,10 +14,9 @@
 
         <LinearLayout
             android:id="@+id/tl_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dip"
             android:layout_weight="1"
-            android:gravity="top|left"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
             <TextView
@@ -35,10 +35,9 @@
 
         <LinearLayout
             android:id="@+id/t_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dip"
             android:layout_weight="1"
-            android:gravity="top|center"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <TextView
@@ -57,9 +56,9 @@
 
         <LinearLayout
             android:id="@+id/tr_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dip"
             android:layout_weight="1"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
             <TextView
@@ -86,9 +85,9 @@
         android:layout_weight="1" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dip"
             android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
         </LinearLayout>
@@ -97,13 +96,12 @@
             android:id="@+id/new_beer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/beer_button" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dip"
             android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
         </LinearLayout>
