@@ -36,7 +36,7 @@ class MainActivity extends TypedActivity
     super.onCreate(state)
     
     /* load view */
-    setContentView(R.layout.activity_example)
+    setContentView(R.layout.main_activity)
     
     /* restore state */
     restoreState(state)
