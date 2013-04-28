@@ -20,17 +20,15 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/PerHourTv"
+                android:id="@+id/tlTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Large Text"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/PerHourLabelTv"
+                android:id="@+id/tlLabelTv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="l/h" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -41,17 +39,15 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/totalCountTv"
+                android:id="@+id/tTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Large Text"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/totalCountLabelTv"
+                android:id="@+id/tLabelTv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="total liters" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -62,17 +58,15 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/totalDrinksTv"
+                android:id="@+id/trTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Large Text"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/totalDrinksLabelTv"
+                android:id="@+id/trLabelTv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="total drinks" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -90,6 +84,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+            <TextView
+                android:id="@+id/lTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/lLabelTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
 
         <Button
@@ -104,6 +109,17 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/rTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/rLabelTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -126,14 +142,12 @@
                 android:id="@+id/blTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Large Text"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/blLabelTv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="l/h" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -147,14 +161,12 @@
                 android:id="@+id/bTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Large Text"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/bLabelTv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="total liters" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -168,14 +180,12 @@
                 android:id="@+id/brTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Large Text"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/brLabelTv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="total drinks" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

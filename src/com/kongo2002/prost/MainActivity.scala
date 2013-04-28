@@ -22,32 +22,30 @@ class MainActivity extends TypedActivity
   with Loggable {
 
   lazy val newBeerBtn = findView(TR.newBeerBtn)
-  lazy val totalTv = findView(TR.totalCountTv)
-  lazy val perHour = findView(TR.perHourTv)
-  lazy val drinksTv = findView(TR.totalDrinksTv)
 
   val db = new DrinksDatabase.DrinksDatabase(this)
   val order = Ordering.by[Drink, Date](x => x.bought)
   val drinks = new java.util.TreeSet[Drink](order)
+  val commands = new scala.collection.mutable.HashMap[Tile, Command]()
 
   var currentDrinkType = 0
 
   override def onCreate(state: Bundle) {
     super.onCreate(state)
-    
+
     /* load view */
     setContentView(R.layout.main_activity)
-    
+
     /* restore state */
     restoreState(state)
-    
+
     /* connect listeners */
     newBeerBtn.setOnClickListener { v: View =>
       /* determine whether a valid drink type is selected */
       if (currentDrinkType > 0) {
         for (dtype <- db.getDrinkType(currentDrinkType)) {
           val drink = dtype.newDrink
-          
+
           if (addDrink(drink)) {
             update
             longToast("Added " + dtype.name)
@@ -55,81 +53,84 @@ class MainActivity extends TypedActivity
         }
       }
     }
-    
+
+    /* load commands */
+    loadCommands
+
     /* load drinks and update the view */
     loadDrinks
     update
-    
+
     logI("onCreate")
   }
-  
+
   override def onRestart {
     super.onRestart
     logI("onRestart")
   }
-  
+
   override def onResume {
     super.onResume
     logI("onResume")
   }
-  
+
   override def onPause {
     super.onPause
     logI("onPause")
   }
-  
+
   override def onStop {
     super.onStop
     logI("onStop")
   }
-  
+
   override def onDestroy {
     super.onDestroy
     db.close
     logI("onDestroy")
   }
-  
+
   override def onSaveInstanceState(state: Bundle) {
     super.onSaveInstanceState(state)
-    
+
     /* save state */
     state.putInt("drinkType", currentDrinkType)
     logI("onSaveInstanceState: stored 'drinkType=" + currentDrinkType + "'")
-    
+
     logI("onSaveInstanceState")
   }
-  
+
   override def onRetainNonConfigurationInstance() = {
     logI("onRetainNonConfigurationInstance")
-    
+
     new Integer(getTaskId())
   }
-  
+
   override def onRestoreInstanceState(state: Bundle) {
     super.onRestoreInstanceState(state)
-    
+
     restoreState(state)
-    
+
     logI("onRestoreInstanceState")
   }
-  
+
   /**
    * Create and show a Toast for a specified period of time.
    */
   private def toast(duration: Int)(msg: String) {
     Toast.makeText(this, msg, duration).show()
   }
-  
+
   /**
    * Create and show a Toast for a long period of time.
    */
   private def longToast(msg: String) = toast(Toast.LENGTH_LONG) _
-  
+
   /**
    * Create and show a Toast for a short period of time.
    */
   private def shortToast(msg: String) = toast(Toast.LENGTH_SHORT) _
-  
+
   private def addDrink(drink: Drink) = {
     if (db.addDrink(drink.drinkType.id)) {
       drinks.add(drink)
@@ -138,7 +139,13 @@ class MainActivity extends TypedActivity
       false
     }
   }
-  
+
+  private def loadCommands {
+    /* TODO: distribute commands to tiles based on configuration */
+    commands += ((LeftTile(this), new TotalDrinksCount()))
+    commands += ((RightTile(this), new TotalLiters()))
+  }
+
   private def loadDrinks {
     drinks.clear
     db.iterAllDrinks { d =>
@@ -146,7 +153,7 @@ class MainActivity extends TypedActivity
       logI(d.toString())
     }
   }
-  
+
   private def getDrinkType(state: Bundle) = {
     /* read last drink type from state */
     if (state != null) {
@@ -160,12 +167,12 @@ class MainActivity extends TypedActivity
       drinkType
     }
   }
-  
+
   private def restoreState(state: Bundle) {
     val drinkType = getDrinkType(state)
     if (drinkType != currentDrinkType) {
       currentDrinkType = drinkType
-      
+
       db.getDrinkTypeName(drinkType) match {
         case Some(name) => newBeerBtn.setText("Add " + name)
         case None => newBeerBtn.setText("Add drink")
@@ -200,18 +207,15 @@ class MainActivity extends TypedActivity
       1.0
     }
   }
-  
-  private def format(value: Double) = value.formatted("%1.2f")
-  private def format(value: Int) = value.toString
 
   private def update {
-    val count = drinks.size()
-    val liters = getLiters
-    val avg = liters / count
+    commands.foreach { case (t, c) => {
+        val result = c.getResult(drinks)
 
-    totalTv.setText(format(liters))
-    perHour.setText(format(liters / getHourDiff))
-    drinksTv.setText(format(count))
+        t.labelTextView.setText(c.unit)
+        t.textView.setText(c.format(result))
+      }
+    }
   }
 }
 

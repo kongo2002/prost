@@ -10,9 +10,6 @@ case class TypedResource[T](id : Int)
 
 object TR {
   val newBeerBtn = TypedResource[Button](R.id.new_beer)
-  val totalCountTv = TypedResource[TextView](R.id.totalCountTv)
-  val perHourTv = TypedResource[TextView](R.id.PerHourTv)
-  val totalDrinksTv = TypedResource[TextView](R.id.totalDrinksTv)
 }
 
 trait TypedViewHolder {
@@ -36,7 +33,7 @@ trait TypedActivity extends Activity with TypedActivityHolder {
 trait Loggable {
   val tag = this.getClass().getSimpleName()
   def TAG = tag
-  
+
   def logI(msg: String) {
     if (BuildConfig.DEBUG) Log.i(tag, msg)
   }
