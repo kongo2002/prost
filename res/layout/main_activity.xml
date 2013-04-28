@@ -115,6 +115,70 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" >
 
+        <LinearLayout
+            android:id="@+id/bl_layout"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/blTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Large Text"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/blLabelTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="l/h" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/b_layout"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/bTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Large Text"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/bLabelTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="total liters" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/br_layout"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/brTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Large Text"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/brLabelTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="total drinks" />
+
+        </LinearLayout>
+
     </TableRow>
 
 </TableLayout>
