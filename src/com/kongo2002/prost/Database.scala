@@ -122,7 +122,7 @@ object DrinksDatabase {
     def getLastDrinkType = {
       scalarInt("SELECT drink FROM drinks ORDER BY date DESC LIMIT 1;")
     }
-    
+
     /**
      * Get the first available drink type in the database.
      */
@@ -137,7 +137,7 @@ object DrinksDatabase {
     def getDrinkTypeName(id: Long) = {
       scalarString("SELECT name FROM drink_types WHERE _id=" + id + ";")
     }
-    
+
     /**
      * Get a DrinkType with the specified ID.
      * @param id  ID of the 'DrinkType' to retrieve
@@ -146,7 +146,7 @@ object DrinksDatabase {
       val query = DrinkTypesCursor.QUERY_ONE + id + ";"
       val db = getReadableDatabase()
       val cursor = db.rawQueryWithFactory(new DrinkTypesCursor.Factory(), query, null, null).asInstanceOf[DrinkTypesCursor]
-      
+
       try {
         if (cursor.moveToFirst)
           Some(cursor.get)
@@ -156,7 +156,7 @@ object DrinksDatabase {
         cursor.close
       }
     }
-    
+
     /**
      * Get a cursor accessing all drinks stored in the database.
      */
@@ -164,7 +164,7 @@ object DrinksDatabase {
       val db = getReadableDatabase()
       db.rawQueryWithFactory(new DrinksCursor.Factory(), DrinksCursor.QUERY, null, null).asInstanceOf[DrinksCursor]
     }
-    
+
     /**
      * Get all drinks stored in the database.
      */
@@ -173,7 +173,7 @@ object DrinksDatabase {
       iterAllDrinks(d => drinks.append(d))
       drinks
     }
-    
+
     /**
      * Iterate all drinks using the specified function.
      * @param func   Function that should be executed for every single 'Drink'
@@ -188,7 +188,7 @@ object DrinksDatabase {
         cursor.close
       }
     }
-    
+
     /**
      * Reduce all drinks to a single value using the specified function.
      * @param func      function that is invoked for every drink
@@ -240,13 +240,13 @@ object DrinksDatabase {
       query(sql, args: _*)(c => c.getString(0))
     }
   }
-  
+
   object DrinksCursor {
     final def QUERY = "SELECT drinks._id AS id,name,unit,type,drink_types._id AS tid," +
       "(strftime('%s', date) * 1000) AS date " +
       "FROM drinks INNER JOIN drink_types ON " +
       "drinks.drink=drink_types._id ORDER BY id DESC;"
-      
+
     /**
      * Factory class to be used for 'rawQueryWithFactory()'
      */
@@ -270,15 +270,15 @@ object DrinksDatabase {
     def getDrinkTypeId = getLong(getColumnIndexOrThrow("tid"))
     def getDrinkBaseType = Drinks(getInt(getColumnIndexOrThrow("type")))
     def getDrinkDate = new Date(getLong(getColumnIndexOrThrow("date")))
-    
+
     def getDrinkType = DrinkType(getDrinkTypeId, getDrinkName, getDrinkUnit, getDrinkBaseType)
     def get = getDrinkType.newDrink(getDrinkDate)
   }
-  
+
   object DrinkTypesCursor {
     final def QUERY_ALL = "SELECT _id,name,unit,type FROM drink_types ORDER BY name ASC;"
     final def QUERY_ONE = "SELECT _id,name,unit,type FROM drink_types WHERE _id="
-      
+
     /**
      * Factory class to be used for 'rawQueryWithFactory()'
      */
@@ -295,12 +295,12 @@ object DrinksDatabase {
    */
   class DrinkTypesCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
     extends SQLiteCursor(db, driver, table, query) {
-    
+
     def getTypeId = getLong(getColumnIndexOrThrow("_id"))
     def getTypeName = getString(getColumnIndexOrThrow("name"))
     def getTypeUnit = getInt(getColumnIndexOrThrow("unit"))
     def getType = Drinks(getInt(getColumnIndexOrThrow("type")))
-    
+
     def get = DrinkType(getTypeId, getTypeName, getTypeUnit, getType)
   }
 }
