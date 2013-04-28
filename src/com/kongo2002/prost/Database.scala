@@ -160,9 +160,18 @@ object DrinksDatabase {
     /**
      * Get a cursor accessing all drinks stored in the database.
      */
-    def getAllDrinks = {
+    def getAllDrinksCursor = {
       val db = getReadableDatabase()
       db.rawQueryWithFactory(new DrinksCursor.Factory(), DrinksCursor.QUERY, null, null).asInstanceOf[DrinksCursor]
+    }
+    
+    /**
+     * Get all drinks stored in the database.
+     */
+    def getAllDrinks = {
+      val drinks = new scala.collection.mutable.ArrayBuffer[Drink]()
+      iterAllDrinks(d => drinks.append(d))
+      drinks
     }
     
     /**
@@ -170,7 +179,7 @@ object DrinksDatabase {
      * @param func   Function that should be executed for every single 'Drink'
      */
     def iterAllDrinks(func: Drink => Unit) {
-      val cursor = getAllDrinks
+      val cursor = getAllDrinksCursor
       try {
         while (cursor.moveToNext) {
           func(cursor.get)
@@ -186,7 +195,7 @@ object DrinksDatabase {
      * @param initial   initial value
      */
     def reduceAllDrinks[T](func: (Drink, T) => T, initialValue: T) = {
-      val cursor = getAllDrinks
+      val cursor = getAllDrinksCursor
       try {
         var acc = initialValue
         while (cursor.moveToNext) {
