@@ -200,15 +200,18 @@ class MainActivity extends TypedActivity
       1.0
     }
   }
+  
+  private def format(value: Double) = value.formatted("%1.2f")
+  private def format(value: Int) = value.toString
 
   private def update {
     val count = drinks.size()
     val liters = getLiters
     val avg = liters / count
 
-    totalTv.setText(liters.toString())
-    perHour.setText((liters / getHourDiff).toString())
-    drinksTv.setText(count.toString())
+    totalTv.setText(format(liters))
+    perHour.setText(format(liters / getHourDiff))
+    drinksTv.setText(format(count))
   }
 }
 

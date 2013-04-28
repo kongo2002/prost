@@ -38,7 +38,7 @@ trait Loggable {
   def TAG = tag
   
   def logI(msg: String) {
-    if (Prost.DEBUG) Log.i(tag, msg)
+    if (BuildConfig.DEBUG) Log.i(tag, msg)
   }
 }
 
