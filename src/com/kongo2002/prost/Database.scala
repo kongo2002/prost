@@ -166,7 +166,7 @@ object DrinksDatabase {
     }
     
     /**
-     * Iterate all Drinks using the specified function.
+     * Iterate all drinks using the specified function.
      * @param func   Function that should be executed for every single 'Drink'
      */
     def iterAllDrinks(func: Drink => Unit) {
@@ -175,6 +175,24 @@ object DrinksDatabase {
         while (cursor.moveToNext) {
           func(cursor.get)
         }
+      } finally {
+        cursor.close
+      }
+    }
+    
+    /**
+     * Reduce all drinks to a single value using the specified function.
+     * @param func      function that is invoked for every drink
+     * @param initial   initial value
+     */
+    def reduceAllDrinks[T](func: (Drink, T) => T, initialValue: T) = {
+      val cursor = getAllDrinks
+      try {
+        var acc = initialValue
+        while (cursor.moveToNext) {
+          acc = func(cursor.get, acc)
+        }
+        acc
       } finally {
         cursor.close
       }
