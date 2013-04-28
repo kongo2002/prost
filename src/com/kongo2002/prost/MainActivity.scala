@@ -147,15 +147,29 @@ class MainActivity extends TypedActivity
     }
   }
   
-  private def restoreState(state: Bundle) {
+  private def getDrinkType(state: Bundle) = {
     /* read last drink type from state */
     if (state != null) {
-      currentDrinkType = state.getInt("drinkType")
-      logI("restored 'drinkType=" + currentDrinkType + "' from state")
+      val drinkType = state.getInt("drinkType")
+      logI("restored 'drinkType=" + drinkType + "' from state")
+      drinkType
     /* or from database */
     } else {
-      currentDrinkType = db.getLastDrinkType.getOrElse(0)
-      logI("restored 'drinkType=" + currentDrinkType + "' from database")
+      val drinkType = db.getLastDrinkType.getOrElse(db.getFirstDrinkType.getOrElse(0))
+      logI("restored 'drinkType=" + drinkType + "' from database")
+      drinkType
+    }
+  }
+  
+  private def restoreState(state: Bundle) {
+    val drinkType = getDrinkType(state)
+    if (drinkType != currentDrinkType) {
+      currentDrinkType = drinkType
+      
+      db.getDrinkTypeName(drinkType) match {
+        case Some(name) => newBeerBtn.setText("Add " + name)
+        case None => newBeerBtn.setText("Add drink")
+      }
     }
   }
 

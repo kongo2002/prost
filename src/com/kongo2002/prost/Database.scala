@@ -122,6 +122,13 @@ object DrinksDatabase {
     def getLastDrinkType = {
       scalarInt("SELECT drink FROM drinks ORDER BY date DESC LIMIT 1;")
     }
+    
+    /**
+     * Get the first available drink type in the database.
+     */
+    def getFirstDrinkType = {
+      scalarInt("SELECT _id FROM drink_types ORDER BY _id ASC LIMIT 1;")
+    }
 
     /**
      * Get the name of the drink type with the specified ID
