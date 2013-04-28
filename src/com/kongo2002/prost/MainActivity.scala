@@ -87,7 +87,11 @@ class MainActivity extends TypedActivity
     selection match {
       case MenuOptions.ClearDatabase => {
         confirm("Clear database", "Do you really want to clear the database?",
-            (_, _) => db.removeAllDrinks)
+            (_, _) => {
+              db.removeAllDrinks
+              drinks.clear
+              update
+            })
         true
       }
       case MenuOptions.About => {
@@ -200,6 +204,7 @@ class MainActivity extends TypedActivity
   private def loadCommands {
     /* TODO: distribute commands to tiles based on configuration */
     commands += ((TopLeftTile(this), new TotalBeersCount()))
+    commands += ((TopTile(this), new LitersPerHour()))
     commands += ((LeftTile(this), new TotalDrinksCount()))
     commands += ((RightTile(this), new TotalLiters()))
   }
@@ -235,34 +240,6 @@ class MainActivity extends TypedActivity
         case Some(name) => newBeerBtn.setText("Add " + name)
         case None => newBeerBtn.setText("Add drink")
       }
-    }
-  }
-
-  private def getLiters = {
-    val liters = drinks.foldLeft(0.0)((a, d) => a + d.drinkType.unit)
-    liters / 1000.0
-  }
-
-  private def timeDiff(from: Date, to: Date) = {
-    val calFrom = Calendar.getInstance()
-    val calTo = Calendar.getInstance()
-
-    calFrom.setTime(from)
-    calTo.setTime(to)
-
-    calTo.getTimeInMillis() - calFrom.getTimeInMillis()
-  }
-
-  private def getHourDiff = {
-    val size = drinks.size()
-    if (size > 0) {
-      val now = new Date()
-      val diff = timeDiff(drinks.first.bought, now)
-      val hourDiff = diff / (1000.0 * 60)
-
-      hourDiff
-    } else {
-      1.0
     }
   }
 
