@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#009933"
+    android:background="#000000"
     android:stretchColumns="1"
     tools:context=".MainActivity" >
 
@@ -25,13 +25,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/yellow" />
 
             <TextView
                 android:id="@+id/tlLabelTv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/dark_yellow" />
 
         </LinearLayout>
 
@@ -47,13 +49,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/yellow" />
 
             <TextView
                 android:id="@+id/tLabelTv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/dark_yellow" />
 
         </LinearLayout>
 
@@ -69,13 +73,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/yellow" />
 
             <TextView
                 android:id="@+id/trLabelTv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/dark_yellow" />
 
         </LinearLayout>
 
@@ -99,13 +105,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/yellow" />
 
             <TextView
                 android:id="@+id/lLabelTv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/dark_yellow" />
 
         </LinearLayout>
 
@@ -128,13 +136,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/yellow" />
 
             <TextView
                 android:id="@+id/rLabelTv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/dark_yellow" />
 
         </LinearLayout>
 
@@ -159,13 +169,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/yellow" />
 
             <TextView
                 android:id="@+id/blLabelTv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/dark_yellow" />
 
         </LinearLayout>
 
@@ -181,13 +193,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/yellow" />
 
             <TextView
                 android:id="@+id/bLabelTv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/dark_yellow" />
 
         </LinearLayout>
 
@@ -203,13 +217,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/yellow" />
 
             <TextView
                 android:id="@+id/brLabelTv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/dark_yellow" />
 
         </LinearLayout>
 
