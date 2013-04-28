@@ -29,7 +29,7 @@ object DrinksDatabase {
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER, type INTEGER);"
 
   private final def DEFAULT_TYPES = "INSERT INTO drink_types " +
-    "(name,unit,type) VALUES ('Pint', 500, 1);"
+    "(name,unit,type) VALUES ('Pint', 500, 0);"
 
   /**
    * Inner database class that wraps a sqlite connection helper.
