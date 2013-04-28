@@ -21,14 +21,17 @@
 
             <TextView
                 android:id="@+id/tlTv"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/tlLabelTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -40,14 +43,17 @@
 
             <TextView
                 android:id="@+id/tTv"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/tLabelTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -59,14 +65,16 @@
 
             <TextView
                 android:id="@+id/trTv"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/trLabelTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
@@ -81,45 +89,50 @@
         <LinearLayout
             android:layout_width="0dip"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/lTv"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/lLabelTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
 
         </LinearLayout>
 
         <Button
             android:id="@+id/new_beer"
             android:layout_width="0dip"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/beer_button" />
 
         <LinearLayout
             android:layout_width="0dip"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/rTv"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/rLabelTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
@@ -140,14 +153,17 @@
 
             <TextView
                 android:id="@+id/blTv"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/blLabelTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -159,14 +175,17 @@
 
             <TextView
                 android:id="@+id/bTv"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/bLabelTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -178,14 +197,16 @@
 
             <TextView
                 android:id="@+id/brTv"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/brLabelTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
