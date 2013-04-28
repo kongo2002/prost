@@ -142,6 +142,7 @@ class MainActivity extends TypedActivity
 
   private def loadCommands {
     /* TODO: distribute commands to tiles based on configuration */
+    commands += ((TopLeftTile(this), new TotalBeersCount()))
     commands += ((LeftTile(this), new TotalDrinksCount()))
     commands += ((RightTile(this), new TotalLiters()))
   }
