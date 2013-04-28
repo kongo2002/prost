@@ -207,6 +207,14 @@ object DrinksDatabase {
       }
     }
 
+    /**
+     * Remove all drinks from the database.
+     */
+    def removeAllDrinks {
+      val db = getReadableDatabase()
+      db.execSQL("DELETE FROM drinks;")
+    }
+
     private def drop(table: String) = "DROP TABLE IF EXISTS " + table + ";"
 
     private def executeSql(db: SQLiteDatabase, sql: String*) = {

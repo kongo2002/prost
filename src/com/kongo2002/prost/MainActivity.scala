@@ -1,6 +1,10 @@
 package com.kongo2002.prost;
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -20,6 +24,12 @@ import com.kongo2002.prost.ImplicitHelpers._
  */
 class MainActivity extends TypedActivity
   with Loggable {
+
+  object MenuOptions extends Enumeration {
+    type MenuOptions = Value
+    val ClearDatabase, About = Value
+  }
+  import MenuOptions._
 
   lazy val newBeerBtn = findView(TR.newBeerBtn)
 
@@ -62,6 +72,29 @@ class MainActivity extends TypedActivity
     update
 
     logI("onCreate")
+  }
+
+  override def onCreateOptionsMenu(menu: Menu) = {
+    menu.add(Menu.NONE, MenuOptions.ClearDatabase.id, Menu.NONE, R.string.clear_database)
+    menu.add(Menu.NONE, MenuOptions.About.id, Menu.NONE, R.string.about)
+
+    super.onCreateOptionsMenu(menu)
+  }
+
+  override def onOptionsItemSelected(item: MenuItem) = {
+    val selection = MenuOptions(item.getItemId)
+
+    selection match {
+      case MenuOptions.ClearDatabase => {
+        confirm("Clear database", "Do you really want to clear the database?",
+            (_, _) => db.removeAllDrinks)
+        true
+      }
+      case MenuOptions.About => {
+        /* TODO: about dialog */
+        true
+      }
+    }
   }
 
   override def onRestart {
@@ -138,6 +171,30 @@ class MainActivity extends TypedActivity
     } else {
       false
     }
+  }
+
+  private def confirm(title: String, question: String, ok: (DialogInterface, Int) => Unit) {
+    val builder = new AlertDialog.Builder(this)
+
+    /* set texts */
+    builder.setTitle(title)
+    builder.setMessage(question)
+
+    /* add buttons and their callbacks */
+    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+      def onClick(di: DialogInterface, i: Int) {
+        ok(di, i)
+      }
+    })
+    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+      def onClick(di: DialogInterface, i: Int) {
+        /* TODO: do nothing */
+      }
+    })
+
+    /* create and show dialog */
+    val dialog = builder.create
+    dialog.show
   }
 
   private def loadCommands {

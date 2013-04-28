@@ -5,5 +5,9 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="beer_button">New beer</string>
+    <string name="clear_database">Clear database</string>
+    <string name="about">About</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
