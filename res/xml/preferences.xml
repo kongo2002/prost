@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory android:title="@string/commands_category">
+        <ListPreference android:entries="@array/commands" android:entryValues="@array/commands_values" android:title="@string/top_left_tile" android:key="top_left_command" android:defaultValue="empty"/>
+        <ListPreference android:entries="@array/commands" android:entryValues="@array/commands_values" android:title="@string/top_tile" android:key="top_command" android:defaultValue="empty"/>
+        <ListPreference android:entries="@array/commands" android:entryValues="@array/commands_values" android:title="@string/top_right_tile" android:key="top_right_command" android:defaultValue="empty"/>
+        <ListPreference android:entries="@array/commands" android:entryValues="@array/commands_values" android:title="@string/left_tile" android:key="left_command" android:defaultValue="empty"/>
+        <ListPreference android:entries="@array/commands" android:entryValues="@array/commands_values" android:title="@string/right_tile" android:key="right_command" android:defaultValue="empty"/>
+        <ListPreference android:entries="@array/commands" android:entryValues="@array/commands_values" android:title="@string/bottom_left_tile" android:key="bottom_left_command" android:defaultValue="empty"/>
+        <ListPreference android:entries="@array/commands" android:entryValues="@array/commands_values" android:title="@string/bottom_tile" android:key="bottom_command" android:defaultValue="empty"/>
+        <ListPreference android:entries="@array/commands" android:entryValues="@array/commands_values" android:title="@string/bottom_right_tile" android:key="bottom_right_command" android:defaultValue="empty"/>
+    </PreferenceCategory>
+</PreferenceScreen>

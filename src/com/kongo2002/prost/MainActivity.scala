@@ -3,6 +3,7 @@ package com.kongo2002.prost;
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -27,7 +28,7 @@ class MainActivity extends TypedActivity
 
   object MenuOptions extends Enumeration {
     type MenuOptions = Value
-    val ClearDatabase, About = Value
+    val Settings, ClearDatabase, About = Value
   }
   import MenuOptions._
 
@@ -75,6 +76,7 @@ class MainActivity extends TypedActivity
   }
 
   override def onCreateOptionsMenu(menu: Menu) = {
+    menu.add(Menu.NONE, MenuOptions.Settings.id, Menu.NONE, R.string.settings)
     menu.add(Menu.NONE, MenuOptions.ClearDatabase.id, Menu.NONE, R.string.clear_database)
     menu.add(Menu.NONE, MenuOptions.About.id, Menu.NONE, R.string.about)
 
@@ -85,6 +87,11 @@ class MainActivity extends TypedActivity
     val selection = MenuOptions(item.getItemId)
 
     selection match {
+      case MenuOptions.Settings => {
+        val intent = new Intent(this, classOf[SettingsActivity])
+        startActivity(intent)
+        true
+      }
       case MenuOptions.ClearDatabase => {
         confirm("Clear database", "Do you really want to clear the database?",
             (_, _) => {

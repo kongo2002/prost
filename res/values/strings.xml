@@ -9,5 +9,30 @@
     <string name="about">About</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="settings">Settings</string>
+    <string-array name="commands">
+        <item>Empty</item><item >Liters per hour</item>
+        <item >Beer liters per hour</item>
+        <item >Shot liters per hour</item>
+        <item >Cocktail liters per hour</item>
+
+    </string-array>
+    <string-array name="commands_values">
+        <item>empty</item><item >LitersPerHour</item>
+        <item >BeerLitersPerHour</item>
+        <item >ShotLitersPerHour</item>
+        <item >CocktailLitersPerHour</item>
+
+    </string-array>
+    <string name="commands_category">Commands</string>
+    <string name="top_left_tile">Top left tile</string>
+    <string name="top_tile">Top tile</string>
+    <string name="top_right_tile">Top right tile</string>
+    <string name="left_tile">Left tile</string>
+    <string name="right_tile">Right tile</string>
+    <string name="bottom_left_tile">Bottom left tile</string>
+    <string name="bottom_tile">Bottom tile</string>
+    <string name="bottom_right_tile">Bottom right tile</string>
+    <string name="title_settings_activity">Settings</string>
 
 </resources>
