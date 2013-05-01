@@ -18,6 +18,8 @@ object Tiles extends Enumeration {
       case BottomRight => BottomRightTile(activity)
     }
   }
+
+  def configKey(name: Tiles) = name.toString.toLowerCase + "_command"
 }
 import Tiles._
 

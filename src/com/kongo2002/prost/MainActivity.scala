@@ -22,10 +22,12 @@ import java.util.Calendar
 
 import com.kongo2002.prost.ImplicitHelpers._
 
+
 /**
  * Main activity of the 'prost' application
  */
 class MainActivity extends TypedActivity
+  with SharedPreferences.OnSharedPreferenceChangeListener
   with Loggable {
 
   object MenuOptions extends Enumeration {
@@ -73,6 +75,10 @@ class MainActivity extends TypedActivity
     /* load drinks and update the view */
     loadDrinks
     update
+
+    /* register to settings changes */
+    val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+    prefs.registerOnSharedPreferenceChangeListener(this)
 
     logI("onCreate")
   }
@@ -132,7 +138,14 @@ class MainActivity extends TypedActivity
 
   override def onDestroy {
     super.onDestroy
+
+    /* unregister from settings changes */
+    val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+    prefs.unregisterOnSharedPreferenceChangeListener(this)
+
+    /* close database handle */
     db.close
+
     logI("onDestroy")
   }
 
@@ -158,6 +171,15 @@ class MainActivity extends TypedActivity
     restoreState(state)
 
     logI("onRestoreInstanceState")
+  }
+
+  override def onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
+    if (Tiles.values.exists(t => Tiles.configKey(t).equals(key))) {
+      logI("Config key '" + key + "' was changed. Reloading tile commands")
+
+      loadCommands
+      update
+    }
   }
 
   /**
