@@ -84,39 +84,67 @@ class LitersPerHour extends Command {
   override def getResult(drinks: Iterable[Drink]) = {
     val (min, max, milliliters) = drinks.foldLeft(new Date(), new Date(1), 0.0) { case ((min, max, liters), c) => {
         val literSum = liters + c.drinkType.unit
-        (minDate(min, c.bought), maxDate(max, c.bought), literSum)
+        (Calculation.minDate(min, c.bought), Calculation.maxDate(max, c.bought), literSum)
       }
     }
 
-    if (milliliters > 0) {
-      val liters = milliliters / 1000.0
-      val diff = timeDiff(min, max)
-      if (diff > 0) {
-        val hourDiff = diff / (1000.0 * 60.0 * 60.0)
-        liters / hourDiff
-      } else {
-        liters
+    Calculation.litersPerHour(milliliters, min, max)
+  }
+}
+
+class BeerLitersPerHour extends Command {
+  override def name = "Beer liters per hour"
+  override def description = "Calculate the average liters of beer per hour"
+  override def unit = "beer liters/h"
+  override def getResult(drinks: Iterable[Drink]) = {
+    val (min, max, milliliters) = drinks.foldLeft(new Date(), new Date(1), 0.0) { case ((min, max, liters), c) => {
+        val literSum = c match {
+          case _: Beer => liters + c.drinkType.unit
+          case _ => liters
+        }
+
+        (Calculation.minDate(min, c.bought), Calculation.maxDate(max, c.bought), literSum)
       }
-    } else {
-      0.0
     }
+
+    Calculation.litersPerHour(milliliters, min, max)
   }
+}
 
-  private def minDate(a: Date, b: Date) = {
-    if (a.after(b)) b else a
+class ShotLitersPerHour extends Command {
+  override def name = "Shot liters per hour"
+  override def description = "Calculate the average liters of shots per hour"
+  override def unit = "shots liters/h"
+  override def getResult(drinks: Iterable[Drink]) = {
+    val (min, max, milliliters) = drinks.foldLeft(new Date(), new Date(1), 0.0) { case ((min, max, liters), c) => {
+        val literSum = c match {
+          case _: Shot => liters + c.drinkType.unit
+          case _ => liters
+        }
+
+        (Calculation.minDate(min, c.bought), Calculation.maxDate(max, c.bought), literSum)
+      }
+    }
+
+    Calculation.litersPerHour(milliliters, min, max)
   }
+}
 
-  private def maxDate(a: Date, b: Date) = {
-    if (a.before(b)) b else a
-  }
+class CocktailLitersPerHour extends Command {
+  override def name = "Cocktail liters per hour"
+  override def description = "Calculate the average liters of coktails per hour"
+  override def unit = "cocktails liters/h"
+  override def getResult(drinks: Iterable[Drink]) = {
+    val (min, max, milliliters) = drinks.foldLeft(new Date(), new Date(1), 0.0) { case ((min, max, liters), c) => {
+        val literSum = c match {
+          case _: Cocktail => liters + c.drinkType.unit
+          case _ => liters
+        }
 
-  private def timeDiff(from: Date, to: Date) = {
-    val calFrom = Calendar.getInstance()
-    val calTo = Calendar.getInstance()
+        (Calculation.minDate(min, c.bought), Calculation.maxDate(max, c.bought), literSum)
+      }
+    }
 
-    calFrom.setTime(from)
-    calTo.setTime(to)
-
-    calTo.getTimeInMillis() - calFrom.getTimeInMillis()
+    Calculation.litersPerHour(milliliters, min, max)
   }
 }
