@@ -173,6 +173,11 @@ class MainActivity extends TypedActivity
     logI("onRestoreInstanceState")
   }
 
+  /**
+   * Preference changes event handler
+   * @param prefs   Shared preferences
+   * @param key     Configuration key that was changed
+   */
   override def onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
     if (Tiles.values.exists(t => Tiles.configKey(t).equals(key))) {
       logI("Config key '" + key + "' was changed. Reloading tile commands")
