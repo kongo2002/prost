@@ -240,7 +240,7 @@ class MainActivity extends TypedActivity
 
   private def getCommand(prefs: SharedPreferences, pos: Tiles.Tiles) = {
     val tile = Tiles.get(pos, this)
-    val key = pos.toString.toLowerCase + "_command"
+    val key = Tiles.configKey(pos)
     val setting = prefs.getString(key, "")
 
     Commands.get(setting) match {
