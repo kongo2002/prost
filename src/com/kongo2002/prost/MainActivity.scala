@@ -235,10 +235,10 @@ class MainActivity extends TypedActivity
   private def loadCommands {
     val prefs = PreferenceManager.getDefaultSharedPreferences(this)
 
-    Tiles.values.foreach(t => getCommand(prefs, t))
+    Tiles.values.foreach(getCommand(prefs))
   }
 
-  private def getCommand(prefs: SharedPreferences, pos: Tiles.Tiles) = {
+  private def getCommand(prefs: SharedPreferences)(pos: Tiles.Tiles) = {
     val tile = Tiles.get(pos, this)
     val key = Tiles.configKey(pos)
     val setting = prefs.getString(key, "")
