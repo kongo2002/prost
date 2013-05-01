@@ -182,6 +182,7 @@ class MainActivity extends TypedActivity
     if (Tiles.values.exists(t => Tiles.configKey(t).equals(key))) {
       logI("Config key '" + key + "' was changed. Reloading tile commands")
 
+      /* TODO: selective update */
       loadCommands
       update
     }

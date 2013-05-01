@@ -16,8 +16,10 @@
         <LinearLayout
             android:id="@+id/tl_layout"
             android:layout_width="0dip"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/tile_padding"
+            android:layout_weight="1"
+            android:background="@color/dark_gray"
             android:orientation="vertical" >
 
             <TextView
@@ -40,8 +42,10 @@
         <LinearLayout
             android:id="@+id/t_layout"
             android:layout_width="0dip"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/tile_padding"
+            android:layout_weight="1"
+            android:background="@color/dark_gray"
             android:orientation="vertical" >
 
             <TextView
@@ -64,8 +68,10 @@
         <LinearLayout
             android:id="@+id/tr_layout"
             android:layout_width="0dip"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/tile_padding"
+            android:layout_weight="1"
+            android:background="@color/dark_gray"
             android:orientation="vertical" >
 
             <TextView
@@ -96,8 +102,10 @@
 
         <LinearLayout
             android:layout_width="0dip"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/tile_padding"
+            android:layout_weight="1"
+            android:background="@color/dark_gray"
             android:orientation="vertical" >
 
             <TextView
@@ -121,14 +129,17 @@
             android:id="@+id/new_beer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/beer_button" />
 
         <LinearLayout
             android:layout_width="0dip"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/tile_padding"
+            android:layout_weight="1"
+            android:background="@color/dark_gray"
             android:orientation="vertical" >
 
             <TextView
@@ -160,8 +171,10 @@
         <LinearLayout
             android:id="@+id/bl_layout"
             android:layout_width="0dip"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/tile_padding"
+            android:layout_weight="1"
+            android:background="@color/dark_gray"
             android:orientation="vertical" >
 
             <TextView
@@ -184,8 +197,10 @@
         <LinearLayout
             android:id="@+id/b_layout"
             android:layout_width="0dip"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/tile_padding"
+            android:layout_weight="1"
+            android:background="@color/dark_gray"
             android:orientation="vertical" >
 
             <TextView
@@ -208,8 +223,10 @@
         <LinearLayout
             android:id="@+id/br_layout"
             android:layout_width="0dip"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/tile_padding"
+            android:layout_weight="1"
+            android:background="@color/dark_gray"
             android:orientation="vertical" >
 
             <TextView
