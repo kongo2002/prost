@@ -3,6 +3,23 @@ package com.kongo2002.prost
 import java.util.Calendar
 import java.util.Date
 
+object Commands {
+  def get(name: String) = {
+    name.toLowerCase match {
+      case "totaldrinkscount" => Some(new TotalDrinksCount)
+      case "totalbeerscount" => Some(new TotalBeersCount)
+      case "totalshotscount" => Some(new TotalShotsCount)
+      case "totalcocktailscount" => Some(new TotalCocktailsCount)
+      case "totalliters" => Some(new TotalLiters)
+      case "litersperhour" => Some(new LitersPerHour)
+      case "beerlitersperhour" => Some(new BeerLitersPerHour)
+      case "shotlitersperhour" => Some(new ShotLitersPerHour)
+      case "cocktaillitersperhour" => Some(new CocktailLitersPerHour)
+      case _ => None
+    }
+  }
+}
+
 abstract class Command {
   def name : String
   def description : String

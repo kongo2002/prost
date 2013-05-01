@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -37,7 +39,7 @@ class MainActivity extends TypedActivity
   val db = new DrinksDatabase.DrinksDatabase(this)
   val order = Ordering.by[Drink, Date](x => x.bought)
   val drinks = new java.util.TreeSet[Drink](order)
-  val commands = new scala.collection.mutable.HashMap[Tile, Command]()
+  val commands = new scala.collection.mutable.HashMap[Tiles.Tiles, (Tile, Command)]()
 
   var currentDrinkType = 0
 
@@ -209,11 +211,20 @@ class MainActivity extends TypedActivity
   }
 
   private def loadCommands {
-    /* TODO: distribute commands to tiles based on configuration */
-    commands += ((TopLeftTile(this), new TotalBeersCount()))
-    commands += ((TopTile(this), new LitersPerHour()))
-    commands += ((LeftTile(this), new TotalDrinksCount()))
-    commands += ((RightTile(this), new TotalLiters()))
+    val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+
+    Tiles.values.foreach(t => getCommand(prefs, t))
+  }
+
+  private def getCommand(prefs: SharedPreferences, pos: Tiles.Tiles) = {
+    val tile = Tiles.get(pos, this)
+    val key = pos.toString.toLowerCase + "_command"
+    val setting = prefs.getString(key, "")
+
+    Commands.get(setting) match {
+      case Some(cmd) => setCommand(tile, cmd)
+      case None => removeCommand(tile)
+    }
   }
 
   private def loadDrinks {
@@ -250,8 +261,21 @@ class MainActivity extends TypedActivity
     }
   }
 
+  private def setCommand(tile: Tile, cmd: Command) {
+    commands += ((tile.position, (tile, cmd)))
+  }
+
+  private def removeCommand(tile: Tile) {
+    /* remove command from hash set */
+    commands -= tile.position
+
+    /* clear text values */
+    tile.labelTextView.setText("")
+    tile.textView.setText("")
+  }
+
   private def update {
-    commands.foreach { case (t, c) => {
+    commands.foreach { case (_, (t, c)) => {
         val result = c.getResult(drinks)
 
         t.labelTextView.setText(c.unit)

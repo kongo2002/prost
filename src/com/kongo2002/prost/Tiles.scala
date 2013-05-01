@@ -5,10 +5,24 @@ import android.widget.TextView
 object Tiles extends Enumeration {
   type Tiles = Value
   val TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight = Value
+
+  def get(name: Tiles, activity: TypedActivity) : Tile = {
+    name match {
+      case TopLeft => new TopLeftTile(activity)
+      case Top => new TopTile(activity)
+      case TopRight => new TopRightTile(activity)
+      case Left => new LeftTile(activity)
+      case Right => new RightTile(activity)
+      case BottomLeft => new BottomLeftTile(activity)
+      case Bottom => BottomTile(activity)
+      case BottomRight => BottomRightTile(activity)
+    }
+  }
 }
 import Tiles._
 
 abstract class Tile(pos: Tiles, text: Int, label: Int, activity: TypedActivity) {
+  def position = pos
   val textView = activity.findView(TypedResource[TextView](text))
   val labelTextView = activity.findView(TypedResource[TextView](label))
 }

@@ -2,8 +2,7 @@
 <resources>
 
     <string name="app_name">Prost</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_settings">Settings</string>
     <string name="beer_button">New beer</string>
     <string name="clear_database">Clear database</string>
     <string name="about">About</string>
@@ -11,20 +10,32 @@
     <string name="cancel">Cancel</string>
     <string name="settings">Settings</string>
     <string-array name="commands">
-        <item>Empty</item><item >Liters per hour</item>
-        <item >Beer liters per hour</item>
-        <item >Shot liters per hour</item>
-        <item >Cocktail liters per hour</item>
+        <item>Empty</item>
+        <item>Total drinks</item>
+        <item>Total beers</item>
+        <item>Total shots</item>
+        <item>Total cocktails</item>
+        <item>Total liters</item>
+        <item>Liters per hour</item>
+        <item>Beer liters per hour</item>
+        <item>Shot liters per hour</item>
+        <item>Cocktail liters per hour</item>
 
     </string-array>
     <string-array name="commands_values">
-        <item>empty</item><item >LitersPerHour</item>
-        <item >BeerLitersPerHour</item>
-        <item >ShotLitersPerHour</item>
-        <item >CocktailLitersPerHour</item>
+        <item>Empty</item>
+        <item>TotalDrinksCount</item>
+        <item>TotalBeersCount</item>
+        <item>TotalShotsCount</item>
+        <item>TotalCocktailsCount</item>
+        <item>TotalLiters</item>
+        <item>LitersPerHour</item>
+        <item>BeerLitersPerHour</item>
+        <item>ShotLitersPerHour</item>
+        <item>CocktailLitersPerHour</item>
 
     </string-array>
-    <string name="commands_category">Commands</string>
+    <string name="commands_category">Tiles</string>
     <string name="top_left_tile">Top left tile</string>
     <string name="top_tile">Top tile</string>
     <string name="top_right_tile">Top right tile</string>
