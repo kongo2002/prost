@@ -231,6 +231,16 @@ class MainActivity extends TypedActivity
     }
   }
 
+  private def updateConfig(tile: Tile, cmd: String) {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+    val editor = prefs.edit
+    val key = Tiles.configKey(tile.position)
+
+    /* put and commit changes */
+    editor.putString(key, cmd)
+    editor.commit
+  }
+
   private def addClickHandlers {
     val cmds = getResources.getStringArray(R.array.commands_values)
 
@@ -243,14 +253,19 @@ class MainActivity extends TypedActivity
             if (before != choice) {
               if (choice > 0) {
                 Commands.get(cmds(choice)) match {
-                  case Some(c) => setCommand(t, c)
-                  case None => removeCommand(t)
+                  case Some(c) => {
+                    setCommand(t, c)
+                    updateConfig(t, c.getClass.getSimpleName)
+                  }
+                  case None => {
+                    removeCommand(t)
+                    updateConfig(t, "Empty")
+                  }
                 }
               } else {
                 removeCommand(t)
+                updateConfig(t, "Empty")
               }
-
-              /* TODO: persist new layout to configuration */
 
               update
             }
