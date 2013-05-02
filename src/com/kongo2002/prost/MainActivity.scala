@@ -221,11 +221,28 @@ class MainActivity extends TypedActivity
     }
   }
 
+  private def getCommandIndex(pos: Tiles.Tiles) = {
+    commands.get(pos) match {
+      case Some((t, c)) => {
+        val name = c.getClass.getSimpleName
+        val cmds = getResources.getStringArray(R.array.commands_values)
+        cmds.indexOf(name)
+      }
+      case None => 0
+    }
+  }
+
   private def addClickHandlers {
     val longClickListener = (t: Tile) => {
       val listener = new View.OnLongClickListener() {
         override def onLongClick(v: View) = {
-          logI("long clicked: " + t.toString)
+          val cmd = getCommandIndex(t.position)
+
+          listSelect("Select command", R.array.commands, cmd, (di, choice) => {
+            logI("selected: " + choice)
+            di.dismiss
+          })
+
           true
         }
       }
@@ -251,6 +268,22 @@ class MainActivity extends TypedActivity
     builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
       def onClick(di: DialogInterface, i: Int) {
         /* TODO: do nothing */
+      }
+    })
+
+    /* create and show dialog */
+    val dialog = builder.create
+    dialog.show
+  }
+
+  private def listSelect(title: String, items: Int, choice: Int, ok: (DialogInterface, Int) => Unit) {
+    val builder = new AlertDialog.Builder(this)
+
+    /* set title and items to select from */
+    builder.setTitle(title)
+    builder.setSingleChoiceItems(items, choice, new DialogInterface.OnClickListener() {
+      def onClick(di: DialogInterface, i: Int) {
+        ok(di, i)
       }
     })
 
