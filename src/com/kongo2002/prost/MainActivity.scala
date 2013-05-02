@@ -221,11 +221,10 @@ class MainActivity extends TypedActivity
     }
   }
 
-  private def getCommandIndex(pos: Tiles.Tiles) = {
+  private def getCommandIndex(cmds: Array[String], pos: Tiles.Tiles) = {
     commands.get(pos) match {
       case Some((t, c)) => {
         val name = c.getClass.getSimpleName
-        val cmds = getResources.getStringArray(R.array.commands_values)
         cmds.indexOf(name)
       }
       case None => 0
@@ -233,13 +232,32 @@ class MainActivity extends TypedActivity
   }
 
   private def addClickHandlers {
+    val cmds = getResources.getStringArray(R.array.commands_values)
+
     val longClickListener = (t: Tile) => {
       val listener = new View.OnLongClickListener() {
         override def onLongClick(v: View) = {
-          val cmd = getCommandIndex(t.position)
+          val before = getCommandIndex(cmds, t.position)
 
-          listSelect("Select command", R.array.commands, cmd, (di, choice) => {
-            logI("selected: " + choice)
+          listSelect("Select tile logic", R.array.commands, before, (di, choice) => {
+            if (before != choice) {
+              if (choice > 0) {
+                Commands.get(cmds(choice)) match {
+                  case Some(c) => setCommand(t, c)
+                  case None => removeCommand(t)
+                }
+              } else {
+                removeCommand(t)
+              }
+
+              /* TODO: persist new layout to configuration */
+
+              update
+            }
+
+            /* dismiss the dialog on the first selection click
+             * by default the dialog is closed on a button click only
+             */
             di.dismiss
           })
 
