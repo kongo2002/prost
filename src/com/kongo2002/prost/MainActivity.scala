@@ -238,7 +238,7 @@ class MainActivity extends TypedActivity
 
     /* put and commit changes */
     editor.putString(key, cmd)
-    editor.commit
+    editor.apply
   }
 
   private def addClickHandlers {
