@@ -239,7 +239,7 @@ class MainActivity extends TypedActivity
         override def onLongClick(v: View) = {
           val before = getCommandIndex(cmds, t.position)
 
-          listSelect("Select tile logic", R.array.commands, before, (di, choice) => {
+          listSelect(R.string.select_tile_logic, R.array.commands, before, (di, choice) => {
             if (before != choice) {
               if (choice > 0) {
                 Commands.get(cmds(choice)) match {
@@ -294,7 +294,7 @@ class MainActivity extends TypedActivity
     dialog.show
   }
 
-  private def listSelect(title: String, items: Int, choice: Int, ok: (DialogInterface, Int) => Unit) {
+  private def listSelect(title: Int, items: Int, choice: Int, ok: (DialogInterface, Int) => Unit) {
     val builder = new AlertDialog.Builder(this)
 
     /* set title and items to select from */
