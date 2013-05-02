@@ -389,6 +389,7 @@ class MainActivity extends TypedActivity
   }
 
   private def update {
+    /* TODO: async */
     commands.foreach { case (_, (t, c)) => {
         val result = c.getResult(drinks)
 
