@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import android.os.Bundle
 
@@ -30,6 +31,9 @@ class MainActivity extends TypedActivity
   with SharedPreferences.OnSharedPreferenceChangeListener
   with Loggable {
 
+  /**
+   *  Enumeration of all valid context menu options
+   */
   object MenuOptions extends Enumeration {
     type MenuOptions = Value
     val Settings, ClearDatabase, About = Value
@@ -37,6 +41,7 @@ class MainActivity extends TypedActivity
   import MenuOptions._
 
   lazy val newBeerBtn = findView(TR.newBeerBtn)
+  lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
 
   val db = new DrinksDatabase.DrinksDatabase(this)
   val order = Ordering.by[Drink, Date](x => x.bought)
@@ -75,6 +80,9 @@ class MainActivity extends TypedActivity
     /* load drinks and update the view */
     loadDrinks
     update
+
+    /* add long click handlers to every clickable linear layout */
+    addClickHandlers
 
     /* register to settings changes */
     val prefs = PreferenceManager.getDefaultSharedPreferences(this)
@@ -214,6 +222,20 @@ class MainActivity extends TypedActivity
     }
   }
 
+  private def addClickHandlers {
+    val longClickListener = (t: Tile) => {
+      val listener = new View.OnLongClickListener() {
+        override def onLongClick(v: View) = {
+          logI("long clicked: " + t.toString)
+          true
+        }
+      }
+      t.layout.setOnLongClickListener(listener)
+    }
+
+    tiles.foreach(longClickListener)
+  }
+
   private def confirm(title: String, question: String, ok: (DialogInterface, Int) => Unit) {
     val builder = new AlertDialog.Builder(this)
 
@@ -241,12 +263,11 @@ class MainActivity extends TypedActivity
   private def loadCommands {
     val prefs = PreferenceManager.getDefaultSharedPreferences(this)
 
-    Tiles.values.foreach(getCommand(prefs))
+    tiles.foreach(getCommand(prefs))
   }
 
-  private def getCommand(prefs: SharedPreferences)(pos: Tiles.Tiles) = {
-    val tile = Tiles.get(pos, this)
-    val key = Tiles.configKey(pos)
+  private def getCommand(prefs: SharedPreferences)(tile: Tile) = {
+    val key = Tiles.configKey(tile.position)
     val setting = prefs.getString(key, "")
 
     Commands.get(setting) match {
