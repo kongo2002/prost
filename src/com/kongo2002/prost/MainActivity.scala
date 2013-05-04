@@ -15,6 +15,9 @@ import android.os.Bundle
 
 import scala.Option._
 import scala.collection.JavaConversions._
+import scala.collection.mutable.HashSet
+import scala.collection.mutable.HashMap
+import scala.collection.mutable.ListBuffer
 import scala.math.Ordering
 
 import java.util.Date
@@ -27,7 +30,6 @@ import com.kongo2002.prost.ImplicitHelpers._
  * Main activity of the 'prost' application
  */
 class MainActivity extends TypedActivity
-  with SharedPreferences.OnSharedPreferenceChangeListener
   with Loggable {
 
   /**
@@ -43,8 +45,9 @@ class MainActivity extends TypedActivity
   lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
 
   val db = new DrinksDatabase.DrinksDatabase(this)
-  val drinks = new scala.collection.mutable.ListBuffer[Drink]
-  val commands = new scala.collection.mutable.HashMap[Tiles.Tiles, (Tile, Command)]()
+  val drinks = new ListBuffer[Drink]
+  val commands = new HashMap[Tiles.Tiles, (Tile, Command)]()
+  val settingsActivity = 7
 
   var currentDrinkType = 0
 
@@ -82,10 +85,6 @@ class MainActivity extends TypedActivity
     /* add long click handlers to every clickable linear layout */
     addClickHandlers
 
-    /* register to settings changes */
-    val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-    prefs.registerOnSharedPreferenceChangeListener(this)
-
     logI("onCreate")
   }
 
@@ -103,7 +102,7 @@ class MainActivity extends TypedActivity
     selection match {
       case MenuOptions.Settings => {
         val intent = new Intent(this, classOf[SettingsActivity])
-        startActivity(intent)
+        startActivityForResult(intent, settingsActivity)
         true
       }
       case MenuOptions.ClearDatabase => {
@@ -119,6 +118,25 @@ class MainActivity extends TypedActivity
         /* TODO: about dialog */
         true
       }
+    }
+  }
+
+  override def onActivityResult(request: Int, result: Int, data: Intent) {
+    /* check whether the result is triggered by a settings change */
+    if (request == settingsActivity && result == SettingsActivity.RESULT_TILES_CHANGED) {
+      val changedData = data.getIntArrayExtra(SettingsActivity.RESULT_DATA_KEY)
+      val changedTiles = changedData.map(Tiles.apply)
+
+      val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+
+      /* adjust the commands of all changed tiles */
+      changedTiles.foreach { ct =>
+        val tile = Tiles.get(ct, this)
+        updateCommand(prefs)(tile)
+      }
+
+      /* update the view */
+      update
     }
   }
 
@@ -145,10 +163,6 @@ class MainActivity extends TypedActivity
   override def onDestroy {
     super.onDestroy
 
-    /* unregister from settings changes */
-    val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-    prefs.unregisterOnSharedPreferenceChangeListener(this)
-
     /* close database handle */
     db.close
 
@@ -165,33 +179,12 @@ class MainActivity extends TypedActivity
     logI("onSaveInstanceState")
   }
 
-  override def onRetainNonConfigurationInstance() = {
-    logI("onRetainNonConfigurationInstance")
-
-    new Integer(getTaskId())
-  }
-
   override def onRestoreInstanceState(state: Bundle) {
     super.onRestoreInstanceState(state)
 
     restoreState(state)
 
     logI("onRestoreInstanceState")
-  }
-
-  /**
-   * Preference changes event handler
-   * @param prefs   Shared preferences
-   * @param key     Configuration key that was changed
-   */
-  override def onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
-    if (Tiles.values.exists(t => Tiles.configKey(t).equals(key))) {
-      logI("Config key '" + key + "' was changed. Reloading tile commands")
-
-      /* TODO: selective update */
-      loadCommands
-      update
-    }
   }
 
   /**
@@ -327,10 +320,10 @@ class MainActivity extends TypedActivity
   private def loadCommands {
     val prefs = PreferenceManager.getDefaultSharedPreferences(this)
 
-    tiles.foreach(getCommand(prefs))
+    tiles.foreach(updateCommand(prefs))
   }
 
-  private def getCommand(prefs: SharedPreferences)(tile: Tile) = {
+  private def updateCommand(prefs: SharedPreferences)(tile: Tile) = {
     val key = Tiles.configKey(tile.position)
     val setting = prefs.getString(key, "")
 

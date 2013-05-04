@@ -19,8 +19,9 @@ import java.util.Date
  */
 object DrinksDatabase {
 
-  private final def DBVERSION = 1
-  private final def DBNAME = "drinks.db"
+  final val DBVERSION = 1
+  final val DBNAME = "drinks.db"
+  final val LOG_TAG = "Prost.DrinksDatabase"
 
   private final def DRINKS_TABLE = "CREATE TABLE drinks (" +
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, drink INTEGER, date TIMESTAMP NOT NULL DEFAULT current_timestamp);"
@@ -43,7 +44,7 @@ object DrinksDatabase {
      * @param db  sqlite database to operate on
      */
     override def onCreate(db: SQLiteDatabase) {
-      Log.w(Prost.LOG_TAG, "Creating database '" + DBNAME + "'")
+      Log.w(LOG_TAG, "Creating database '" + DBNAME + "'")
 
       db.beginTransaction()
 
@@ -65,7 +66,7 @@ object DrinksDatabase {
      * @param newV  new version number
      */
     override def onUpgrade(db: SQLiteDatabase, oldV: Int, newV: Int) {
-      Log.w(Prost.LOG_TAG, "Upgrading database '" + DBNAME + "' from version " + oldV +
+      Log.w(LOG_TAG, "Upgrading database '" + DBNAME + "' from version " + oldV +
         " to " + newV + ", which will currently destroy all existing data!")
 
       db.beginTransaction()
@@ -231,7 +232,7 @@ object DrinksDatabase {
       }
       catch {
         case ex: SQLException => {
-          Log.e(Prost.LOG_TAG, ex.getMessage(), ex)
+          Log.e(LOG_TAG, ex.getMessage(), ex)
           None
         }
       }
