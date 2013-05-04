@@ -43,8 +43,7 @@ class MainActivity extends TypedActivity
   lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
 
   val db = new DrinksDatabase.DrinksDatabase(this)
-  val order = Ordering.by[Drink, Date](x => x.bought)
-  val drinks = new java.util.TreeSet[Drink](order)
+  val drinks = new scala.collection.mutable.ListBuffer[Drink]
   val commands = new scala.collection.mutable.HashMap[Tiles.Tiles, (Tile, Command)]()
 
   var currentDrinkType = 0
@@ -214,7 +213,7 @@ class MainActivity extends TypedActivity
 
   private def addDrink(drink: Drink) = {
     if (db.addDrink(drink.drinkType.id)) {
-      drinks.add(drink)
+      drinks += drink
       true
     } else {
       false
@@ -238,7 +237,7 @@ class MainActivity extends TypedActivity
 
     /* put and commit changes */
     editor.putString(key, cmd)
-    editor.apply
+    editor.commit
   }
 
   private def addClickHandlers {
@@ -344,7 +343,7 @@ class MainActivity extends TypedActivity
   private def loadDrinks {
     drinks.clear
     db.iterAllDrinks { d =>
-      drinks.add(d)
+      drinks += d
       logI(d.toString())
     }
   }
@@ -389,12 +388,9 @@ class MainActivity extends TypedActivity
   }
 
   private def update {
-    /* TODO: async */
     commands.foreach { case (_, (t, c)) => {
-        val result = c.getResult(drinks)
-
-        t.labelTextView.setText(c.unit)
-        t.textView.setText(c.format(result))
+        val task = new UpdateTask(t, c)
+        task.execute(drinks)
       }
     }
   }
