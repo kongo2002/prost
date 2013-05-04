@@ -61,9 +61,10 @@ class SettingsActivity extends PreferenceActivity
 
   override def finish {
     if (changedTiles.size > 0) {
-      val intent = new Intent
       val tilesArray = changedTiles.toArray.map(x => x.id)
+      val intent = new Intent
       intent.putExtra(SettingsActivity.RESULT_DATA_KEY, tilesArray)
+      changedTiles.clear
 
       setResult(SettingsActivity.RESULT_TILES_CHANGED, intent)
     } else {

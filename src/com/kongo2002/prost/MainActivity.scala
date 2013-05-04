@@ -335,10 +335,7 @@ class MainActivity extends TypedActivity
 
   private def loadDrinks {
     drinks.clear
-    db.iterAllDrinks { d =>
-      drinks += d
-      logI(d.toString())
-    }
+    db.iterAllDrinks { d => drinks += d }
   }
 
   private def getDrinkType(state: Bundle) = {
