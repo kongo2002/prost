@@ -1,4 +1,4 @@
-package com.kongo2002.prost;
+package com.kongo2002.android.prost;
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -23,7 +23,7 @@ import scala.math.Ordering
 import java.util.Date
 import java.util.Calendar
 
-import com.kongo2002.prost.ImplicitHelpers._
+import com.kongo2002.android.prost.ImplicitHelpers._
 
 
 /**

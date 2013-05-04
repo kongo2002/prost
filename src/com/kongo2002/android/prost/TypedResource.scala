@@ -1,4 +1,4 @@
-package com.kongo2002.prost;
+package com.kongo2002.android.prost;
 
 import android.app.Activity
 import android.util.Log

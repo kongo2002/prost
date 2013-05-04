@@ -1,4 +1,4 @@
-package com.kongo2002.prost
+package com.kongo2002.android.prost
 
 import android.app.Activity
 import android.content.Intent
@@ -10,7 +10,7 @@ import scala.collection.mutable.HashSet
 
 object SettingsActivity {
   final val RESULT_TILES_CHANGED = 2
-  final val RESULT_DATA_KEY = "com.kongo2002.prost.ChangedTiles"
+  final val RESULT_DATA_KEY = "com.kongo2002.android.prost.ChangedTiles"
 }
 
 class SettingsActivity extends PreferenceActivity
