@@ -10,7 +10,7 @@ import scala.collection.mutable.HashSet
 
 object SettingsActivity {
   final val RESULT_TILES_CHANGED = 2
-  final val RESULT_DATA_KEY = "changedTiles"
+  final val RESULT_DATA_KEY = "com.kongo2002.prost.ChangedTiles"
 }
 
 class SettingsActivity extends PreferenceActivity
