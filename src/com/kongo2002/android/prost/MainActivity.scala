@@ -33,12 +33,11 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable.HashSet
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
-import scala.math.Ordering
 
 import java.util.Date
 import java.util.Calendar
 
-import com.kongo2002.android.prost.ImplicitHelpers._
+import ImplicitHelpers._
 
 
 /**
@@ -98,7 +97,7 @@ class MainActivity extends TypedActivity
     update
 
     /* add long click handlers to every clickable linear layout */
-    addClickHandlers
+    addHandlers
 
     logI("onCreate")
   }
@@ -248,11 +247,12 @@ class MainActivity extends TypedActivity
     editor.apply()
   }
 
-  private def addClickHandlers {
-    val cmds = getResources.getStringArray(R.array.commands_values)
+  private def addHandlers {
+    val res = getResources
+    val cmds = res.getStringArray(R.array.commands_values)
 
-    val longClickListener = (t: Tile) => {
-      val listener = new View.OnLongClickListener() {
+    val addListeners = (t: Tile) => {
+      val clickListener = new View.OnLongClickListener() {
         override def onLongClick(v: View) = {
           val before = getCommandIndex(cmds, t.position)
 
@@ -286,10 +286,11 @@ class MainActivity extends TypedActivity
           true
         }
       }
-      t.layout.setOnLongClickListener(listener)
+
+      t.layout.setOnLongClickListener(clickListener)
     }
 
-    tiles.foreach(longClickListener)
+    tiles.foreach(addListeners)
   }
 
   private def confirm(title: String, question: String, ok: (DialogInterface, Int) => Unit) {
