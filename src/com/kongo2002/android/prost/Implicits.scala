@@ -17,16 +17,27 @@
 package com.kongo2002.android.prost
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.view.View
 
 object ImplicitHelpers {
-  implicit def view2Typed(v : View) = new TypedViewHolder { def view = v }
+
+  implicit def view2Typed(v: View) = new TypedViewHolder { def view = v }
+
   implicit def activity2Typed(a : Activity) = new TypedActivityHolder { def activity = a }
 
-  implicit def function2OnClickListener(f : View => Unit) : View.OnClickListener = {
+  implicit def function2OnClickListener(f: View => Unit) : View.OnClickListener = {
     new View.OnClickListener() {
-      def onClick(v : View) {
-        f(v);
+      def onClick(v: View) {
+        f(v)
+      }
+    }
+  }
+
+  implicit def function2DialogOnClickListener(f: (DialogInterface, Int) => Unit) : DialogInterface.OnClickListener = {
+    new DialogInterface.OnClickListener() {
+      override def onClick(di: DialogInterface, i: Int) {
+        f(di, i)
       }
     }
   }

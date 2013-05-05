@@ -71,7 +71,7 @@ class SettingsActivity extends PreferenceActivity
 
         changedTiles += tile
       }
-      case None => ()
+      case None =>
     }
   }
 

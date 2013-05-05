@@ -29,7 +29,6 @@ import android.widget.Button
 import android.widget.Toast
 import android.os.Bundle
 
-import scala.Option._
 import scala.collection.JavaConversions._
 import scala.collection.mutable.HashSet
 import scala.collection.mutable.HashMap
@@ -301,16 +300,8 @@ class MainActivity extends TypedActivity
     builder.setMessage(question)
 
     /* add buttons and their callbacks */
-    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-      def onClick(di: DialogInterface, i: Int) {
-        ok(di, i)
-      }
-    })
-    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-      def onClick(di: DialogInterface, i: Int) {
-        /* TODO: do nothing */
-      }
-    })
+    builder.setPositiveButton(R.string.ok, ok)
+    builder.setNegativeButton(R.string.cancel, (di: DialogInterface, i: Int) => {})
 
     /* create and show dialog */
     val dialog = builder.create
@@ -322,11 +313,7 @@ class MainActivity extends TypedActivity
 
     /* set title and items to select from */
     builder.setTitle(title)
-    builder.setSingleChoiceItems(items, choice, new DialogInterface.OnClickListener() {
-      def onClick(di: DialogInterface, i: Int) {
-        ok(di, i)
-      }
-    })
+    builder.setSingleChoiceItems(items, choice, ok)
 
     /* create and show dialog */
     val dialog = builder.create
