@@ -46,15 +46,6 @@ import ImplicitHelpers._
 class MainActivity extends TypedActivity
   with Loggable {
 
-  /**
-   *  Enumeration of all valid context menu options
-   */
-  object MenuOptions extends Enumeration {
-    type MenuOptions = Value
-    val Settings, ClearDatabase, About = Value
-  }
-  import MenuOptions._
-
   lazy val newBeerBtn = findView(TR.newBeerBtn)
   lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
 
@@ -103,23 +94,21 @@ class MainActivity extends TypedActivity
   }
 
   override def onCreateOptionsMenu(menu: Menu) = {
-    menu.add(Menu.NONE, MenuOptions.Settings.id, Menu.NONE, R.string.settings)
-    menu.add(Menu.NONE, MenuOptions.ClearDatabase.id, Menu.NONE, R.string.clear_database)
-    menu.add(Menu.NONE, MenuOptions.About.id, Menu.NONE, R.string.about)
+    val menuInflater = getMenuInflater
+    menuInflater.inflate(R.menu.menu, menu)
 
     super.onCreateOptionsMenu(menu)
   }
 
   override def onOptionsItemSelected(item: MenuItem) = {
-    val selection = MenuOptions(item.getItemId)
 
-    selection match {
-      case MenuOptions.Settings => {
+    item.getItemId match {
+      case R.id.menu_settings => {
         val intent = new Intent(this, classOf[SettingsActivity])
         startActivityForResult(intent, settingsActivity)
         true
       }
-      case MenuOptions.ClearDatabase => {
+      case R.id.menu_clear_database => {
         confirm("Clear database", "Do you really want to clear the database?",
             (_, _) => {
               db.removeAllDrinks
@@ -128,7 +117,7 @@ class MainActivity extends TypedActivity
             })
         true
       }
-      case MenuOptions.About => {
+      case R.id.menu_about => {
         /* TODO: about dialog */
         true
       }

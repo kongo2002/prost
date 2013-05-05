@@ -4,5 +4,6 @@
     <color name="yellow">#ffff00</color>
     <color name="dark_yellow">#abab00</color>
     <color name="dark_gray">#222222</color>
+    <color name="focus_color">#666666</color>
 
 </resources>
