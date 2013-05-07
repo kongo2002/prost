@@ -28,6 +28,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import android.os.Bundle
+import android.support.v4.view.ViewPager
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.HashSet
@@ -43,11 +44,13 @@ import ImplicitHelpers._
 /**
  * Main activity of the 'prost' application
  */
-class MainActivity extends TypedActivity
+class MainActivity extends TypedFragmentActivity
   with Loggable {
 
   lazy val newBeerBtn = findView(TR.newBeerBtn)
   lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
+
+  val pager = new ViewPager(this)
 
   val db = new DrinksDatabase.DrinksDatabase(this)
   val drinks = new ListBuffer[Drink]

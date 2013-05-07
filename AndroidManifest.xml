@@ -28,6 +28,10 @@
             android:name="com.kongo2002.android.prost.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name="com.kongo2002.android.prost.BarActivity"
+            android:label="@string/title_activity_bar" >
+        </activity>
     </application>
 
 </manifest>
