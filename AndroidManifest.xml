@@ -25,12 +25,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.kongo2002.android.prost.SettingsActivity"
+            android:name="SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name="com.kongo2002.android.prost.BarActivity"
+            android:name="BarActivity"
             android:label="@string/title_activity_bar" >
+        </activity>
+        <activity
+            android:name="StatisticsActivity"
+            android:label="@string/title_activity_statistics" >
         </activity>
     </application>
 

@@ -45,9 +45,9 @@
     <string name="bottom_left_tile">Bottom left tile</string>
     <string name="bottom_tile">Bottom tile</string>
     <string name="bottom_right_tile">Bottom right tile</string>
-    <string name="title_settings_activity">Settings</string>
-    <string name="title_activity_bar">BarActivity</string>
+    <string name="title_activity_bar">Bars</string>
     <string name="action_settings">Settings</string>
     <string name="statistics">Statistics</string>
+    <string name="title_activity_statistics">Statistics</string>
 
 </resources>

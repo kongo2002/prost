@@ -66,8 +66,9 @@ class MainActivity extends TypedFragmentActivity
     setContentView(R.layout.main_activity)
 
     val adapter = new TabsAdapter(this, pager)
-    adapter.addTab(classOf[BarActivity].getName, null)
+
     adapter.addTab(classOf[StatisticsActivity].getName, null)
+    adapter.addTab(classOf[BarActivity].getName, null)
 
     pager.setAdapter(adapter)
     pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener {

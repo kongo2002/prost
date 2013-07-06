@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 
 class StatisticsActivity extends Fragment {
+
   override def onCreateView(inf: LayoutInflater, c: ViewGroup, b: Bundle) = {
     Log.i("prost", "onCreateView: StatisticsActivity")
-    val view = inf.inflate(R.layout.main_activity, c, false)
+    val view = inf.inflate(R.layout.statistics_activity, c, false)
     view
   }
+
 }

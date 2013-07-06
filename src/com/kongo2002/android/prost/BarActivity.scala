@@ -9,14 +9,10 @@ import android.view.ViewGroup
 
 class BarActivity extends Fragment {
 
-  override def onCreate(state: Bundle) {
-    super.onCreate(state)
-    //setContentView(R.layout.bar_activity)
-  }
-
   override def onCreateView(inf: LayoutInflater, c: ViewGroup, b: Bundle) = {
     Log.i("prost", "onCreateView: BarActivity")
     val view = inf.inflate(R.layout.bar_activity, c, false)
     view
   }
+
 }
