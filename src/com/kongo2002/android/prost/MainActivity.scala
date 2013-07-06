@@ -16,6 +16,7 @@
 
 package com.kongo2002.android.prost;
 
+import android.app.ActionBar
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -48,9 +49,8 @@ class MainActivity extends TypedFragmentActivity
   with Loggable {
 
   lazy val newBeerBtn = findView(TR.newBeerBtn)
+  lazy val pager = findView(TR.pager)
   lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
-
-  val pager = new ViewPager(this)
 
   val db = new DrinksDatabase.DrinksDatabase(this)
   val drinks = new ListBuffer[Drink]
@@ -65,10 +65,21 @@ class MainActivity extends TypedFragmentActivity
     /* load view */
     setContentView(R.layout.main_activity)
 
-    /* restore state */
-    restoreState(state)
+    val adapter = new TabsAdapter(this, pager)
+    adapter.addTab(classOf[BarActivity].getName, null)
+    adapter.addTab(classOf[StatisticsActivity].getName, null)
 
-    /* connect listeners */
+    pager.setAdapter(adapter)
+    pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener {
+      override def onPageSelected(index: Int) {
+        logI("selected: " + index)
+      }
+    })
+
+    /* restore state */
+    //restoreState(state)
+
+    /* connect listeners
     newBeerBtn.setOnClickListener { v: View =>
       /* determine whether a valid drink type is selected */
       if (currentDrinkType > 0) {
@@ -82,18 +93,27 @@ class MainActivity extends TypedFragmentActivity
         }
       }
     }
-
+*/
     /* load commands */
-    loadCommands
+    //loadCommands
 
     /* load drinks and update the view */
-    loadDrinks
-    update
+    //loadDrinks
+    //update
 
     /* add long click handlers to every clickable linear layout */
-    addHandlers
+    //addHandlers
 
     logI("onCreate")
+  }
+
+  override def onBackPressed() {
+    val currentItem = pager.getCurrentItem
+    if (currentItem == 0) {
+      super.onBackPressed
+    } else {
+      pager.setCurrentItem(currentItem - 1)
+    }
   }
 
   override def onCreateOptionsMenu(menu: Menu) = {
@@ -107,8 +127,9 @@ class MainActivity extends TypedFragmentActivity
 
     item.getItemId match {
       case R.id.menu_settings => {
-        val intent = new Intent(this, classOf[SettingsActivity])
-        startActivityForResult(intent, settingsActivity)
+        //val intent = new Intent(this, classOf[SettingsActivity])
+        //startActivityForResult(intent, settingsActivity)
+        pager.setCurrentItem(pager.getCurrentItem + 1)
         true
       }
       case R.id.menu_clear_database => {

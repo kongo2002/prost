@@ -1,253 +1,27 @@
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:stretchColumns="1"
     tools:context=".MainActivity" >
+-->
+    <android.support.v4.view.ViewPager
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TableRow
-        android:id="@+id/tableRow1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1" >
+	    <android.support.v4.view.PagerTitleStrip
+	        android:id="@+id/pager_title_strip"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="top"
+	        android:background="#33b5e5"
+	        android:textColor="#fff"
+	        android:paddingTop="4dp"
+	        android:paddingBottom="4dp" />
 
-        <LinearLayout
-            android:id="@+id/tl_layout"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/tile_padding"
-            android:layout_weight="1"
-            android:background="@color/dark_gray"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/tlTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/yellow" />
-
-            <TextView
-                android:id="@+id/tlLabelTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/dark_yellow" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/t_layout"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/tile_padding"
-            android:layout_weight="1"
-            android:background="@color/dark_gray"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/tTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/yellow" />
-
-            <TextView
-                android:id="@+id/tLabelTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/dark_yellow" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/tr_layout"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/tile_padding"
-            android:layout_weight="1"
-            android:background="@color/dark_gray"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/trTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/yellow" />
-
-            <TextView
-                android:id="@+id/trLabelTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/dark_yellow" />
-
-        </LinearLayout>
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1" >
-
-        <LinearLayout
-            android:id="@+id/l_layout"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/tile_padding"
-            android:layout_weight="1"
-            android:background="@color/dark_gray"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/lTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/yellow" />
-
-            <TextView
-                android:id="@+id/lLabelTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/dark_yellow" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/new_beer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/beer_button" />
-
-        <LinearLayout
-            android:id="@+id/r_layout"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/tile_padding"
-            android:layout_weight="1"
-            android:background="@color/dark_gray"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/rTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/yellow" />
-
-            <TextView
-                android:id="@+id/rLabelTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/dark_yellow" />
-
-        </LinearLayout>
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1" >
-
-        <LinearLayout
-            android:id="@+id/bl_layout"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/tile_padding"
-            android:layout_weight="1"
-            android:background="@color/dark_gray"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/blTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/yellow" />
-
-            <TextView
-                android:id="@+id/blLabelTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/dark_yellow" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/b_layout"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/tile_padding"
-            android:layout_weight="1"
-            android:background="@color/dark_gray"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/bTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/yellow" />
-
-            <TextView
-                android:id="@+id/bLabelTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/dark_yellow" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/br_layout"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/tile_padding"
-            android:layout_weight="1"
-            android:background="@color/dark_gray"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/brTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/yellow" />
-
-            <TextView
-                android:id="@+id/brLabelTv"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/dark_yellow" />
-
-        </LinearLayout>
-
-    </TableRow>
-
-</TableLayout>
+    </android.support.v4.view.ViewPager>
+<!-- 
+</LinearLayout>-->

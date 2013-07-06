@@ -18,6 +18,7 @@ package com.kongo2002.android.prost;
 
 import android.app.Activity
 import android.support.v4.app.FragmentActivity
+import android.support.v4.view.ViewPager
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -36,6 +37,7 @@ object TR {
   val bottomLeftTile = TypedResource[LinearLayout](R.id.bl_layout)
   val bottomTile = TypedResource[LinearLayout](R.id.b_layout)
   val bottomRightTile = TypedResource[LinearLayout](R.id.br_layout)
+  val pager = TypedResource[ViewPager](R.id.pager)
 }
 
 trait TypedViewHolder {
