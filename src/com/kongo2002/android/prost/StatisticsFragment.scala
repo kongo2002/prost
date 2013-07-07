@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -20,12 +19,12 @@ import scala.collection.mutable.ListBuffer
 import com.kongo2002.android.prost.ImplicitHelpers._
 
 
-class StatisticsActivity extends TypedFragment
+class StatisticsFragment extends TypedFragment
   with Loggable {
 
-  lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
+  lazy val tiles = Tiles.values.map(t => Tiles.get(t, StatisticsFragment.this))
   lazy val button = findView(TR.newBeerBtn)
-  lazy val db = new DrinksDatabase.DrinksDatabase(this.getActivity)
+  lazy val db = new DrinksDatabase.DrinksDatabase(StatisticsFragment.this.getActivity)
 
   val drinks = new ListBuffer[Drink]
   val commands = new HashMap[Tiles.Tiles, (Tile, Command)]()
@@ -34,9 +33,9 @@ class StatisticsActivity extends TypedFragment
   var currentDrinkType = 0
 
   override def onCreateView(inf: LayoutInflater, c: ViewGroup, b: Bundle) = {
-    Log.i("prost", "onCreateView: StatisticsActivity")
+    logI("onCreateView")
 
-    val view = inf.inflate(R.layout.statistics_activity, c, false)
+    val view = inf.inflate(R.layout.statistics_fragment, c, false)
 
     setHasOptionsMenu(true)
 
@@ -161,7 +160,7 @@ class StatisticsActivity extends TypedFragment
 
       /* adjust the commands of all changed tiles */
       changedTiles.foreach { ct =>
-        val tile = Tiles.get(ct, this)
+        val tile = Tiles.get(ct, StatisticsFragment.this)
         updateCommand(prefs)(tile)
       }
 
