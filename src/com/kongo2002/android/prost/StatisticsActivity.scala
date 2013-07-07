@@ -8,6 +8,9 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +38,8 @@ class StatisticsActivity extends TypedFragment
 
     val view = inf.inflate(R.layout.statistics_activity, c, false)
     val button = TR.find(view, TR.newBeerBtn)
+
+    setHasOptionsMenu(true)
 
     /* restore state */
     restoreState(b, button)
@@ -101,6 +106,52 @@ class StatisticsActivity extends TypedFragment
   }
   */
 
+  override def onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) = {
+    inflater.inflate(R.menu.menu, menu)
+
+    super.onCreateOptionsMenu(menu, inflater)
+  }
+
+  override def onOptionsItemSelected(item: MenuItem) = {
+
+    item.getItemId match {
+      case R.id.menu_settings => {
+        val intent = new Intent(activity, classOf[SettingsActivity])
+        startActivityForResult(intent, settingsActivity)
+        true
+      }
+      case R.id.menu_clear_database => {
+        confirm("Clear database", "Do you really want to clear the database?",
+            (_, _) => {
+              db.removeAllDrinks
+              drinks.clear
+              update
+            })
+        true
+      }
+      case R.id.menu_about => {
+        /* TODO: about dialog */
+        true
+      }
+    }
+  }
+
+  private def confirm(title: String, question: String, ok: (DialogInterface, Int) => Unit) {
+    val builder = new AlertDialog.Builder(activity)
+
+    /* set texts */
+    builder.setTitle(title)
+    builder.setMessage(question)
+
+    /* add buttons and their callbacks */
+    builder.setPositiveButton(R.string.ok, ok)
+    builder.setNegativeButton(R.string.cancel, (di: DialogInterface, i: Int) => {})
+
+    /* create and show dialog */
+    val dialog = builder.create
+    dialog.show
+  }
+
   override def onActivityResult(request: Int, result: Int, data: Intent) {
     /* check whether the result is triggered by a settings change */
     if (request == settingsActivity && result == SettingsActivity.RESULT_TILES_CHANGED) {
@@ -144,7 +195,7 @@ class StatisticsActivity extends TypedFragment
 
     /* set title and items to select from */
     builder.setTitle(title)
-    //builder.setSingleChoiceItems(items, choice, ok)
+    builder.setSingleChoiceItems(items, choice, ok)
 
     /* create and show dialog */
     val dialog = builder.create

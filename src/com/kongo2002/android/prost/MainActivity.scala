@@ -20,11 +20,8 @@ import android.app.ActionBar
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -86,37 +83,6 @@ class MainActivity extends TypedFragmentActivity
     }
   }
 
-  override def onCreateOptionsMenu(menu: Menu) = {
-    val menuInflater = getMenuInflater
-    menuInflater.inflate(R.menu.menu, menu)
-
-    super.onCreateOptionsMenu(menu)
-  }
-
-  override def onOptionsItemSelected(item: MenuItem) = {
-
-    item.getItemId match {
-      case R.id.menu_settings => {
-        val intent = new Intent(this, classOf[SettingsActivity])
-        startActivityForResult(intent, settingsActivity)
-        pager.setCurrentItem(pager.getCurrentItem + 1)
-        true
-      }
-      case R.id.menu_clear_database => {
-        confirm("Clear database", "Do you really want to clear the database?",
-            (_, _) => {
-              db.removeAllDrinks
-              //drinks.clear
-              //update
-            })
-        true
-      }
-      case R.id.menu_about => {
-        /* TODO: about dialog */
-        true
-      }
-    }
-  }
 
   override def onRestart {
     super.onRestart
@@ -147,8 +113,6 @@ class MainActivity extends TypedFragmentActivity
     logI("onDestroy")
   }
 
-
-
   /**
    * Create and show a Toast for a specified period of time.
    */
@@ -165,24 +129,6 @@ class MainActivity extends TypedFragmentActivity
    * Create and show a Toast for a short period of time.
    */
   private def shortToast(msg: String) = toast(Toast.LENGTH_SHORT) _
-
-  private def confirm(title: String, question: String, ok: (DialogInterface, Int) => Unit) {
-    val builder = new AlertDialog.Builder(this)
-
-    /* set texts */
-    builder.setTitle(title)
-    builder.setMessage(question)
-
-    /* add buttons and their callbacks */
-    builder.setPositiveButton(R.string.ok, ok)
-    builder.setNegativeButton(R.string.cancel, (di: DialogInterface, i: Int) => {})
-
-    /* create and show dialog */
-    val dialog = builder.create
-    dialog.show
-  }
-
-
 
 }
 
