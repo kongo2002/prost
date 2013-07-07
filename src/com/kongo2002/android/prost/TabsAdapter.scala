@@ -14,7 +14,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity
 import com.actionbarsherlock.app.ActionBar
 import com.actionbarsherlock.app.ActionBar.Tab
 
-case class TabInfo(name: String, args: Bundle)
+case class TabInfo(name: String, title: String, args: Bundle)
 
 class TabsAdapter(activity: SherlockFragmentActivity, pager: ViewPager)
   extends FragmentStatePagerAdapter(activity.getSupportFragmentManager())
@@ -31,13 +31,13 @@ class TabsAdapter(activity: SherlockFragmentActivity, pager: ViewPager)
         pager.setAdapter(this)
         pager.setOnPageChangeListener(this)
 
-        def addTab(name: String, args: Bundle) {
-          val info = TabInfo(name, args)
+        def addTab(name: String, title: String, args: Bundle) {
+          val info = TabInfo(name, title, args)
 
           tabs += info
 
           val tab = actionBar.newTab()
-          tab.setText(name)
+          tab.setText(title)
           tab.setTabListener(new ActionBar.TabListener() {
             override def onTabSelected(tab: Tab, ft: FragmentTransaction) {
               pager.setCurrentItem(tab.getPosition)
@@ -62,7 +62,6 @@ class TabsAdapter(activity: SherlockFragmentActivity, pager: ViewPager)
         }
 
         override def getItem(pos: Int) = {
-          Log.i("TabsAdapter", "getItem: " + pos)
           val info = tabs(pos)
           Fragment.instantiate(activity, info.name, info.args)
         }

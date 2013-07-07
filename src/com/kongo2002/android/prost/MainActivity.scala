@@ -59,8 +59,8 @@ class MainActivity extends TypedFragmentActivity
 
     val adapter = new TabsAdapter(this, pager)
 
-    adapter.addTab(classOf[StatisticsActivity].getName, null)
-    adapter.addTab(classOf[BarActivity].getName, null)
+    adapter.addTab(classOf[StatisticsActivity].getName, "Prost", null)
+    adapter.addTab(classOf[BarActivity].getName, "Bars", null)
 
     logI("onCreate")
   }
