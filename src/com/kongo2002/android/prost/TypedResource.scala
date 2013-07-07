@@ -39,6 +39,8 @@ object TR {
   val bottomTile = TypedResource[LinearLayout](R.id.b_layout)
   val bottomRightTile = TypedResource[LinearLayout](R.id.br_layout)
   val pager = TypedResource[ViewPager](R.id.pager)
+
+  def find[T](v: View, tr: TypedResource[T]) = v.findViewById(tr.id).asInstanceOf[T]
 }
 
 trait TypedViewHolder {

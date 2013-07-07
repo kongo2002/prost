@@ -21,29 +21,26 @@ import ImplicitHelpers._
 class StatisticsActivity extends TypedFragment
   with Loggable {
 
-  lazy val newBeerBtn = findView(TR.newBeerBtn)
   lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
+  lazy val db = new DrinksDatabase.DrinksDatabase(this.getActivity)
 
-  val db = new DrinksDatabase.DrinksDatabase(this.getActivity)
   val drinks = new ListBuffer[Drink]
   val commands = new HashMap[Tiles.Tiles, (Tile, Command)]()
   val settingsActivity = 7
 
   var currentDrinkType = 0
 
-  override def onCreate(b: Bundle) {
-    /* restore state */
-    restoreState(b)
-
-    super.onCreate(b)
-  }
-
   override def onCreateView(inf: LayoutInflater, c: ViewGroup, b: Bundle) = {
     Log.i("prost", "onCreateView: StatisticsActivity")
+
     val view = inf.inflate(R.layout.statistics_activity, c, false)
+    val button = TR.find(view, TR.newBeerBtn)
+
+    /* restore state */
+    restoreState(b, button)
 
     /* connect listeners */
-    newBeerBtn.setOnClickListener { v: View =>
+    button.setOnClickListener { v: View =>
       /* determine whether a valid drink type is selected */
       if (currentDrinkType > 0) {
         for (dtype <- db.getDrinkType(currentDrinkType)) {
@@ -57,6 +54,10 @@ class StatisticsActivity extends TypedFragment
       }
     }
 
+    view
+  }
+
+  override def onViewCreated(v: View, b: Bundle) {
     /* load commands */
     loadCommands
 
@@ -67,7 +68,7 @@ class StatisticsActivity extends TypedFragment
     /* add long click handlers to every clickable linear layout */
     addHandlers
 
-    view
+    super.onViewCreated(v, b)
   }
 
   private def getCommandIndex(cmds: Array[String], pos: Tiles.Tiles) = {
@@ -231,14 +232,14 @@ class StatisticsActivity extends TypedFragment
     }
   }
 
-  private def restoreState(state: Bundle) {
+  private def restoreState(state: Bundle, btn: android.widget.Button) {
     val drinkType = getDrinkType(state)
     if (drinkType != currentDrinkType) {
       currentDrinkType = drinkType
 
       db.getDrinkTypeName(drinkType) match {
-        case Some(name) => newBeerBtn.setText("Add " + name)
-        case None => newBeerBtn.setText("Add drink")
+        case Some(name) => btn.setText("Add " + name)
+        case None => btn.setText("Add drink")
       }
     }
   }

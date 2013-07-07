@@ -67,7 +67,9 @@ class MainActivity extends TypedFragmentActivity
     pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener {
       override def onPageSelected(index: Int) {
         logI("selected: " + index)
-        invalidateOptionsMenu
+
+        // TODO: throws NoSuchMethodError...
+        //invalidateOptionsMenu
       }
     })
 
