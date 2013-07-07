@@ -50,6 +50,8 @@ class MainActivity extends TypedFragmentActivity
   val settingsActivity = 7
 
   override def onCreate(state: Bundle) {
+    setTheme(R.style.Theme_Sherlock_Light)
+
     super.onCreate(state)
 
     /* load view */
@@ -59,17 +61,6 @@ class MainActivity extends TypedFragmentActivity
 
     adapter.addTab(classOf[StatisticsActivity].getName, null)
     adapter.addTab(classOf[BarActivity].getName, null)
-
-    pager.setAdapter(adapter)
-    pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener {
-      override def onPageSelected(index: Int) {
-        logI("selected: " + index)
-
-        // TODO: throws NoSuchMethodError...
-        //invalidateOptionsMenu
-      }
-    })
-
 
     logI("onCreate")
   }

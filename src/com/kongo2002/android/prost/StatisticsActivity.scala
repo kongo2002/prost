@@ -96,6 +96,7 @@ class StatisticsActivity extends TypedFragment
     logI("onSaveInstanceState")
   }
 
+  /*
   override def onViewStateRestored(state: Bundle) {
     super.onViewStateRestored(state)
 
@@ -103,6 +104,7 @@ class StatisticsActivity extends TypedFragment
 
     logI("onViewStateRestored")
   }
+  */
 
   override def onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) = {
     inflater.inflate(R.menu.menu, menu)
