@@ -17,6 +17,7 @@
 package com.kongo2002.android.prost;
 
 import android.app.Activity
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.view.ViewPager
 import android.util.Log
@@ -56,6 +57,11 @@ trait TypedActivityHolder {
 
 trait TypedActivity extends Activity with TypedActivityHolder {
   def activity = this
+}
+
+trait TypedFragment extends Fragment with TypedActivityHolder {
+  def fragment = this
+  def activity = fragment.getActivity
 }
 
 trait TypedFragmentActivity extends FragmentActivity with TypedActivity { }
