@@ -26,7 +26,6 @@ import android.widget.Toast
 class MainActivity extends TypedFragmentActivity
   with Loggable {
 
-  val db = new DrinksDatabase.DrinksDatabase(this)
   lazy val pager = findView(TR.pager)
   val settingsActivity = 7
 
@@ -77,10 +76,6 @@ class MainActivity extends TypedFragmentActivity
 
   override def onDestroy {
     super.onDestroy
-
-    /* close database handle */
-    db.close
-
     logI("onDestroy")
   }
 

@@ -134,6 +134,11 @@ class StatisticsFragment extends TypedFragment
     }
   }
 
+  override def onDestroy {
+    super.onDestroy
+    db.close
+  }
+
   private def confirm(title: String, question: String, ok: (DialogInterface, Int) => Unit) {
     val builder = new AlertDialog.Builder(activity)
 
