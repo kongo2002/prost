@@ -25,7 +25,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.actionbarsherlock.app.SherlockFragmentActivity
 
 case class TypedResource[T](id : Int)
 
@@ -67,7 +66,7 @@ trait TypedFragment extends Fragment with TypedActivityHolder {
   def activity = fragment.getActivity
 }
 
-trait TypedFragmentActivity extends SherlockFragmentActivity with TypedActivity { }
+trait TypedFragmentActivity extends FragmentActivity with TypedActivity { }
 
 trait Loggable {
   val tag = this.getClass().getSimpleName()

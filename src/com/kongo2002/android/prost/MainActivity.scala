@@ -50,8 +50,6 @@ class MainActivity extends TypedFragmentActivity
   val settingsActivity = 7
 
   override def onCreate(state: Bundle) {
-    setTheme(R.style.Theme_Sherlock_Light)
-
     super.onCreate(state)
 
     /* load view */
