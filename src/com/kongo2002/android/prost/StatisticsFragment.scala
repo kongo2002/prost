@@ -16,7 +16,7 @@ import android.view.ViewGroup
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
 
-import com.kongo2002.android.prost.ImplicitHelpers._
+import ImplicitHelpers._
 
 
 class StatisticsFragment extends TypedFragment

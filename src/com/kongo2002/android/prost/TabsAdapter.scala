@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.ViewPager
 import android.util.Log
 
+import java.lang.Class
+
 import scala.collection.mutable.ListBuffer
 
 
@@ -23,8 +25,9 @@ class TabsAdapter(activity: FragmentActivity, pager: ViewPager)
     pager.setAdapter(this)
     pager.setOnPageChangeListener(this)
 
-    def addTab(name: String, title: String, args: Bundle) {
-      val info = TabInfo(name, title, args)
+    def addTab[T](name: Class[T], title: String) : Unit = addTab(name, title, null)
+    def addTab[T](name: Class[T], title: String, args: Bundle) {
+      val info = TabInfo(name.getName, title, args)
 
       tabs += info
 
