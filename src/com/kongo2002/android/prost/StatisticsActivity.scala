@@ -25,6 +25,7 @@ class StatisticsActivity extends TypedFragment
   with Loggable {
 
   lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
+  lazy val button = findView(TR.newBeerBtn)
   lazy val db = new DrinksDatabase.DrinksDatabase(this.getActivity)
 
   val drinks = new ListBuffer[Drink]
@@ -37,12 +38,15 @@ class StatisticsActivity extends TypedFragment
     Log.i("prost", "onCreateView: StatisticsActivity")
 
     val view = inf.inflate(R.layout.statistics_activity, c, false)
-    val button = TR.find(view, TR.newBeerBtn)
 
     setHasOptionsMenu(true)
 
+    view
+  }
+
+  override def onViewCreated(v: View, b: Bundle) {
     /* restore state */
-    restoreState(b, button)
+    restoreState(b)
 
     /* connect listeners */
     button.setOnClickListener { v: View =>
@@ -59,10 +63,6 @@ class StatisticsActivity extends TypedFragment
       }
     }
 
-    view
-  }
-
-  override def onViewCreated(v: View, b: Bundle) {
     /* load commands */
     loadCommands
 
@@ -96,15 +96,13 @@ class StatisticsActivity extends TypedFragment
     logI("onSaveInstanceState")
   }
 
-  /*
-  override def onRestoreInstanceState(state: Bundle) {
-    super.onRestoreInstanceState(state)
+  override def onViewStateRestored(state: Bundle) {
+    super.onViewStateRestored(state)
 
     restoreState(state)
 
-    logI("onRestoreInstanceState")
+    logI("onViewStateRestored")
   }
-  */
 
   override def onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) = {
     inflater.inflate(R.menu.menu, menu)
@@ -187,7 +185,7 @@ class StatisticsActivity extends TypedFragment
 
     /* put and commit changes */
     editor.putString(key, cmd)
-    editor.apply()
+    editor.commit
   }
 
   private def listSelect(title: Int, items: Int, choice: Int, ok: (DialogInterface, Int) => Unit) {
@@ -283,14 +281,16 @@ class StatisticsActivity extends TypedFragment
     }
   }
 
-  private def restoreState(state: Bundle, btn: android.widget.Button) {
+  private def restoreState(state: Bundle) {
     val drinkType = getDrinkType(state)
     if (drinkType != currentDrinkType) {
       currentDrinkType = drinkType
 
-      db.getDrinkTypeName(drinkType) match {
-        case Some(name) => btn.setText("Add " + name)
-        case None => btn.setText("Add drink")
+      if (button != null) {
+        db.getDrinkTypeName(drinkType) match {
+          case Some(name) => button.setText("Add " + name)
+          case None => button.setText("Add drink")
+        }
       }
     }
   }
