@@ -23,7 +23,10 @@ class TabsAdapter(activity: SherlockFragmentActivity, pager: ViewPager)
         private val tabs = new ListBuffer[TabInfo]
 
         val actionBar = activity.getSupportActionBar
+
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS)
+        actionBar.setDisplayShowHomeEnabled(false)
+        actionBar.setDisplayShowTitleEnabled(false)
 
         pager.setAdapter(this)
         pager.setOnPageChangeListener(this)
@@ -51,6 +54,12 @@ class TabsAdapter(activity: SherlockFragmentActivity, pager: ViewPager)
         }
 
         override def getCount = tabs.size
+
+        /* this one would be used by the PagerTitleStrip of the ViewPager */
+        override def getPageTitle(pos: Int) = {
+          val info = tabs(pos)
+          info.name
+        }
 
         override def getItem(pos: Int) = {
           Log.i("TabsAdapter", "getItem: " + pos)
