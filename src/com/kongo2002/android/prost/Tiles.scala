@@ -19,6 +19,7 @@ package com.kongo2002.android.prost
 import android.widget.LinearLayout
 import android.widget.TextView
 
+
 object Tiles extends Enumeration {
   type Tiles = Value
   val TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight = Value

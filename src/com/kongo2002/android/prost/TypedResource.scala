@@ -24,7 +24,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
+
 
 case class TypedResource[T](id : Int)
 
