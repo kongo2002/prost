@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.MenuInflater
 import android.view.Menu
+import android.view.MenuItem
 
-class DrinksFragment extends Fragment
+class DrinksFragment extends TypedFragment
   with Loggable {
 
   override def onCreateView(inf: LayoutInflater, c: ViewGroup, b: Bundle) = {
@@ -24,6 +25,15 @@ class DrinksFragment extends Fragment
     inflater.inflate(R.menu.drinks, menu)
 
     super.onCreateOptionsMenu(menu, inflater)
+  }
+
+  override def onOptionsItemSelected(item: MenuItem) = {
+    item.getItemId match {
+      case R.id.menu_add_drink => {
+        logI("add drink")
+        true
+      }
+    }
   }
 
 }

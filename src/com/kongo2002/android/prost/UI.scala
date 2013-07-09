@@ -20,12 +20,12 @@ object UI {
   /**
    * Create and show a Toast for a long period of time.
    */
-  def longToast(msg: String) = toast(Toast.LENGTH_LONG) _
+  def longToast(ctx: Context, msg: String) = toast(Toast.LENGTH_LONG) _
 
   /**
    * Create and show a Toast for a short period of time.
    */
-  def shortToast(msg: String) = toast(Toast.LENGTH_SHORT) _
+  def shortToast(ctx: Context, msg: String) = toast(Toast.LENGTH_SHORT) _
 
   /**
    * Create and show a confirmation dialog and hook into
