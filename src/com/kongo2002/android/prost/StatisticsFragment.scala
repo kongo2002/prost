@@ -26,7 +26,6 @@ class StatisticsFragment extends TypedFragment
 
   val drinks = new ListBuffer[Drink]
   val commands = new HashMap[Tiles.Tiles, (Tile, Command)]()
-  val SETTINGS_ACTIVITY = 7
 
   var currentDrinkType = 0
 
@@ -101,7 +100,7 @@ class StatisticsFragment extends TypedFragment
     item.getItemId match {
       case R.id.menu_settings => {
         val intent = new Intent(activity, classOf[SettingsActivity])
-        startActivityForResult(intent, SETTINGS_ACTIVITY)
+        startActivityForResult(intent, Activities.SETTINGS)
         true
       }
       case R.id.menu_clear_database => {
@@ -127,7 +126,7 @@ class StatisticsFragment extends TypedFragment
 
   override def onActivityResult(request: Int, result: Int, data: Intent) {
     /* check whether the result is triggered by a settings change */
-    if (request == SETTINGS_ACTIVITY && result == SettingsActivity.RESULT_TILES_CHANGED) {
+    if (request == Activities.SETTINGS && result == SettingsActivity.RESULT_TILES_CHANGED) {
       val changedData = data.getIntArrayExtra(SettingsActivity.RESULT_DATA_KEY)
       val changedTiles = changedData.map(Tiles.apply)
 

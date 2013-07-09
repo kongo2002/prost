@@ -1,12 +1,12 @@
 package com.kongo2002.android.prost
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.view.MenuInflater
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.ViewGroup
 
 class DrinksFragment extends TypedFragment
   with Loggable {
@@ -30,7 +30,8 @@ class DrinksFragment extends TypedFragment
   override def onOptionsItemSelected(item: MenuItem) = {
     item.getItemId match {
       case R.id.menu_add_drink => {
-        logI("add drink")
+        val intent = new Intent(activity, classOf[EditDrinkActivity])
+        startActivityForResult(intent, Activities.EDIT_DRINK)
         true
       }
     }
