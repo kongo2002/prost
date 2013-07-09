@@ -1,7 +1,6 @@
 package com.kongo2002.android.prost
 
-import android.app.AlertDialog
-import android.content.DialogInterface
+
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -17,7 +16,6 @@ import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
 
 import ImplicitHelpers._
-
 
 class StatisticsFragment extends TypedFragment
   with Loggable {
@@ -107,7 +105,7 @@ class StatisticsFragment extends TypedFragment
         true
       }
       case R.id.menu_clear_database => {
-        confirm("Clear database", "Do you really want to clear the database?",
+        UI.confirm(activity, "Clear database", "Do you really want to clear the database?",
             (_, _) => {
               db.removeAllDrinks
               drinks.clear
@@ -125,22 +123,6 @@ class StatisticsFragment extends TypedFragment
   override def onDestroy {
     super.onDestroy
     db.close
-  }
-
-  private def confirm(title: String, question: String, ok: (DialogInterface, Int) => Unit) {
-    val builder = new AlertDialog.Builder(activity)
-
-    /* set texts */
-    builder.setTitle(title)
-    builder.setMessage(question)
-
-    /* add buttons and their callbacks */
-    builder.setPositiveButton(R.string.ok, ok)
-    builder.setNegativeButton(R.string.cancel, (di: DialogInterface, i: Int) => {})
-
-    /* create and show dialog */
-    val dialog = builder.create
-    dialog.show
   }
 
   override def onActivityResult(request: Int, result: Int, data: Intent) {
@@ -181,18 +163,6 @@ class StatisticsFragment extends TypedFragment
     editor.commit
   }
 
-  private def listSelect(title: Int, items: Int, choice: Int, ok: (DialogInterface, Int) => Unit) {
-    val builder = new AlertDialog.Builder(activity)
-
-    /* set title and items to select from */
-    builder.setTitle(title)
-    builder.setSingleChoiceItems(items, choice, ok)
-
-    /* create and show dialog */
-    val dialog = builder.create
-    dialog.show
-  }
-
   private def addHandlers {
     val res = getResources
     val cmds = res.getStringArray(R.array.commands_values)
@@ -202,7 +172,7 @@ class StatisticsFragment extends TypedFragment
         override def onLongClick(v: View) = {
           val before = getCommandIndex(cmds, t.position)
 
-          listSelect(R.string.select_tile_logic, R.array.commands, before, (di, choice) => {
+          UI.listSelect(activity, R.string.select_tile_logic, R.array.commands, before, (di, choice) => {
             if (before != choice) {
               if (choice > 0) {
                 Commands.get(cmds(choice)) match {

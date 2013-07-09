@@ -17,7 +17,6 @@
 package com.kongo2002.android.prost;
 
 import android.os.Bundle
-import android.widget.Toast
 
 
 /**
@@ -34,6 +33,7 @@ class MainActivity extends TypedFragmentActivity
     /* load view */
     setContentView(R.layout.main_activity)
 
+    /* create adapter and initialize fragments */
     val adapter = new TabsAdapter(this, pager)
 
     adapter.addTab(classOf[StatisticsFragment], R.string.fragment_title_statistics)
@@ -43,7 +43,7 @@ class MainActivity extends TypedFragmentActivity
     logI("onCreate")
   }
 
-  override def onBackPressed() {
+  override def onBackPressed {
     val currentItem = pager.getCurrentItem
     if (currentItem == 0) {
       super.onBackPressed
@@ -77,24 +77,6 @@ class MainActivity extends TypedFragmentActivity
     super.onDestroy
     logI("onDestroy")
   }
-
-  /**
-   * Create and show a Toast for a specified period of time.
-   */
-  private def toast(duration: Int)(msg: String) {
-    Toast.makeText(this, msg, duration).show()
-  }
-
-  /**
-   * Create and show a Toast for a long period of time.
-   */
-  private def longToast(msg: String) = toast(Toast.LENGTH_LONG) _
-
-  /**
-   * Create and show a Toast for a short period of time.
-   */
-  private def shortToast(msg: String) = toast(Toast.LENGTH_SHORT) _
-
 }
 
 /* vim: set et sw=2 sts=2: */
