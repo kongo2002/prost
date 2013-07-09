@@ -26,15 +26,7 @@
         </activity>
         <activity
             android:name="SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
-        <activity
-            android:name="BarActivity"
-            android:label="@string/title_activity_bar" >
-        </activity>
-        <activity
-            android:name="StatisticsActivity"
-            android:label="@string/title_activity_statistics" >
+            android:label="@string/activity_title_settings" >
         </activity>
     </application>
 

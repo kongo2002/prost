@@ -25,6 +25,7 @@ class TabsAdapter(activity: FragmentActivity, pager: ViewPager)
     pager.setAdapter(this)
     pager.setOnPageChangeListener(this)
 
+    def addTab[T](name: Class[T], titleId: Int) : Unit = addTab(name, activity.getString(titleId))
     def addTab[T](name: Class[T], title: String) : Unit = addTab(name, title, null)
     def addTab[T](name: Class[T], title: String, args: Bundle) {
       val info = TabInfo(name.getName, title, args)
@@ -36,7 +37,6 @@ class TabsAdapter(activity: FragmentActivity, pager: ViewPager)
 
     override def getCount = tabs.size
 
-    /* this one would be used by the PagerTitleStrip of the ViewPager */
     override def getPageTitle(pos: Int) = {
       val info = tabs(pos)
       info.title
