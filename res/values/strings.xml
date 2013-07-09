@@ -51,5 +51,9 @@
     <string name="fragment_title_drinks">Drinks</string>
     <string name="no_drinks">no drinks configured yet</string>
     <string name="no_bars">no bars configured yet</string>
+    <string name="drinks_name">Name</string>
+    <string name="drinks_type">Type</string>
+    <string name="drinks_size">Unit (in ml)</string>
+    <string name="add_drink">Add drink</string>
 
 </resources>
