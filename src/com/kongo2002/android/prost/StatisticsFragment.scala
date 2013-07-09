@@ -28,7 +28,7 @@ class StatisticsFragment extends TypedFragment
 
   val drinks = new ListBuffer[Drink]
   val commands = new HashMap[Tiles.Tiles, (Tile, Command)]()
-  val settingsActivity = 7
+  val SETTINGS_ACTIVITY = 7
 
   var currentDrinkType = 0
 
@@ -87,22 +87,10 @@ class StatisticsFragment extends TypedFragment
   override def onSaveInstanceState(state: Bundle) {
     super.onSaveInstanceState(state)
 
-    /* save state */
     state.putInt("drinkType", currentDrinkType)
+
     logI("onSaveInstanceState: stored 'drinkType=" + currentDrinkType + "'")
-
-    logI("onSaveInstanceState")
   }
-
-  /*
-  override def onViewStateRestored(state: Bundle) {
-    super.onViewStateRestored(state)
-
-    restoreState(state)
-
-    logI("onViewStateRestored")
-  }
-  */
 
   override def onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) = {
     inflater.inflate(R.menu.menu, menu)
@@ -115,7 +103,7 @@ class StatisticsFragment extends TypedFragment
     item.getItemId match {
       case R.id.menu_settings => {
         val intent = new Intent(activity, classOf[SettingsActivity])
-        startActivityForResult(intent, settingsActivity)
+        startActivityForResult(intent, SETTINGS_ACTIVITY)
         true
       }
       case R.id.menu_clear_database => {
@@ -157,7 +145,7 @@ class StatisticsFragment extends TypedFragment
 
   override def onActivityResult(request: Int, result: Int, data: Intent) {
     /* check whether the result is triggered by a settings change */
-    if (request == settingsActivity && result == SettingsActivity.RESULT_TILES_CHANGED) {
+    if (request == SETTINGS_ACTIVITY && result == SettingsActivity.RESULT_TILES_CHANGED) {
       val changedData = data.getIntArrayExtra(SettingsActivity.RESULT_DATA_KEY)
       val changedTiles = changedData.map(Tiles.apply)
 

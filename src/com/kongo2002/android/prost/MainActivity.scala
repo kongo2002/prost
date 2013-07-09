@@ -27,7 +27,6 @@ class MainActivity extends TypedFragmentActivity
   with Loggable {
 
   lazy val pager = findView(TR.pager)
-  val settingsActivity = 7
 
   override def onCreate(state: Bundle) {
     super.onCreate(state)
