@@ -5,9 +5,15 @@
     android:background="#000000"
     android:orientation="vertical" >
 
+    <ListView
+        android:id="@+id/barsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TODO: bars" />
+        android:text="@string/no_bars" />
 
 </LinearLayout>
