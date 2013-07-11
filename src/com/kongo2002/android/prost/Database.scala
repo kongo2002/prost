@@ -47,8 +47,8 @@ object DrinksDatabase {
   private final def DRINK_TYPES_TABLE = "CREATE TABLE drink_types (" +
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER, type INTEGER);"
 
-  private final def DEFAULT_TYPES = "INSERT INTO drink_types " +
-    "(name,unit,type) VALUES ('Pint', 500, 0);"
+  private final def DEFAULT_PINT = "INSERT INTO drink_types (name,unit,type) VALUES ('Pint', 500, 0);"
+  private final def DEFAULT_KORN = "INSERT INTO drink_types (name,unit,type) VALUES ('Korn', 200, 1);"
 
   /**
    * Inner database class that wraps a sqlite connection helper.
@@ -67,7 +67,7 @@ object DrinksDatabase {
       db.beginTransaction()
 
       try {
-        executeSql(db, DRINKS_TABLE, DRINK_TYPES_TABLE, DEFAULT_TYPES)
+        executeSql(db, DRINKS_TABLE, DRINK_TYPES_TABLE, DEFAULT_PINT, DEFAULT_KORN)
         db.setTransactionSuccessful()
       } catch {
         case sex: SQLException => Log.e("Error creating database '" + DBNAME + "'", sex.toString())
@@ -90,7 +90,7 @@ object DrinksDatabase {
       db.beginTransaction()
 
       try {
-        executeSql(db, drop("drinks"), drop("drink_types"), DRINKS_TABLE, DRINK_TYPES_TABLE, DEFAULT_TYPES)
+        executeSql(db, drop("drinks"), drop("drink_types"), DRINKS_TABLE, DRINK_TYPES_TABLE, DEFAULT_PINT, DEFAULT_KORN)
         db.setTransactionSuccessful()
       } catch {
         case sex: SQLException => Log.e("Error updating database '" + DBNAME + "'", sex.toString())
