@@ -28,6 +28,10 @@
             android:name="SettingsActivity"
             android:label="@string/activity_title_settings" >
         </activity>
+        <activity
+            android:name="EditDrinkActivity"
+            android:label="@string/activity_title_edit_drink" >
+        </activity>
     </application>
 
 </manifest>
