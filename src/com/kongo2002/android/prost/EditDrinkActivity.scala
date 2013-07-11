@@ -1,8 +1,9 @@
 package com.kongo2002.android.prost
 
 import android.os.Bundle
-import DrinksDatabase.DrinkTypesCursor
 import android.widget.ArrayAdapter
+
+import DrinksDatabase.DrinkTypesCursor
 
 class EditDrinkActivity extends TypedActivity
   with Loggable {
@@ -25,10 +26,12 @@ class EditDrinkActivity extends TypedActivity
     val extras = getIntent.getExtras
     if (extras != null) {
       val name = extras.getString(DrinkTypesCursor.KEY_NAME)
+      val drinkType = extras.getInt(DrinkTypesCursor.KEY_TYPE)
       val unit = extras.getInt(DrinkTypesCursor.KEY_UNIT)
 
       if (name != null) editName.setText(name)
-      if (unit > 0) editUnit.setText(unit.toString)
+      editUnit.setText(unit.toString)
+      selectType.setSelection(drinkType)
     }
 
     logI("onCreate")

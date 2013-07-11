@@ -58,7 +58,7 @@ class DrinksFragment extends TypedFragment
       /* build intent with its extra contents */
       val intent = new Intent(activity, classOf[EditDrinkActivity])
       intent.putExtra(DrinkTypesCursor.KEY_NAME, cursor.getTypeName)
-      intent.putExtra(DrinkTypesCursor.KEY_TYPE, cursor.getTypeId)
+      intent.putExtra(DrinkTypesCursor.KEY_TYPE, cursor.getType.id)
       intent.putExtra(DrinkTypesCursor.KEY_UNIT, cursor.getTypeUnit)
 
       /* start edit activity */
