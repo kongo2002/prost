@@ -11,6 +11,7 @@ import android.view.View
 import android.support.v4.widget.SimpleCursorAdapter
 import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
+import android.widget.AdapterView.AdapterContextMenuInfo
 
 class DrinksFragment extends TypedFragment
   with Loggable {
@@ -49,6 +50,18 @@ class DrinksFragment extends TypedFragment
     menu.add(0, OPTION_DELETE_DRINK, 0, R.string.delete_drink)
   }
 
+  override def onContextItemSelected(item: MenuItem) = {
+    item.getItemId match {
+      case OPTION_DELETE_DRINK => {
+        /* TODO: delete drink type */
+        val info = item.getMenuInfo.asInstanceOf[AdapterContextMenuInfo]
+        logI("delete item " + info.id)
+        true
+      }
+      case _ => super.onContextItemSelected(item)
+    }
+  }
+
   override def onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
     inflater.inflate(R.menu.drinks, menu)
 
@@ -62,6 +75,7 @@ class DrinksFragment extends TypedFragment
         startActivityForResult(intent, Activities.EDIT_DRINK)
         true
       }
+      case _ => super.onOptionsItemSelected(item)
     }
   }
 
