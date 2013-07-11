@@ -12,6 +12,9 @@ import android.support.v4.widget.SimpleCursorAdapter
 import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
 import android.widget.AdapterView.AdapterContextMenuInfo
+import android.widget.AdapterView
+
+import ImplicitHelpers._
 
 class DrinksFragment extends TypedFragment
   with Loggable {
@@ -41,7 +44,13 @@ class DrinksFragment extends TypedFragment
     /* attach list adapter */
     drinksList.setAdapter(adapter)
 
+    /* hook into list events */
     registerForContextMenu(drinksList)
+
+    drinksList.setOnItemClickListener((p: AdapterView[_], v: View, pos: Int, id: Long) => {
+      /* TODO: edit selected drink type */
+      logI("edit item " + id)
+    })
   }
 
   override def onCreateContextMenu(menu: ContextMenu, view: View, info: ContextMenuInfo) {

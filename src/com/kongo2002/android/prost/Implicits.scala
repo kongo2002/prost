@@ -19,6 +19,7 @@ package com.kongo2002.android.prost
 import android.app.Activity
 import android.content.DialogInterface
 import android.view.View
+import android.widget.AdapterView
 
 object ImplicitHelpers {
 
@@ -38,6 +39,14 @@ object ImplicitHelpers {
     new DialogInterface.OnClickListener() {
       override def onClick(di: DialogInterface, i: Int) {
         f(di, i)
+      }
+    }
+  }
+
+  implicit def function2OnItemClickListener(f: (AdapterView[_], View, Int, Long) => Unit) : AdapterView.OnItemClickListener = {
+    new AdapterView.OnItemClickListener() {
+      override def onItemClick(parent: AdapterView[_], v: View, pos: Int, id: Long) {
+        f(parent, v, pos, id)
       }
     }
   }
