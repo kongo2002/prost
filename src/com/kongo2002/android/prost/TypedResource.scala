@@ -24,11 +24,13 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.ListView
 
 
 case class TypedResource[T](id : Int)
 
 object TR {
+  /* statistics fragment */
   val newBeerBtn = TypedResource[Button](R.id.new_beer)
   val topLeftTile = TypedResource[LinearLayout](R.id.tl_layout)
   val topTile = TypedResource[LinearLayout](R.id.t_layout)
@@ -39,6 +41,9 @@ object TR {
   val bottomTile = TypedResource[LinearLayout](R.id.b_layout)
   val bottomRightTile = TypedResource[LinearLayout](R.id.br_layout)
   val pager = TypedResource[ViewPager](R.id.pager)
+
+  /* drinks fragment */
+  val drinksList = TypedResource[ListView](R.id.drinksList)
 
   def find[T](v: View, tr: TypedResource[T]) = v.findViewById(tr.id).asInstanceOf[T]
 }

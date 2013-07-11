@@ -20,9 +20,9 @@ import ImplicitHelpers._
 class StatisticsFragment extends TypedFragment
   with Loggable {
 
-  lazy val tiles = Tiles.values.map(t => Tiles.get(t, StatisticsFragment.this))
+  lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
   lazy val button = findView(TR.newBeerBtn)
-  lazy val db = new DrinksDatabase.DrinksDatabase(StatisticsFragment.this.getActivity)
+  lazy val db = new DrinksDatabase.DrinksDatabase(getActivity)
 
   val drinks = new ListBuffer[Drink]
   val commands = new HashMap[Tiles.Tiles, (Tile, Command)]()

@@ -55,6 +55,7 @@
     <string name="drinks_type">Type</string>
     <string name="drinks_size">Unit (in ml)</string>
     <string name="add_drink">Add drink</string>
+    <string name="delete_drink">Delete drink</string>
     
 
 </resources>

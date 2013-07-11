@@ -192,6 +192,14 @@ object DrinksDatabase {
     }
 
     /**
+     * Get a cursor accessing all drink types stored in the database.
+     */
+    def getAllDrinkTypesCursor = {
+      val db = getReadableDatabase()
+      db.rawQueryWithFactory(new DrinkTypesCursor.Factory(), DrinkTypesCursor.QUERY_ALL, null, null).asInstanceOf[DrinkTypesCursor]
+    }
+
+    /**
      * Iterate all drinks using the specified function.
      * @param func   Function that should be executed for every single 'Drink'
      */
@@ -301,6 +309,7 @@ object DrinksDatabase {
   }
 
   object DrinkTypesCursor {
+    final def NAME_KEY = "name"
     final def QUERY_ALL = "SELECT _id,name,unit,type FROM drink_types ORDER BY name ASC;"
     final def QUERY_ONE = "SELECT _id,name,unit,type FROM drink_types WHERE _id="
 
