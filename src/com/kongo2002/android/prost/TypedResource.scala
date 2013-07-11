@@ -25,6 +25,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.EditText
 
 
 case class TypedResource[T](id : Int)
@@ -44,6 +45,10 @@ object TR {
 
   /* drinks fragment */
   val drinksList = TypedResource[ListView](R.id.drinksList)
+
+  /* edit drink activity */
+  val editDrinkName = TypedResource[EditText](R.id.edit_drink_name)
+  val editDrinkUnit = TypedResource[EditText](R.id.edit_drink_unit)
 
   def find[T](v: View, tr: TypedResource[T]) = v.findViewById(tr.id).asInstanceOf[T]
 }

@@ -14,6 +14,7 @@ import android.view.ContextMenu.ContextMenuInfo
 import android.widget.AdapterView.AdapterContextMenuInfo
 import android.widget.AdapterView
 
+import DrinksDatabase.DrinkTypesCursor
 import ImplicitHelpers._
 
 class DrinksFragment extends TypedFragment
@@ -37,7 +38,7 @@ class DrinksFragment extends TypedFragment
   override def onViewCreated(view: View, bundle: Bundle) {
     /* create adapter */
     val cursor = db.getAllDrinkTypesCursor
-    val selectedFields = Array(DrinksDatabase.DrinkTypesCursor.NAME_KEY)
+    val selectedFields = Array(DrinkTypesCursor.KEY_NAME)
     val bindResources = Array(R.id.drink_text)
     val adapter = new SimpleCursorAdapter(activity, R.layout.drinks_row, cursor, selectedFields, bindResources)
 
@@ -48,8 +49,20 @@ class DrinksFragment extends TypedFragment
     registerForContextMenu(drinksList)
 
     drinksList.setOnItemClickListener((p: AdapterView[_], v: View, pos: Int, id: Long) => {
-      /* TODO: edit selected drink type */
+      /* edit selected drink type */
       logI("edit item " + id)
+
+      /* position cursor */
+      cursor.moveToPosition(pos)
+
+      /* build intent with its extra contents */
+      val intent = new Intent(activity, classOf[EditDrinkActivity])
+      intent.putExtra(DrinkTypesCursor.KEY_NAME, cursor.getTypeName)
+      intent.putExtra(DrinkTypesCursor.KEY_TYPE, cursor.getTypeId)
+      intent.putExtra(DrinkTypesCursor.KEY_UNIT, cursor.getTypeUnit)
+
+      /* start edit activity */
+      startActivityForResult(intent, Activities.EDIT_DRINK)
     })
   }
 

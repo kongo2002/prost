@@ -39,6 +39,8 @@ object DrinksDatabase {
   final val DBNAME = "drinks.db"
   final val LOG_TAG = "Prost.DrinksDatabase"
 
+  final val KEY_ID = "_id"
+
   private final def DRINKS_TABLE = "CREATE TABLE drinks (" +
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, drink INTEGER, date TIMESTAMP NOT NULL DEFAULT current_timestamp);"
 
@@ -299,7 +301,7 @@ object DrinksDatabase {
 
     def getDrinkId = getLong(getColumnIndexOrThrow("id"))
     def getDrinkName = getString(getColumnIndexOrThrow("name"))
-    def getDrinkUnit = getLong(getColumnIndexOrThrow("unit"))
+    def getDrinkUnit = getInt(getColumnIndexOrThrow("unit"))
     def getDrinkTypeId = getLong(getColumnIndexOrThrow("tid"))
     def getDrinkBaseType = Drinks(getInt(getColumnIndexOrThrow("type")))
     def getDrinkDate = new Date(getLong(getColumnIndexOrThrow("date")))
@@ -309,7 +311,10 @@ object DrinksDatabase {
   }
 
   object DrinkTypesCursor {
-    final def NAME_KEY = "name"
+    final def KEY_NAME = "name"
+    final def KEY_UNIT = "unit"
+    final def KEY_TYPE = "type"
+
     final def QUERY_ALL = "SELECT _id,name,unit,type FROM drink_types ORDER BY name ASC;"
     final def QUERY_ONE = "SELECT _id,name,unit,type FROM drink_types WHERE _id="
 
