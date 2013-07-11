@@ -26,6 +26,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.EditText
+import android.widget.Spinner
 
 
 case class TypedResource[T](id : Int)
@@ -49,6 +50,7 @@ object TR {
   /* edit drink activity */
   val editDrinkName = TypedResource[EditText](R.id.edit_drink_name)
   val editDrinkUnit = TypedResource[EditText](R.id.edit_drink_unit)
+  val selectDrinkType = TypedResource[Spinner](R.id.select_drink_type)
 
   def find[T](v: View, tr: TypedResource[T]) = v.findViewById(tr.id).asInstanceOf[T]
 }

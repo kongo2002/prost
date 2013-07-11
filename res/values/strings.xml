@@ -56,6 +56,11 @@
     <string name="drinks_size">Unit (in ml)</string>
     <string name="add_drink">Add drink</string>
     <string name="delete_drink">Delete drink</string>
+    <string-array name="drink_types">
+        <item >Beer</item>
+        <item >Shot</item>
+        <item >Cocktail</item>
+    </string-array>
     
 
 </resources>
