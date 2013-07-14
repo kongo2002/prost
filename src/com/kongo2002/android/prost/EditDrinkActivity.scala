@@ -18,8 +18,9 @@ package com.kongo2002.android.prost
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
-
 import DrinksDatabase.DrinkTypesCursor
+import android.widget.TextView
+
 
 class EditDrinkActivity extends TypedActivity
   with Loggable {
@@ -49,6 +50,16 @@ class EditDrinkActivity extends TypedActivity
       editUnit.setText(unit.toString)
       selectType.setSelection(drinkType)
     }
+
+    /* add validation callbacks */
+    editName.addTextChangedListener(new EditTextValidator(editName) {
+      override def getError(view: TextView, value: String) = {
+        if (value == null || value.length < 1 || value.trim.length < 1)
+          Some("invalid drink type name given")
+        else
+          None
+      }
+    })
 
     logI("onCreate")
   }
