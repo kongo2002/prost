@@ -21,13 +21,14 @@ import android.content.DialogInterface
 import android.view.View
 import android.widget.AdapterView
 
-object ImplicitHelpers {
+
+object Implicits {
 
   implicit def view2Typed(v: View) = new TypedViewHolder { def view = v }
 
   implicit def activity2Typed(a : Activity) = new TypedActivityHolder { def activity = a }
 
-  implicit def function2OnClickListener(f: View => Unit) : View.OnClickListener = {
+  implicit def func2OnClickListener(f: View => Unit) : View.OnClickListener = {
     new View.OnClickListener() {
       def onClick(v: View) {
         f(v)
@@ -35,7 +36,7 @@ object ImplicitHelpers {
     }
   }
 
-  implicit def function2DialogOnClickListener(f: (DialogInterface, Int) => Unit) : DialogInterface.OnClickListener = {
+  implicit def func2DialogOnClickListener(f: (DialogInterface, Int) => Unit) : DialogInterface.OnClickListener = {
     new DialogInterface.OnClickListener() {
       override def onClick(di: DialogInterface, i: Int) {
         f(di, i)
@@ -43,13 +44,27 @@ object ImplicitHelpers {
     }
   }
 
-  implicit def function2OnItemClickListener(f: (AdapterView[_], View, Int, Long) => Unit) : AdapterView.OnItemClickListener = {
+  implicit def func2OnItemClickListener(f: (AdapterView[_], View, Int, Long) => Unit) : AdapterView.OnItemClickListener = {
     new AdapterView.OnItemClickListener() {
       override def onItemClick(parent: AdapterView[_], v: View, pos: Int, id: Long) {
         f(parent, v, pos, id)
       }
     }
   }
+
+  implicit def func2Runnable[F](f: () => F): Runnable =
+    new Runnable() {
+      def run() {
+        f()
+      }
+    }
+
+  implicit def lazy2Runnable[F](f: => F): Runnable =
+    new Runnable() {
+      def run() {
+        f
+      }
+    }
 }
 
 /* vim: set et sw=2 sts=2: */

@@ -16,23 +16,24 @@
 
 package com.kongo2002.android.prost
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.widget.CursorAdapter
+import android.support.v4.widget.SimpleCursorAdapter
+import android.view.ContextMenu
+import android.view.ContextMenu.ContextMenuInfo
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.ViewGroup
 import android.view.View
-import android.support.v4.widget.SimpleCursorAdapter
-import android.view.ContextMenu
-import android.view.ContextMenu.ContextMenuInfo
-import android.widget.AdapterView.AdapterContextMenuInfo
+import android.view.ViewGroup
 import android.widget.AdapterView
-import android.support.v4.widget.CursorAdapter
-import android.app.Activity
+import android.widget.AdapterView.AdapterContextMenuInfo
+
+import Implicits._
 import DrinksDatabase.DrinkTypesCursor
-import ImplicitHelpers._
 
 
 class DrinksFragment extends TypedFragment

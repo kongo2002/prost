@@ -21,7 +21,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.widget.Toast
 
-import ImplicitHelpers._
+import Implicits._
 
 
 object UI {

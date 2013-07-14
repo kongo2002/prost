@@ -24,7 +24,7 @@ import android.content.Intent
 import android.app.Activity
 
 import DrinksDatabase.DrinkTypesCursor
-import ImplicitHelpers._
+import Implicits._
 
 class EditDrinkActivity extends TypedActivity
   with Loggable {

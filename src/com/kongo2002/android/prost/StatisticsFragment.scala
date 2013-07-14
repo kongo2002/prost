@@ -30,7 +30,7 @@ import android.view.ViewGroup
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
 
-import ImplicitHelpers._
+import Implicits._
 
 class StatisticsFragment extends TypedFragment
   with Loggable {
@@ -294,12 +294,19 @@ class StatisticsFragment extends TypedFragment
     tile.textView.setText("")
   }
 
+  def startLoading = activity.setProgressBarIndeterminateVisibility(true)
+  def stopLoading = activity.setProgressBarIndeterminateVisibility(false)
+
   private def update {
+    activity.runOnUiThread { startLoading }
+
     commands.foreach { case (_, (t, c)) => {
         val task = new UpdateTask(t, c)
         task.execute(drinks)
       }
     }
+
+    activity.runOnUiThread { stopLoading }
   }
 
 }
