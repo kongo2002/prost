@@ -167,6 +167,7 @@ class DrinksFragment extends TypedFragment
     cursor = db.getAllDrinkTypesCursor
 
     adapter.changeCursor(cursor)
+    adapter.notifyDataSetChanged
   }
 
   override def onPause {
