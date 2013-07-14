@@ -16,8 +16,15 @@
 
 package com.kongo2002.android.prost
 
+/**
+ * Various string utility functions
+ */
 object StringUtils {
 
+  /**
+   * Check whether the input string is either empty or just whitespace.
+   * @param value	string to check
+   */
   def isEmpty(value: String) = {
     value == null || value.length < 1 || value.trim.length < 1
   }

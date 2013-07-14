@@ -177,6 +177,14 @@ object DrinksDatabase {
     }
 
     /**
+     * Get the number of usages of the given drink type
+     * @param id  ID of the drink type to get the usages of
+     */
+    def getDrinkTypeUsage(id: Long) = {
+      scalarInt(DrinksCursor.QUERY_DRINK_TYPE_COUNT + id + ";")
+    }
+
+    /**
      * Get a cursor accessing all drinks stored in the database.
      */
     def getAllDrinksCursor = {
@@ -281,6 +289,8 @@ object DrinksDatabase {
       "(strftime('%s', date) * 1000) AS date " +
       "FROM drinks INNER JOIN drink_types ON " +
       "drinks.drink=drink_types._id ORDER BY id DESC;"
+
+    final def QUERY_DRINK_TYPE_COUNT = "SELECT COUNT(_id) FROM drinks WHERE drink="
 
     /**
      * Factory class to be used for 'rawQueryWithFactory()'

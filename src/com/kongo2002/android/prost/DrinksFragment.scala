@@ -91,9 +91,26 @@ class DrinksFragment extends TypedFragment
   override def onContextItemSelected(item: MenuItem) = {
     item.getItemId match {
       case OPTION_DELETE_DRINK => {
-        /* TODO: delete drink type */
+        def getMessage (id: Long) = {
+          /* TODO: use resource strings */
+          val usage = db.getDrinkTypeUsage(id)
+          val msg = "Do you really want to delete the selected drink type?"
+          usage match {
+            case Some(x) if x > 0 => {
+              msg + " The drink type is used " + x + " times."
+            }
+            case _ => msg
+          }
+        }
+
         val info = item.getMenuInfo.asInstanceOf[AdapterContextMenuInfo]
         logI("delete item " + info.id)
+
+        UI.confirm(activity, "Delete drink type", getMessage(info.id),
+            (_, _) => {
+              /* TODO: delete drink type */
+            })
+
         true
       }
       case _ => super.onContextItemSelected(item)
