@@ -54,8 +54,17 @@ class EditDrinkActivity extends TypedActivity
     /* add validation callbacks */
     editName.addTextChangedListener(new EditTextValidator(editName) {
       override def getError(view: TextView, value: String) = {
-        if (value == null || value.length < 1 || value.trim.length < 1)
+        if (StringUtils.isEmpty(value))
           Some("invalid drink type name given")
+        else
+          None
+      }
+    })
+
+    editUnit.addTextChangedListener(new EditTextValidator(editUnit) {
+      override def getError(view: TextView, value: String) = {
+        if (StringUtils.isEmpty(value) || value.toInt < 1)
+          Some("unit has to be a valid amount in milliliters")
         else
           None
       }
