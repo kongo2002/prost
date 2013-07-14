@@ -106,10 +106,7 @@ class DrinksFragment extends TypedFragment
         UI.confirm(activity, "Delete drink type", getMessage(id),
             (_, _) => {
               db.removeDrinkType(id)
-
-              /* refresh list */
-              val adapter = drinksList.getAdapter.asInstanceOf[SimpleCursorAdapter]
-              refreshView(adapter)
+              refreshView
             })
 
         true
@@ -135,8 +132,10 @@ class DrinksFragment extends TypedFragment
     }
   }
 
-  private def refreshView(adapter: CursorAdapter) {
+  private def refreshView {
+    val adapter = drinksList.getAdapter.asInstanceOf[CursorAdapter]
     val cursor = db.getAllDrinkTypesCursor
+
     adapter.changeCursor(cursor)
   }
 
