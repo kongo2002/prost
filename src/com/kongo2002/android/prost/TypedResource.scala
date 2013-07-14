@@ -27,13 +27,16 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 
 
 case class TypedResource[T](id : Int)
 
 object TR {
   /* statistics fragment */
-  val newBeerBtn = TypedResource[Button](R.id.new_beer)
+  val newDrinkTile = TypedResource[LinearLayout](R.id.c_layout)
+  val newDrinkLabel = TypedResource[TextView](R.id.cLabelTv)
+
   val topLeftTile = TypedResource[LinearLayout](R.id.tl_layout)
   val topTile = TypedResource[LinearLayout](R.id.t_layout)
   val topRightTile = TypedResource[LinearLayout](R.id.tr_layout)

@@ -16,6 +16,7 @@
 
 package com.kongo2002.android.prost
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -36,7 +37,8 @@ class StatisticsFragment extends TypedFragment
   with Loggable {
 
   lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
-  lazy val button = findView(TR.newBeerBtn)
+  lazy val button = findView(TR.newDrinkTile)
+  lazy val buttonText = findView(TR.newDrinkLabel)
   lazy val db = new DrinksDatabase.DrinksDatabase(getActivity)
 
   val drinks = new ListBuffer[Drink]
@@ -67,10 +69,28 @@ class StatisticsFragment extends TypedFragment
 
           if (addDrink(drink)) {
             update
-            //longToast("Added " + dtype.name)
           }
         }
       }
+    }
+
+    button.setOnLongClickListener { v: View =>
+      val drinkTypes = db.getAllDrinkTypesCursor
+      val key = DrinksDatabase.DrinkTypesCursor.KEY_NAME
+
+      UI.listSelect(activity, R.string.select_drink_type, drinkTypes, key, -1, { (di: DialogInterface, i: Int) =>
+        logI("selected: " + i)
+
+        drinkTypes.moveToPosition(i)
+        val id = drinkTypes.getTypeId
+        val name = drinkTypes.getTypeName
+
+        buttonText.setText(name)
+        currentDrinkType = id.toInt
+
+        di.dismiss
+      })
+      true
     }
 
     /* load commands */
@@ -274,8 +294,8 @@ class StatisticsFragment extends TypedFragment
 
       if (button != null) {
         db.getDrinkTypeName(drinkType) match {
-          case Some(name) => button.setText("Add " + name)
-          case None => button.setText("Add drink")
+          case Some(name) => buttonText.setText(name)
+          case None => buttonText.setText("drink")
         }
       }
     }

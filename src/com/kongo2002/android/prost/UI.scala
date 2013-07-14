@@ -20,8 +20,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.widget.Toast
-
 import Implicits._
+import android.database.Cursor
 
 
 object UI {
@@ -73,6 +73,22 @@ object UI {
     /* set title and items to select from */
     builder.setTitle(title)
     builder.setSingleChoiceItems(items, choice, ok)
+
+    /* create and show dialog */
+    val dialog = builder.create
+    dialog.show
+  }
+
+  /**
+   * Create and show a dialog with a list selection and hook
+   * into the specified callback function.
+   */
+  def listSelect(ctx: Context, title: Int, itemsCursor: Cursor, label: String, choice: Int, ok: (DialogInterface, Int) => Unit) {
+    val builder = new AlertDialog.Builder(ctx)
+
+    /* set title and items to select from */
+    builder.setTitle(title)
+    builder.setSingleChoiceItems(itemsCursor, choice, label, ok)
 
     /* create and show dialog */
     val dialog = builder.create

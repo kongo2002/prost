@@ -127,14 +127,33 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/new_beer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+        <LinearLayout
+            android:id="@+id/c_layout"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/tile_padding"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/beer_button" />
+            android:background="@color/dark_gray"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/cTv"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/newDrink"
+                android:textColor="@color/dark_yellow" />
+
+            <TextView
+                android:id="@+id/cLabelTv"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/dark_yellow"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/r_layout"

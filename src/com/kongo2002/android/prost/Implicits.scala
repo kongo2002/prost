@@ -36,6 +36,14 @@ object Implicits {
     }
   }
 
+  implicit def func2OnLongClickListener(f: View => Boolean) : View.OnLongClickListener = {
+    new View.OnLongClickListener() {
+      def onLongClick(v: View) = {
+        f(v)
+      }
+    }
+  }
+
   implicit def func2DialogOnClickListener(f: (DialogInterface, Int) => Unit) : DialogInterface.OnClickListener = {
     new DialogInterface.OnClickListener() {
       override def onClick(di: DialogInterface, i: Int) {
