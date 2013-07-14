@@ -134,9 +134,18 @@ class StatisticsFragment extends TypedFragment
     }
   }
 
-  override def onDestroy {
-    super.onDestroy
+  override def onPause {
+    logI("onPause")
     db.close
+
+    super.onPause
+  }
+
+  override def onDestroy {
+    logI("onDestroy")
+    db.close
+
+    super.onDestroy
   }
 
   override def onActivityResult(request: Int, result: Int, data: Intent) {

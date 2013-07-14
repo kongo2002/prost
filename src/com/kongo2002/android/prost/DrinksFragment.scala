@@ -29,9 +29,9 @@ import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
 import android.widget.AdapterView.AdapterContextMenuInfo
 import android.widget.AdapterView
-
 import DrinksDatabase.DrinkTypesCursor
 import ImplicitHelpers._
+import android.support.v4.widget.CursorAdapter
 
 class DrinksFragment extends TypedFragment
   with Loggable {
@@ -65,9 +65,6 @@ class DrinksFragment extends TypedFragment
     registerForContextMenu(drinksList)
 
     drinksList.setOnItemClickListener((p: AdapterView[_], v: View, pos: Int, id: Long) => {
-      /* edit selected drink type */
-      logI("edit item " + id)
-
       /* position cursor */
       cursor.moveToPosition(pos)
 
@@ -91,7 +88,7 @@ class DrinksFragment extends TypedFragment
   override def onContextItemSelected(item: MenuItem) = {
     item.getItemId match {
       case OPTION_DELETE_DRINK => {
-        def getMessage (id: Long) = {
+        def getMessage(id: Long) = {
           /* TODO: use resource strings */
           val usage = db.getDrinkTypeUsage(id)
           val msg = "Do you really want to delete the selected drink type?"
@@ -107,7 +104,13 @@ class DrinksFragment extends TypedFragment
         val id = info.id
 
         UI.confirm(activity, "Delete drink type", getMessage(id),
-            (_, _) => db.removeDrinkType(id))
+            (_, _) => {
+              db.removeDrinkType(id)
+
+              /* refresh list */
+              val adapter = drinksList.getAdapter.asInstanceOf[SimpleCursorAdapter]
+              refreshView(adapter)
+            })
 
         true
       }
@@ -130,6 +133,25 @@ class DrinksFragment extends TypedFragment
       }
       case _ => super.onOptionsItemSelected(item)
     }
+  }
+
+  private def refreshView(adapter: CursorAdapter) {
+    val cursor = db.getAllDrinkTypesCursor
+    adapter.changeCursor(cursor)
+  }
+
+  override def onPause {
+    logI("onPause")
+    db.close
+
+    super.onPause
+  }
+
+  override def onDestroy {
+    logI("onDestroy")
+    db.close
+
+    super.onDestroy
   }
 
 }
