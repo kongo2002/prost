@@ -19,12 +19,12 @@ package com.kongo2002.android.prost
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import DrinksDatabase.DrinkTypesCursor
-import ImplicitHelpers._
 import android.view.View
 import android.content.Intent
 import android.app.Activity
 
+import DrinksDatabase.DrinkTypesCursor
+import ImplicitHelpers._
 
 class EditDrinkActivity extends TypedActivity
   with Loggable {

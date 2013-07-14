@@ -30,18 +30,20 @@ import android.view.ContextMenu.ContextMenuInfo
 import android.widget.AdapterView.AdapterContextMenuInfo
 import android.widget.AdapterView
 import android.support.v4.widget.CursorAdapter
+import android.app.Activity
 import DrinksDatabase.DrinkTypesCursor
 import ImplicitHelpers._
-import android.app.Activity
 
 
 class DrinksFragment extends TypedFragment
   with Loggable {
 
+  val OPTION_DELETE_DRINK = 1
+
   lazy val db = new DrinksDatabase.DrinksDatabase(getActivity)
   lazy val drinksList = findView(TR.drinksList)
 
-  val OPTION_DELETE_DRINK = 1
+  var cursor : DrinkTypesCursor = null
 
   override def onCreateView(inf: LayoutInflater, c: ViewGroup, b: Bundle) = {
     logI("onCreateView")
@@ -55,7 +57,7 @@ class DrinksFragment extends TypedFragment
 
   override def onViewCreated(view: View, bundle: Bundle) {
     /* create adapter */
-    val cursor = db.getAllDrinkTypesCursor
+    cursor = db.getAllDrinkTypesCursor
     val selectedFields = Array(DrinkTypesCursor.KEY_NAME)
     val bindResources = Array(R.id.drink_text)
     val adapter = new SimpleCursorAdapter(activity, R.layout.drinks_row, cursor, selectedFields, bindResources)
@@ -140,19 +142,15 @@ class DrinksFragment extends TypedFragment
 
     if (result == Activity.RESULT_OK) {
       val extras = data.getExtras
-      request match {
-        case Activities.CREATE_DRINK => {
-          val drinkType = getDrinkTypeFromBundle(extras)
-          db.addDrinkType(drinkType)
-        }
-        case Activities.EDIT_DRINK => {
-          val drinkType = getDrinkTypeFromBundle(extras)
-          db.updateDrinkType(drinkType)
-        }
-        case _ => { }
-      }
-    }
+      val drinkType = getDrinkTypeFromBundle(extras)
 
+      request match {
+        case Activities.CREATE_DRINK => db.addDrinkType(drinkType)
+        case Activities.EDIT_DRINK => db.updateDrinkType(drinkType)
+      }
+
+      refreshView
+    }
   }
 
   private def getDrinkTypeFromBundle(extras: Bundle) = {
@@ -166,7 +164,7 @@ class DrinksFragment extends TypedFragment
 
   private def refreshView {
     val adapter = drinksList.getAdapter.asInstanceOf[CursorAdapter]
-    val cursor = db.getAllDrinkTypesCursor
+    cursor = db.getAllDrinkTypesCursor
 
     adapter.changeCursor(cursor)
   }
