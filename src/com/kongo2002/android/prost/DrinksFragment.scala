@@ -104,12 +104,10 @@ class DrinksFragment extends TypedFragment
         }
 
         val info = item.getMenuInfo.asInstanceOf[AdapterContextMenuInfo]
-        logI("delete item " + info.id)
+        val id = info.id
 
-        UI.confirm(activity, "Delete drink type", getMessage(info.id),
-            (_, _) => {
-              /* TODO: delete drink type */
-            })
+        UI.confirm(activity, "Delete drink type", getMessage(id),
+            (_, _) => db.removeDrinkType(id))
 
         true
       }
