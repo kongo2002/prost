@@ -34,7 +34,7 @@ case class Beer(t: DrinkType, date: Date) extends Drink(Drinks.Beer, t, date)
 case class Shot(t: DrinkType, date: Date) extends Drink(Drinks.Shot, t, date)
 case class Cocktail(t: DrinkType, date: Date) extends Drink(Drinks.Cocktail, t, date)
 
-case class DrinkType(id: Long, name: String, unit: Long, baseType: Drinks) {
+case class DrinkType(id: Long, name: String, unit: Int, baseType: Drinks) {
   def newDrink(date: Date) : Drink = {
     baseType match {
       case Drinks.Beer => Beer(this, date)

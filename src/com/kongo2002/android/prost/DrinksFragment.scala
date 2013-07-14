@@ -29,9 +29,11 @@ import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
 import android.widget.AdapterView.AdapterContextMenuInfo
 import android.widget.AdapterView
+import android.support.v4.widget.CursorAdapter
 import DrinksDatabase.DrinkTypesCursor
 import ImplicitHelpers._
-import android.support.v4.widget.CursorAdapter
+import android.app.Activity
+
 
 class DrinksFragment extends TypedFragment
   with Loggable {
@@ -70,6 +72,7 @@ class DrinksFragment extends TypedFragment
 
       /* build intent with its extra contents */
       val intent = new Intent(activity, classOf[EditDrinkActivity])
+      intent.putExtra(DrinksDatabase.KEY_ID, id)
       intent.putExtra(DrinkTypesCursor.KEY_NAME, cursor.getTypeName)
       intent.putExtra(DrinkTypesCursor.KEY_TYPE, cursor.getType.id)
       intent.putExtra(DrinkTypesCursor.KEY_UNIT, cursor.getTypeUnit)
@@ -125,11 +128,40 @@ class DrinksFragment extends TypedFragment
     item.getItemId match {
       case R.id.menu_add_drink => {
         val intent = new Intent(activity, classOf[EditDrinkActivity])
-        startActivityForResult(intent, Activities.EDIT_DRINK)
+        startActivityForResult(intent, Activities.CREATE_DRINK)
         true
       }
       case _ => super.onOptionsItemSelected(item)
     }
+  }
+
+  override def onActivityResult(request: Int, result: Int, data: Intent) {
+    super.onActivityResult(request, result, data)
+
+    if (result == Activity.RESULT_OK) {
+      val extras = data.getExtras
+      request match {
+        case Activities.CREATE_DRINK => {
+          val drinkType = getDrinkTypeFromBundle(extras)
+          db.addDrinkType(drinkType)
+        }
+        case Activities.EDIT_DRINK => {
+          val drinkType = getDrinkTypeFromBundle(extras)
+          db.updateDrinkType(drinkType)
+        }
+        case _ => { }
+      }
+    }
+
+  }
+
+  private def getDrinkTypeFromBundle(extras: Bundle) = {
+    val id = extras.getLong(DrinksDatabase.KEY_ID)
+    val name = extras.getString(DrinkTypesCursor.KEY_NAME)
+    val drink = extras.getInt(DrinkTypesCursor.KEY_TYPE)
+    val unit = extras.getInt(DrinkTypesCursor.KEY_UNIT)
+
+    DrinkType(id, name, unit, Drinks(drink))
   }
 
   private def refreshView {

@@ -17,6 +17,7 @@
 package com.kongo2002.android.prost
 
 object Activities {
-  val SETTINGS   = 11
-  val EDIT_DRINK = 12
+  val SETTINGS     = 11
+  val EDIT_DRINK   = 12
+  val CREATE_DRINK = 13
 }

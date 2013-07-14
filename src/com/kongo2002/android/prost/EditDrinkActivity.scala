@@ -18,8 +18,12 @@ package com.kongo2002.android.prost
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import DrinksDatabase.DrinkTypesCursor
 import android.widget.TextView
+import DrinksDatabase.DrinkTypesCursor
+import ImplicitHelpers._
+import android.view.View
+import android.content.Intent
+import android.app.Activity
 
 
 class EditDrinkActivity extends TypedActivity
@@ -28,6 +32,9 @@ class EditDrinkActivity extends TypedActivity
   lazy val editName = findView(TR.editDrinkName)
   lazy val editUnit = findView(TR.editDrinkUnit)
   lazy val selectType = findView(TR.selectDrinkType)
+  lazy val submit = findView(TR.submitDrinkType)
+
+  var id = 0L
 
   override def onCreate(state: Bundle) {
     super.onCreate(state)
@@ -42,11 +49,15 @@ class EditDrinkActivity extends TypedActivity
     /* load intent contents if specified */
     val extras = getIntent.getExtras
     if (extras != null) {
+      id = extras.getLong(DrinksDatabase.KEY_ID)
+
       val name = extras.getString(DrinkTypesCursor.KEY_NAME)
       val drinkType = extras.getInt(DrinkTypesCursor.KEY_TYPE)
       val unit = extras.getInt(DrinkTypesCursor.KEY_UNIT)
 
-      if (name != null) editName.setText(name)
+      if (name != null)
+        editName.setText(name)
+
       editUnit.setText(unit.toString)
       selectType.setSelection(drinkType)
     }
@@ -70,6 +81,27 @@ class EditDrinkActivity extends TypedActivity
       }
     })
 
+    submit.setOnClickListener((v: View) => {
+      val intent = new Intent()
+      intent.putExtras(getResultBundle)
+
+      setResult(Activity.RESULT_OK, intent)
+      finish
+    })
+
     logI("onCreate")
+  }
+
+  private def getResultBundle = {
+    val bundle = new Bundle()
+
+    if (id > 0)
+      bundle.putLong(DrinksDatabase.KEY_ID, id)
+
+    bundle.putString(DrinkTypesCursor.KEY_NAME, editName.getText.toString)
+    bundle.putInt(DrinkTypesCursor.KEY_UNIT, editUnit.getText.toString.toInt)
+    bundle.putInt(DrinkTypesCursor.KEY_TYPE, selectType.getSelectedItemPosition)
+
+    bundle
   }
 }

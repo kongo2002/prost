@@ -47,8 +47,8 @@ object DrinksDatabase {
   private final def DRINK_TYPES_TABLE = "CREATE TABLE drink_types (" +
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER, type INTEGER);"
 
-  private final def DEFAULT_PINT = "INSERT INTO drink_types (name,unit,type) VALUES ('Pint', 500, 0);"
-  private final def DEFAULT_KORN = "INSERT INTO drink_types (name,unit,type) VALUES ('Korn', 200, 1);"
+  private final def DEFAULT_PINT = DrinkTypesCursor.QUERY_INSERT.format("Pint", 500, 0)
+  private final def DEFAULT_KORN = DrinkTypesCursor.QUERY_INSERT.format("Korn", 200, 1)
 
   /**
    * Inner database class that wraps a sqlite connection helper.
@@ -247,12 +247,36 @@ object DrinksDatabase {
      * @param id  ID of the drink type to remove
      */
     def removeDrinkType(id: Long) {
-      val db = getReadableDatabase
+      val db = getWritableDatabase
 
       val removeDrinks = "DELETE from drinks WHERE drink=%d;".format(id)
       val removeType = "DELETE from drink_types WHERE _id=%d;".format(id)
 
       executeSql(db, removeDrinks, removeType)
+    }
+
+    /**
+     * Update the given drink type.
+     * @param dt  Drink type to update
+     */
+    def updateDrinkType(dt: DrinkType) {
+      if (dt.id > 0) {
+        val db = getWritableDatabase
+        val update = DrinkTypesCursor.updateQuery(dt.id, dt.name, dt.unit, dt.baseType.id)
+
+        db.execSQL(update)
+      }
+    }
+
+    /**
+     * Add a new drink type to the database.
+     * @param dt  Drink type to insert
+     */
+    def addDrinkType(dt: DrinkType) = {
+      val db = getWritableDatabase
+      val insert = DrinkTypesCursor.insertQuery(dt.name, dt.unit, dt.baseType.id)
+
+      db.execSQL(insert)
     }
 
     /**
@@ -334,12 +358,22 @@ object DrinksDatabase {
   }
 
   object DrinkTypesCursor {
-    final def KEY_NAME = "name"
-    final def KEY_UNIT = "unit"
-    final def KEY_TYPE = "type"
+    final val KEY_NAME = "name"
+    final val KEY_UNIT = "unit"
+    final val KEY_TYPE = "type"
 
-    final def QUERY_ALL = "SELECT _id,name,unit,type FROM drink_types ORDER BY name ASC;"
-    final def QUERY_ONE = "SELECT _id,name,unit,type FROM drink_types WHERE _id="
+    final val QUERY_ALL = "SELECT _id,name,unit,type FROM drink_types ORDER BY name ASC;"
+    final val QUERY_ONE = "SELECT _id,name,unit,type FROM drink_types WHERE _id="
+    final val QUERY_UPDATE = "UPDATE drink_types SET name='%s',unit=%d,type=%d WHERE _id=%d;"
+    final val QUERY_INSERT = "INSERT INTO drink_types (name,unit,type) VALUES('%s',%d,%d);"
+
+    def updateQuery(id: Long, name: String, unit: Int, baseType: Int) = {
+      QUERY_UPDATE.format(name, unit, baseType, id)
+    }
+
+    def insertQuery(name: String, unit: Int, baseType: Int) = {
+      QUERY_INSERT.format(name, unit, baseType)
+    }
 
     /**
      * Factory class to be used for 'rawQueryWithFactory()'
