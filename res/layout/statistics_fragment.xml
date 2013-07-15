@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/black"
     android:stretchColumns="1"
     tools:context=".StatisticsActivity" >
 
@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/dark_yellow"
+                android:textColor="@color/yellow"
                 android:textStyle="bold" />
 
         </LinearLayout>
