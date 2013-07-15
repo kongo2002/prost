@@ -26,11 +26,13 @@ import android.app.Activity
 import DrinksDatabase.DrinkTypesCursor
 import Implicits._
 
+
 class EditDrinkActivity extends TypedActivity
   with Loggable {
 
   lazy val editName = findView(TR.editDrinkName)
   lazy val editUnit = findView(TR.editDrinkUnit)
+  lazy val editPrice = findView(TR.editDrinkPrice)
   lazy val selectType = findView(TR.selectDrinkType)
   lazy val submit = findView(TR.submitDrinkType)
 
@@ -54,11 +56,13 @@ class EditDrinkActivity extends TypedActivity
       val name = extras.getString(DrinkTypesCursor.KEY_NAME)
       val drinkType = extras.getInt(DrinkTypesCursor.KEY_TYPE)
       val unit = extras.getInt(DrinkTypesCursor.KEY_UNIT)
+      val price = extras.getInt(DrinkTypesCursor.KEY_PRICE)
 
       if (name != null)
         editName.setText(name)
 
       editUnit.setText(unit.toString)
+      editPrice.setText(price.toString)
       selectType.setSelection(drinkType)
     }
 
@@ -101,6 +105,7 @@ class EditDrinkActivity extends TypedActivity
     bundle.putString(DrinkTypesCursor.KEY_NAME, editName.getText.toString)
     bundle.putInt(DrinkTypesCursor.KEY_UNIT, editUnit.getText.toString.toInt)
     bundle.putInt(DrinkTypesCursor.KEY_TYPE, selectType.getSelectedItemPosition)
+    bundle.putInt(DrinkTypesCursor.KEY_PRICE, editPrice.getText.toString.toInt)
 
     bundle
   }

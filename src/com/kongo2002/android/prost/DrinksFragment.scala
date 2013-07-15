@@ -79,6 +79,7 @@ class DrinksFragment extends TypedFragment
       intent.putExtra(DrinkTypesCursor.KEY_NAME, cursor.getTypeName)
       intent.putExtra(DrinkTypesCursor.KEY_TYPE, cursor.getType.id)
       intent.putExtra(DrinkTypesCursor.KEY_UNIT, cursor.getTypeUnit)
+      intent.putExtra(DrinkTypesCursor.KEY_PRICE, cursor.getPrice)
 
       /* start edit activity */
       startActivityForResult(intent, Activities.EDIT_DRINK)
@@ -159,8 +160,9 @@ class DrinksFragment extends TypedFragment
     val name = extras.getString(DrinkTypesCursor.KEY_NAME)
     val drink = extras.getInt(DrinkTypesCursor.KEY_TYPE)
     val unit = extras.getInt(DrinkTypesCursor.KEY_UNIT)
+    val price = extras.getInt(DrinkTypesCursor.KEY_PRICE)
 
-    DrinkType(id, name, unit, Drinks(drink))
+    DrinkType(id, name, unit, Drinks(drink), price)
   }
 
   private def refreshView {

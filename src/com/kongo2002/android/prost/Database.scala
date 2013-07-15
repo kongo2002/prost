@@ -29,6 +29,7 @@ import android.util.Log
 
 import java.util.Date
 
+
 /**
  * Main database class that manages all database related
  * operations.
@@ -45,10 +46,10 @@ object DrinksDatabase {
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, drink INTEGER, date TIMESTAMP NOT NULL DEFAULT current_timestamp);"
 
   private final def DRINK_TYPES_TABLE = "CREATE TABLE drink_types (" +
-    "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER, type INTEGER);"
+    "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER, type INTEGER, price INTEGER);"
 
-  private final def DEFAULT_PINT = DrinkTypesCursor.QUERY_INSERT.format("Pint", 500, 0)
-  private final def DEFAULT_KORN = DrinkTypesCursor.QUERY_INSERT.format("Korn", 200, 1)
+  private final def DEFAULT_PINT = DrinkTypesCursor.QUERY_INSERT.format("Pint", 500, 0, 350)
+  private final def DEFAULT_KORN = DrinkTypesCursor.QUERY_INSERT.format("Korn", 200, 1, 150)
 
   /**
    * Inner database class that wraps a sqlite connection helper.
@@ -262,7 +263,7 @@ object DrinksDatabase {
     def updateDrinkType(dt: DrinkType) {
       if (dt.id > 0) {
         val db = getWritableDatabase
-        val update = DrinkTypesCursor.updateQuery(dt.id, dt.name, dt.unit, dt.baseType.id)
+        val update = DrinkTypesCursor.updateQuery(dt.id, dt.name, dt.unit, dt.price, dt.baseType.id)
 
         db.execSQL(update)
       }
@@ -274,7 +275,7 @@ object DrinksDatabase {
      */
     def addDrinkType(dt: DrinkType) = {
       val db = getWritableDatabase
-      val insert = DrinkTypesCursor.insertQuery(dt.name, dt.unit, dt.baseType.id)
+      val insert = DrinkTypesCursor.insertQuery(dt.name, dt.unit, dt.price, dt.baseType.id)
 
       db.execSQL(insert)
     }
@@ -323,7 +324,7 @@ object DrinksDatabase {
 
   object DrinksCursor {
     final def QUERY = "SELECT drinks._id AS id,name,unit,type,drink_types._id AS tid," +
-      "(strftime('%s', date) * 1000) AS date " +
+      "(strftime('%s', date) * 1000) AS date,price " +
       "FROM drinks INNER JOIN drink_types ON " +
       "drinks.drink=drink_types._id ORDER BY id DESC;"
 
@@ -352,27 +353,47 @@ object DrinksDatabase {
     def getDrinkTypeId = getLong(getColumnIndexOrThrow("tid"))
     def getDrinkBaseType = Drinks(getInt(getColumnIndexOrThrow("type")))
     def getDrinkDate = new Date(getLong(getColumnIndexOrThrow("date")))
+    def getDrinkPrice = getInt(getColumnIndexOrThrow("price"))
 
-    def getDrinkType = DrinkType(getDrinkTypeId, getDrinkName, getDrinkUnit, getDrinkBaseType)
+    def getDrinkType = DrinkType(getDrinkTypeId, getDrinkName, getDrinkUnit, getDrinkBaseType, getDrinkPrice)
     def get = getDrinkType.newDrink(getDrinkDate)
   }
 
+  /**
+   * Cursor to access drink type information.
+   */
   object DrinkTypesCursor {
     final val KEY_NAME = "name"
     final val KEY_UNIT = "unit"
     final val KEY_TYPE = "type"
+    final val KEY_PRICE = "price"
 
-    final val QUERY_ALL = "SELECT _id,name,unit,type FROM drink_types ORDER BY name ASC;"
-    final val QUERY_ONE = "SELECT _id,name,unit,type FROM drink_types WHERE _id="
-    final val QUERY_UPDATE = "UPDATE drink_types SET name='%s',unit=%d,type=%d WHERE _id=%d;"
-    final val QUERY_INSERT = "INSERT INTO drink_types (name,unit,type) VALUES('%s',%d,%d);"
+    final val QUERY_ALL = "SELECT _id,name,unit,type,price FROM drink_types ORDER BY name ASC;"
+    final val QUERY_ONE = "SELECT _id,name,unit,type,price FROM drink_types WHERE _id="
+    final val QUERY_UPDATE = "UPDATE drink_types SET name='%s',unit=%d,type=%d,price=%d WHERE _id=%d;"
+    final val QUERY_INSERT = "INSERT INTO drink_types (name,unit,type,price) VALUES('%s',%d,%d,%d);"
 
-    def updateQuery(id: Long, name: String, unit: Int, baseType: Int) = {
-      QUERY_UPDATE.format(name, unit, baseType, id)
+    /**
+     * Build an drink type 'update' query string.
+     * @param id        drink type ID
+     * @param name      drink type name
+     * @param unit      drink type unit (in milliliters)
+     * @param baseType  base type (beer, shot, cocktail)
+     * @param price     price (in cents)
+     */
+    def updateQuery(id: Long, name: String, unit: Int, baseType: Int, price: Int) = {
+      QUERY_UPDATE.format(name, unit, baseType, price, id)
     }
 
-    def insertQuery(name: String, unit: Int, baseType: Int) = {
-      QUERY_INSERT.format(name, unit, baseType)
+    /**
+     * Build an drink type 'insert' query string.
+     * @param name      drink type name
+     * @param unit      drink type unit (in milliliters)
+     * @param baseType  base type (beer, shot, cocktail)
+     * @param price     price (in cents)
+     */
+    def insertQuery(name: String, unit: Int, baseType: Int, price: Int) = {
+      QUERY_INSERT.format(name, unit, baseType, price)
     }
 
     /**
@@ -396,8 +417,9 @@ object DrinksDatabase {
     def getTypeName = getString(getColumnIndexOrThrow("name"))
     def getTypeUnit = getInt(getColumnIndexOrThrow("unit"))
     def getType = Drinks(getInt(getColumnIndexOrThrow("type")))
+    def getPrice = getInt(getColumnIndexOrThrow("price"))
 
-    def get = DrinkType(getTypeId, getTypeName, getTypeUnit, getType)
+    def get = DrinkType(getTypeId, getTypeName, getTypeUnit, getType, getPrice)
   }
 }
 

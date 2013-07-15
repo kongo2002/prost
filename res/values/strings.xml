@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Prost</string>
-    
+
     <string name="beer_button">New beer</string>
     <string name="clear_database">Clear database</string>
     <string name="about">About</string>
@@ -55,6 +55,7 @@
     <string name="drinks_name">Name</string>
     <string name="drinks_type">Type</string>
     <string name="drinks_size">Unit (in ml)</string>
+    <string name="drinks_price">Price (in cents)</string>
     <string name="add_drink">Add drink</string>
     <string name="delete_drink">Delete drink</string>
     <string name="select_drink_type">Select drink type</string>
@@ -63,6 +64,6 @@
         <item >Shot</item>
         <item >Cocktail</item>
     </string-array>
-    
+
 
 </resources>
