@@ -285,7 +285,7 @@ object DrinksDatabase {
     def updateDrinkType(dt: DrinkType) {
       if (dt.id > 0) {
         val db = getWritableDatabase
-        val update = DrinkTypesCursor.updateQuery(dt.id, dt.name, dt.unit, dt.price, dt.baseType.id, dt.bar)
+        val update = DrinkTypesCursor.updateQuery(dt.id, dt.name, dt.unit, dt.baseType.id, dt.price, dt.bar)
 
         db.execSQL(update)
       }
@@ -297,7 +297,7 @@ object DrinksDatabase {
      */
     def addDrinkType(dt: DrinkType) = {
       val db = getWritableDatabase
-      val insert = DrinkTypesCursor.insertQuery(dt.name, dt.unit, dt.price, dt.baseType.id, dt.bar)
+      val insert = DrinkTypesCursor.insertQuery(dt.name, dt.unit, dt.baseType.id, dt.price, dt.bar)
 
       db.execSQL(insert)
     }

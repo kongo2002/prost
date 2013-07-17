@@ -51,20 +51,16 @@ class EditDrinkActivity extends TypedActivity
     /* load intent contents if specified */
     val extras = getIntent.getExtras
     if (extras != null) {
-      id = extras.getLong(DrinksDatabase.KEY_ID)
+      val dt = DrinkType.fromBundle(extras)
 
-      val name = extras.getString(DrinkTypesCursor.KEY_NAME)
-      val drinkType = extras.getInt(DrinkTypesCursor.KEY_TYPE)
-      val unit = extras.getInt(DrinkTypesCursor.KEY_UNIT)
-      val price = extras.getInt(DrinkTypesCursor.KEY_PRICE)
-      val bar = extras.getLong(DrinkTypesCursor.KEY_BAR)
+      id = dt.id
 
-      if (name != null)
-        editName.setText(name)
+      if (dt.name != null)
+        editName.setText(dt.name)
 
-      editUnit.setText(unit.toString)
-      editPrice.setText(price.toString)
-      selectType.setSelection(drinkType)
+      editUnit.setText(dt.unit.toString)
+      editPrice.setText(dt.price.toString)
+      selectType.setSelection(dt.baseType.id)
     }
 
     /* add validation callbacks */
