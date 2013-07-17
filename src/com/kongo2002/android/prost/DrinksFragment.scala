@@ -80,6 +80,7 @@ class DrinksFragment extends TypedFragment
       intent.putExtra(DrinkTypesCursor.KEY_TYPE, cursor.getType.id)
       intent.putExtra(DrinkTypesCursor.KEY_UNIT, cursor.getTypeUnit)
       intent.putExtra(DrinkTypesCursor.KEY_PRICE, cursor.getPrice)
+      intent.putExtra(DrinkTypesCursor.KEY_BAR, cursor.getDrinkTypeBar)
 
       /* start edit activity */
       startActivityForResult(intent, Activities.EDIT_DRINK)
@@ -144,7 +145,7 @@ class DrinksFragment extends TypedFragment
 
     if (result == Activity.RESULT_OK) {
       val extras = data.getExtras
-      val drinkType = getDrinkTypeFromBundle(extras)
+      val drinkType = DrinkType.fromBundle(extras)
 
       request match {
         case Activities.CREATE_DRINK => db.addDrinkType(drinkType)
@@ -153,16 +154,6 @@ class DrinksFragment extends TypedFragment
 
       refreshView
     }
-  }
-
-  private def getDrinkTypeFromBundle(extras: Bundle) = {
-    val id = extras.getLong(DrinksDatabase.KEY_ID)
-    val name = extras.getString(DrinkTypesCursor.KEY_NAME)
-    val drink = extras.getInt(DrinkTypesCursor.KEY_TYPE)
-    val unit = extras.getInt(DrinkTypesCursor.KEY_UNIT)
-    val price = extras.getInt(DrinkTypesCursor.KEY_PRICE)
-
-    DrinkType(id, name, unit, Drinks(drink), price)
   }
 
   private def refreshView {

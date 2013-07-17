@@ -57,6 +57,7 @@ class EditDrinkActivity extends TypedActivity
       val drinkType = extras.getInt(DrinkTypesCursor.KEY_TYPE)
       val unit = extras.getInt(DrinkTypesCursor.KEY_UNIT)
       val price = extras.getInt(DrinkTypesCursor.KEY_PRICE)
+      val bar = extras.getLong(DrinkTypesCursor.KEY_BAR)
 
       if (name != null)
         editName.setText(name)
@@ -106,6 +107,9 @@ class EditDrinkActivity extends TypedActivity
     bundle.putInt(DrinkTypesCursor.KEY_UNIT, editUnit.getText.toString.toInt)
     bundle.putInt(DrinkTypesCursor.KEY_TYPE, selectType.getSelectedItemPosition)
     bundle.putInt(DrinkTypesCursor.KEY_PRICE, editPrice.getText.toString.toInt)
+
+    /* TODO: add bar */
+    bundle.putLong(DrinkTypesCursor.KEY_BAR, 0)
 
     bundle
   }

@@ -16,7 +16,11 @@
 
 package com.kongo2002.android.prost
 
+import android.os.Bundle
+
 import java.util.Date
+
+import DrinksDatabase.DrinkTypesCursor
 
 
 /**
@@ -62,8 +66,9 @@ case class Cocktail(t: DrinkType, date: Date) extends Drink(Drinks.Cocktail, t, 
  * @param unit      Unit of the drink type (in milliliters)
  * @param baseType  Base type the drink is based on
  * @param price     Price of the drink type (in cents)
+ * @param bar       ID of the bar the drink type belongs to
  */
-case class DrinkType(id: Long, name: String, unit: Int, baseType: Drinks, price: Int) {
+case class DrinkType(id: Long, name: String, unit: Int, baseType: Drinks, price: Int, bar: Long) {
   def newDrink(date: Date) : Drink = {
     baseType match {
       case Drinks.Beer => Beer(this, date)
@@ -72,6 +77,27 @@ case class DrinkType(id: Long, name: String, unit: Int, baseType: Drinks, price:
     }
   }
   def newDrink : Drink = newDrink(new Date())
+}
+
+/**
+ * Some basic convenience functions regarding
+ * the DrinkType class.
+ */
+object DrinkType {
+  /**
+   * Initialize a DrinkType instance from a specified Bundle.
+   * @param extras  Bundle to extract the data from
+   */
+  def fromBundle(extras: Bundle) = {
+    val id = extras.getLong(DrinksDatabase.KEY_ID)
+    val name = extras.getString(DrinkTypesCursor.KEY_NAME)
+    val drink = extras.getInt(DrinkTypesCursor.KEY_TYPE)
+    val unit = extras.getInt(DrinkTypesCursor.KEY_UNIT)
+    val price = extras.getInt(DrinkTypesCursor.KEY_PRICE)
+    val bar = extras.getLong(DrinkTypesCursor.KEY_BAR)
+
+    DrinkType(id, name, unit, Drinks(drink), price, bar)
+  }
 }
 
 /* vim: set et sw=2 sts=2: */
