@@ -52,7 +52,6 @@ class MainActivity extends TypedFragmentActivity
     }
   }
 
-
   override def onRestart {
     super.onRestart
     logI("onRestart")
