@@ -48,6 +48,9 @@ object DrinksDatabase {
   private final def DRINK_TYPES_TABLE = "CREATE TABLE drink_types (" +
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, unit INTEGER, type INTEGER, price INTEGER);"
 
+  private final def BARS_TABLE = "CREATE TABLE bars (" +
+    "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, longitude INTEGER, latitude INTEGER);"
+
   private final def DEFAULT_PINT = DrinkTypesCursor.QUERY_INSERT.format("Pint", 500, 0, 350)
   private final def DEFAULT_KORN = DrinkTypesCursor.QUERY_INSERT.format("Korn", 200, 1, 150)
 
@@ -68,7 +71,13 @@ object DrinksDatabase {
       db.beginTransaction()
 
       try {
-        executeSql(db, DRINKS_TABLE, DRINK_TYPES_TABLE, DEFAULT_PINT, DEFAULT_KORN)
+        executeSql(db,
+          DRINKS_TABLE,
+          DRINK_TYPES_TABLE,
+          BARS_TABLE,
+          DEFAULT_PINT,
+          DEFAULT_KORN)
+
         db.setTransactionSuccessful()
       } catch {
         case sex: SQLException => Log.e("Error creating database '" + DBNAME + "'", sex.toString())
@@ -91,7 +100,16 @@ object DrinksDatabase {
       db.beginTransaction()
 
       try {
-        executeSql(db, drop("drinks"), drop("drink_types"), DRINKS_TABLE, DRINK_TYPES_TABLE, DEFAULT_PINT, DEFAULT_KORN)
+        executeSql(db,
+          drop("drinks"),
+          drop("drink_types"),
+          drop("bars"),
+          DRINKS_TABLE,
+          DRINK_TYPES_TABLE,
+          BARS_TABLE,
+          DEFAULT_PINT,
+          DEFAULT_KORN)
+
         db.setTransactionSuccessful()
       } catch {
         case sex: SQLException => Log.e("Error updating database '" + DBNAME + "'", sex.toString())
@@ -163,7 +181,7 @@ object DrinksDatabase {
      * @param id  ID of the 'DrinkType' to retrieve
      */
     def getDrinkType(id: Long) = {
-      val query = DrinkTypesCursor.QUERY_ONE + id + ";"
+      val query = DrinkTypesCursor.QUERY_ONE.format(id)
       val db = getReadableDatabase()
       val cursor = db.rawQueryWithFactory(new DrinkTypesCursor.Factory(), query, null, null).asInstanceOf[DrinkTypesCursor]
 
@@ -182,7 +200,7 @@ object DrinksDatabase {
      * @param id  ID of the drink type to get the usages of
      */
     def getDrinkTypeUsage(id: Long) = {
-      scalarInt(DrinksCursor.QUERY_DRINK_TYPE_COUNT + id + ";")
+      scalarInt(DrinksCursor.QUERY_DRINK_TYPE_COUNT.format(id))
     }
 
     /**
@@ -288,7 +306,7 @@ object DrinksDatabase {
       db.execSQL("DELETE FROM drinks;")
     }
 
-    private def drop(table: String) = "DROP TABLE IF EXISTS " + table + ";"
+    private def drop(table: String) = "DROP TABLE IF EXISTS %s;".format(table)
 
     private def executeSql(db: SQLiteDatabase, sql: String*) = {
       sql.foreach(s => db.execSQL(s))
@@ -328,7 +346,7 @@ object DrinksDatabase {
       "FROM drinks INNER JOIN drink_types ON " +
       "drinks.drink=drink_types._id ORDER BY id DESC;"
 
-    final def QUERY_DRINK_TYPE_COUNT = "SELECT COUNT(_id) FROM drinks WHERE drink="
+    final def QUERY_DRINK_TYPE_COUNT = "SELECT COUNT(_id) FROM drinks WHERE drink=%d;"
 
     /**
      * Factory class to be used for 'rawQueryWithFactory()'
@@ -369,7 +387,7 @@ object DrinksDatabase {
     final val KEY_PRICE = "price"
 
     final val QUERY_ALL = "SELECT _id,name,unit,type,price FROM drink_types ORDER BY name ASC;"
-    final val QUERY_ONE = "SELECT _id,name,unit,type,price FROM drink_types WHERE _id="
+    final val QUERY_ONE = "SELECT _id,name,unit,type,price FROM drink_types WHERE _id=%d;"
     final val QUERY_UPDATE = "UPDATE drink_types SET name='%s',unit=%d,type=%d,price=%d WHERE _id=%d;"
     final val QUERY_INSERT = "INSERT INTO drink_types (name,unit,type,price) VALUES('%s',%d,%d,%d);"
 
@@ -420,6 +438,63 @@ object DrinksDatabase {
     def getPrice = getInt(getColumnIndexOrThrow("price"))
 
     def get = DrinkType(getTypeId, getTypeName, getTypeUnit, getType, getPrice)
+  }
+
+  /**
+   * Cursor to access bars information.
+   */
+  object BarsCursor {
+    final val KEY_NAME = "name"
+    final val KEY_LONGITUDE = "long"
+    final val KEY_LATITUDE = "lat"
+
+    final val QUERY_ALL = "SELECT _id,name,long,lat FROM bars ORDER BY name ASC;"
+    final val QUERY_ONE = "SELECT _id,name,long,lat FROM bars WHERE _id=%d;"
+    final val QUERY_UPDATE = "UPDATE bars SET name='%s',long=%d,lat=%d WHERE _id=%d;"
+    final val QUERY_INSERT = "INSERT INTO bars (name,long,lat) VALUES ('%s',%d,%d);"
+
+    /**
+     * Build a bars 'update' query.
+     * @param id         ID of the bar to update
+     * @param name       Name of the bar
+     * @param longitude  Longitude of location
+     * @parma latitude   Latitude of location
+     */
+    def updateQuery(id: Long, name: String, longitude: Long, latitude: Long) = {
+      QUERY_UPDATE.format(name, longitude, latitude, id)
+    }
+
+    /**
+     * Build a bars 'insert' query.
+     * @param name       Name of the bar
+     * @param longitude  Longitude of location
+     * @parma latitude   Latitude of location
+     */
+    def insertQuery(name: String, longitude: Long, latitude: Long) = {
+      QUERY_INSERT.format(name, longitude, latitude)
+    }
+
+    /**
+     * Factory class to be used for 'rawQueryWithFactory()'
+     */
+    class Factory extends SQLiteDatabase.CursorFactory {
+      override def newCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery) = {
+        new BarsCursor(db, driver, table, query)
+      }
+    }
+  }
+
+  /**
+   * Convenience cursor wrapper class to centralize all access to
+   * the 'drinks' table.
+   */
+  class BarsCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
+    extends SQLiteCursor(db, driver, table, query) {
+
+    def getBarId = getLong(getColumnIndexOrThrow("id"))
+    def getBarName = getString(getColumnIndexOrThrow("name"))
+    def getBarLongitude = getString(getColumnIndexOrThrow("longitude"))
+    def getBarLatitude = getString(getColumnIndexOrThrow("latitude"))
   }
 }
 
