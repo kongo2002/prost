@@ -32,8 +32,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.AdapterContextMenuInfo
 
-import Implicits._
 import DrinksDatabase.DrinkTypesCursor
+import Implicits._
 
 
 class DrinksFragment extends TypedFragment
@@ -177,5 +177,6 @@ class DrinksFragment extends TypedFragment
 
     super.onDestroy
   }
-
 }
+
+/* vim: set et sw=2 sts=2: */

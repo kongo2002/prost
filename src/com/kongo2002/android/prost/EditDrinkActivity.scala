@@ -110,3 +110,5 @@ class EditDrinkActivity extends TypedActivity
     bundle
   }
 }
+
+/* vim: set et sw=2 sts=2: */

@@ -17,17 +17,26 @@
 package com.kongo2002.android.prost
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
-class BarsFragment extends Fragment
+import Implicits._
+import DrinksDatabase.BarsCursor
+
+class BarsFragment extends TypedFragment
   with Loggable {
 
-  override def onCreateView(inf: LayoutInflater, c: ViewGroup, b: Bundle) = {
+  val OPTION_DELETE_BAR = 1
+
+  override def onCreateView(inf: LayoutInflater, vg: ViewGroup, b: Bundle) = {
     logI("onCreateView")
-    val view = inf.inflate(R.layout.bars_fragment, c, false)
+
+    val view = inf.inflate(R.layout.bars_fragment, vg, false)
+
+    setHasOptionsMenu(true)
+
     view
   }
-
 }
+
+/* vim: set et sw=2 sts=2: */
