@@ -39,8 +39,6 @@ import Implicits._
 class DrinksFragment extends TypedFragment
   with Loggable {
 
-  val OPTION_DELETE_DRINK = 1
-
   lazy val db = new DrinksDatabase.DrinksDatabase(getActivity)
   lazy val drinksList = findView(TR.drinksList)
 
@@ -90,12 +88,12 @@ class DrinksFragment extends TypedFragment
   override def onCreateContextMenu(menu: ContextMenu, view: View, info: ContextMenuInfo) {
     super.onCreateContextMenu(menu, view, info)
 
-    menu.add(0, OPTION_DELETE_DRINK, 0, R.string.delete_drink)
+    menu.add(0, Options.DELETE_DRINK, 0, R.string.delete_drink)
   }
 
   override def onContextItemSelected(item: MenuItem) = {
     item.getItemId match {
-      case OPTION_DELETE_DRINK => {
+      case Options.DELETE_DRINK => {
         def getMessage(id: Long) = {
           /* TODO: use resource strings */
           val usage = db.getDrinkTypeUsage(id)
@@ -110,8 +108,9 @@ class DrinksFragment extends TypedFragment
 
         val info = item.getMenuInfo.asInstanceOf[AdapterContextMenuInfo]
         val id = info.id
+        val title = activity.getString(R.string.delete_drink)
 
-        UI.confirm(activity, "Delete drink type", getMessage(id),
+        UI.confirm(activity, title, getMessage(id),
             (_, _) => {
               db.removeDrinkType(id)
               refreshView

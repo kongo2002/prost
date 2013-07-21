@@ -17,8 +17,12 @@
 package com.kongo2002.android.prost
 
 import android.os.Bundle
+import android.support.v4.widget.CursorAdapter
 import android.support.v4.widget.SimpleCursorAdapter
+import android.view.ContextMenu
+import android.view.ContextMenu.ContextMenuInfo
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -29,8 +33,6 @@ import DrinksDatabase.BarsCursor
 
 class BarsFragment extends TypedFragment
   with Loggable {
-
-  val OPTION_DELETE_BAR = 1
 
   lazy val db = new DrinksDatabase.DrinksDatabase(getActivity)
   lazy val barsList = findView(TR.barsList)
@@ -45,6 +47,39 @@ class BarsFragment extends TypedFragment
     setHasOptionsMenu(true)
 
     view
+  }
+
+  private def refreshView {
+    val adapter = barsList.getAdapter.asInstanceOf[CursorAdapter]
+    cursor = db.getAllBarsCursor
+
+    adapter.changeCursor(cursor)
+    adapter.notifyDataSetChanged
+  }
+
+  override def onCreateContextMenu(menu: ContextMenu, view: View, info: ContextMenuInfo) {
+    super.onCreateContextMenu(menu, view, info)
+
+    menu.add(0, Options.DELETE_BAR, 0, R.string.delete_bar)
+  }
+
+  override def onContextItemSelected(item: MenuItem) = {
+    val id = item.getItemId
+    logI("id: " + id)
+
+    id match {
+      case Options.DELETE_BAR => {
+        val title = activity.getString(R.string.delete_bar)
+        val msg = activity.getString(R.string.delete_bar_question)
+
+        UI.confirm(activity, title, msg,
+          (_, _) => {
+            ()
+          })
+        true
+      }
+      case _ => super.onContextItemSelected(item)
+    }
   }
 
   override def onViewCreated(view: View, bundle: Bundle) {

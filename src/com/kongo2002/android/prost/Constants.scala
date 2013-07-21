@@ -21,3 +21,8 @@ object Activities {
   val EDIT_DRINK   = 12
   val CREATE_DRINK = 13
 }
+
+object Options {
+  val DELETE_DRINK = 1
+  val DELETE_BAR   = 2
+}

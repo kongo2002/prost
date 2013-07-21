@@ -274,14 +274,25 @@ object DrinksDatabase {
     }
 
     /**
-     * Remove the specified drink type and all drinks of that type
+     * Remove the specified bar.
+     * @param id  ID of the bar to remove
+     */
+    def removeBar(id: Long) {
+      val db = getWritableDatabase
+
+      val remove = "DELETE FROM bars WHERE _id=%d;".format(id)
+      executeSql(db, remove)
+    }
+
+    /**
+     * Remove the specified drink type and all drinks of that type.
      * @param id  ID of the drink type to remove
      */
     def removeDrinkType(id: Long) {
       val db = getWritableDatabase
 
-      val removeDrinks = "DELETE from drinks WHERE drink=%d;".format(id)
-      val removeType = "DELETE from drink_types WHERE _id=%d;".format(id)
+      val removeDrinks = "DELETE FROM drinks WHERE drink=%d;".format(id)
+      val removeType = "DELETE FROM drink_types WHERE _id=%d;".format(id)
 
       executeSql(db, removeDrinks, removeType)
     }
