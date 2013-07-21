@@ -58,14 +58,15 @@
     <string name="drinks_price">Price (in cents)</string>
     <string name="add_drink">Add drink</string>
     <string name="delete_drink">Delete drink</string>
+    <string name="delete_drink_question">Do you really want to delete the drink \'%s\'?</string>
+    <string name="drink_usage">It is used %d times.</string>
     <string name="delete_bar">Delete bar</string>
-    <string name="delete_bar_question">Do you really want to delete the selected bar?</string>
+    <string name="delete_bar_question">Do you really want to delete the bar \'%s\'?</string>
     <string name="select_drink_type">Select drink type</string>
     <string-array name="drink_types">
         <item >Beer</item>
         <item >Shot</item>
         <item >Cocktail</item>
     </string-array>
-
 
 </resources>

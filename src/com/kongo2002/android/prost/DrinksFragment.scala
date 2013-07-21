@@ -95,14 +95,14 @@ class DrinksFragment extends TypedFragment
     item.getItemId match {
       case Options.DELETE_DRINK => {
         def getMessage(id: Long) = {
-          /* TODO: use resource strings */
           val usage = db.getDrinkTypeUsage(id)
-          val msg = "Do you really want to delete the selected drink type?"
+          val name = db.getDrinkTypeName(id)
+          val question = activity.getString(R.string.delete_drink_question).format(name.get)
           usage match {
             case Some(x) if x > 0 => {
-              msg + " The drink type is used " + x + " times."
+              question + " " + activity.getString(R.string.drink_usage).format(x)
             }
-            case _ => msg
+            case _ => question
           }
         }
 

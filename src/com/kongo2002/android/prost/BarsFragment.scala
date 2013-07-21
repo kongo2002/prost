@@ -64,15 +64,15 @@ class BarsFragment extends TypedFragment
   }
 
   override def onContextItemSelected(item: MenuItem) = {
-    val id = item.getItemId
-    logI("id: " + id)
-
-    id match {
+    item.getItemId match {
       case Options.DELETE_BAR => {
-        val title = activity.getString(R.string.delete_bar)
-        val msg = activity.getString(R.string.delete_bar_question)
+        val info = item.getMenuInfo.asInstanceOf[AdapterContextMenuInfo]
 
-        UI.confirm(activity, title, msg,
+        val title = activity.getString(R.string.delete_bar)
+        val name = db.getBarName(info.id)
+        val question = activity.getString(R.string.delete_bar_question).format(name.get)
+
+        UI.confirm(activity, title, question,
           (_, _) => {
             ()
           })

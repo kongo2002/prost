@@ -177,7 +177,15 @@ object DrinksDatabase {
      * @param id  ID of the 'DrinkType' to get the name for
      */
     def getDrinkTypeName(id: Long) = {
-      scalarString("SELECT name FROM drink_types WHERE _id=" + id + ";")
+      scalarString("SELECT name FROM drink_types WHERE _id=%d;".format(id))
+    }
+
+    /**
+     * Get the name of the specified bar.
+     * @param id  ID of the bar to get the name of
+     */
+    def getBarName(id: Long) = {
+      scalarString("SELECT name FROM bars WHERE _id=%d;".format(id))
     }
 
     /**
