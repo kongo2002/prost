@@ -16,6 +16,28 @@ work-in-progress. The app is written in [scala][scala] and targets the
 - have fun
 
 
+## Building
+
+*Prost* can be easily built with [maven][maven] using the [android maven
+plugin][plugin].
+
+
+### Requirements
+
+- JDK 1.6+
+- Android SDK(s)
+- Maven 3.0.3+
+
+### Building the android package
+
+	mvn install
+
+
+### Deploy and start on a running emulator
+
+	mvn android:deploy android:run
+
+
 ## Todo
 
 Some random things or features I plan to implement at some time:
@@ -55,5 +77,7 @@ form.  Feel free to join :-)
 [apache]: http://www.apache.org/licenses/LICENSE-2.0
 [mail]: mailto:kongo2002@gmail.com
 [gamification]: http://en.wikipedia.org/wiki/Gamification
+[maven]: http://maven.apache.org
+[plugin]: http://code.google.com/p/maven-android-plugin
 
 <!-- vim: set noet ts=4 sw=4 sts=4 tw=80: -->
