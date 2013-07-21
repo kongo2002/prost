@@ -17,8 +17,12 @@
 package com.kongo2002.android.prost
 
 import android.os.Bundle
+import android.support.v4.widget.SimpleCursorAdapter
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.AdapterContextMenuInfo
 
 import Implicits._
 import DrinksDatabase.BarsCursor
@@ -28,6 +32,11 @@ class BarsFragment extends TypedFragment
 
   val OPTION_DELETE_BAR = 1
 
+  lazy val db = new DrinksDatabase.DrinksDatabase(getActivity)
+  lazy val barsList = findView(TR.barsList)
+
+  var cursor : BarsCursor = null
+
   override def onCreateView(inf: LayoutInflater, vg: ViewGroup, b: Bundle) = {
     logI("onCreateView")
 
@@ -36,6 +45,39 @@ class BarsFragment extends TypedFragment
     setHasOptionsMenu(true)
 
     view
+  }
+
+  override def onViewCreated(view: View, bundle: Bundle) {
+    /* create adapter */
+    cursor = db.getAllBarsCursor
+    val selectedFields = Array(BarsCursor.KEY_NAME)
+    val bindResources = Array(R.id.bars_text)
+    val adapter = new SimpleCursorAdapter(activity, R.layout.bars_row, cursor, selectedFields, bindResources)
+
+    /* attach adapter */
+    barsList.setAdapter(adapter)
+
+    /* hook into list events */
+    registerForContextMenu(barsList)
+
+    barsList.setOnItemClickListener((p: AdapterView[_], v: View, pos: Int, id: Long) => {
+      /* TODO: edit bar */
+      logI("edit bar" + id)
+    })
+  }
+
+  override def onPause {
+    logI("onPause")
+    db.close
+
+    super.onPause
+  }
+
+  override def onDestroy {
+    logI("onDestroy")
+    db.close
+
+    super.onDestroy
   }
 }
 

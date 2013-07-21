@@ -228,8 +228,16 @@ object DrinksDatabase {
      * Get a cursor accessing all drink types stored in the database.
      */
     def getAllDrinkTypesCursor = {
-      val db = getReadableDatabase()
+      val db = getReadableDatabase
       db.rawQueryWithFactory(new DrinkTypesCursor.Factory(), DrinkTypesCursor.QUERY_ALL, null, null).asInstanceOf[DrinkTypesCursor]
+    }
+
+    /**
+     * Get a cursor accessing all bars stored in the database.
+     */
+    def getAllBarsCursor = {
+      val db = getReadableDatabase
+      db.rawQueryWithFactory(new BarsCursor.Factory(), BarsCursor.QUERY_ALL, null, null).asInstanceOf[BarsCursor]
     }
 
     /**

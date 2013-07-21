@@ -50,6 +50,9 @@ object TR {
   /* drinks fragment */
   val drinksList = TypedResource[ListView](R.id.drinksList)
 
+  /* bars fragment */
+  val barsList = TypedResource[ListView](R.id.barsList)
+
   /* edit drink activity */
   val editDrinkName = TypedResource[EditText](R.id.edit_drink_name)
   val editDrinkUnit = TypedResource[EditText](R.id.edit_drink_unit)
