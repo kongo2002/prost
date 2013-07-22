@@ -47,7 +47,10 @@
     <string name="bottom_tile">Bottom tile</string>
     <string name="bottom_right_tile">Bottom right tile</string>
     <string name="action_settings">Settings</string>
-    <string name="activity_title_settings">Settings</string><string name="activity_title_edit_drink">Edit drink</string><string name="fragment_title_statistics">Statistics</string>
+    <string name="activity_title_settings">Settings</string>
+    <string name="activity_title_edit_drink">Edit drink</string>
+    <string name="activity_title_edit_bar">Edit bar</string>
+    <string name="fragment_title_statistics">Statistics</string>
     <string name="fragment_title_bars">Bars</string>
     <string name="fragment_title_drinks">Drinks</string>
     <string name="no_drinks">no drinks configured yet</string>
@@ -63,6 +66,7 @@
     <string name="delete_bar">Delete bar</string>
     <string name="delete_bar_question">Do you really want to delete the bar \'%s\'?</string>
     <string name="select_drink_type">Select drink type</string>
+    <string name="bars_name">Name</string>
     <string-array name="drink_types">
         <item >Beer</item>
         <item >Shot</item>

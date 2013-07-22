@@ -60,6 +60,10 @@ object TR {
   val selectDrinkType = TypedResource[Spinner](R.id.select_drink_type)
   val submitDrinkType = TypedResource[Button](R.id.submit_drink_type)
 
+  /* edit bar activity */
+  val editBarName = TypedResource[EditText](R.id.edit_bar_name)
+  val submitBar = TypedResource[Button](R.id.submit_bar)
+
   def find[T](v: View, tr: TypedResource[T]) = v.findViewById(tr.id).asInstanceOf[T]
 }
 

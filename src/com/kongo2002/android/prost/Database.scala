@@ -531,6 +531,8 @@ object DrinksDatabase {
     def getBarName = getString(getColumnIndexOrThrow("name"))
     def getBarLongitude = getString(getColumnIndexOrThrow("long"))
     def getBarLatitude = getString(getColumnIndexOrThrow("lat"))
+
+    def get = Bar(getBarId, getBarName, getBarLongitude, getBarLatitude)
   }
 }
 

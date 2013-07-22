@@ -31,6 +31,11 @@ import android.widget.AdapterView.AdapterContextMenuInfo
 import Implicits._
 import DrinksDatabase.BarsCursor
 
+
+/**
+ * Fragment that displays a list of all available bars
+ * contained in the database.
+ */
 class BarsFragment extends TypedFragment
   with Loggable {
 
@@ -67,6 +72,7 @@ class BarsFragment extends TypedFragment
     item.getItemId match {
       case Options.DELETE_BAR => {
         val info = item.getMenuInfo.asInstanceOf[AdapterContextMenuInfo]
+        val id = info.id
 
         val title = activity.getString(R.string.delete_bar)
         val name = db.getBarName(info.id)
@@ -74,7 +80,8 @@ class BarsFragment extends TypedFragment
 
         UI.confirm(activity, title, question,
           (_, _) => {
-            ()
+            db.removeBar(id)
+            refreshView
           })
         true
       }

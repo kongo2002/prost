@@ -32,6 +32,10 @@
             android:name="EditDrinkActivity"
             android:label="@string/activity_title_edit_drink" >
         </activity>
+        <activity
+            android:name="EditBarActivity"
+            android:label="@string/activity_title_edit_bar" >
+        </activity>
     </application>
 
 </manifest>
