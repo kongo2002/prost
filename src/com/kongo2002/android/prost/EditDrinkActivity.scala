@@ -16,12 +16,12 @@
 
 package com.kongo2002.android.prost
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.view.View
-import android.content.Intent
-import android.app.Activity
 
 import DrinksDatabase.DrinkTypesCursor
 import Implicits._
@@ -67,7 +67,7 @@ class EditDrinkActivity extends TypedActivity
     editName.addTextChangedListener(new EditTextValidator(editName) {
       override def getError(view: TextView, value: String) = {
         if (StringUtils.isEmpty(value))
-          Some("invalid drink type name given")
+          Some("invalid drink name given")
         else
           None
       }

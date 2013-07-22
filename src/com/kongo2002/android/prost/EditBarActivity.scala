@@ -16,14 +16,14 @@
 
 package com.kongo2002.android.prost
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.view.View
-import android.content.Intent
-import android.app.Activity
 
-import DrinksDatabase.DrinkTypesCursor
+import DrinksDatabase.BarsCursor
 import Implicits._
 
 
@@ -40,13 +40,24 @@ class EditBarActivity extends TypedActivity
 
     setContentView(R.layout.edit_bar_activity)
 
-    /* TODO: load intent contents if specified */
+    /* load intent contents if specified */
+    val extras = getIntent.getExtras
+    if (extras != null) {
+      val bar = Bar.fromBundle(extras)
+
+      id = bar.id
+
+      if (bar.name != null)
+        editName.setText(bar.name)
+
+      /* TODO: longitude, latitude */
+    }
 
     /* add validation callbacks */
     editName.addTextChangedListener(new EditTextValidator(editName) {
       override def getError(view: TextView, value: String) = {
         if (StringUtils.isEmpty(value))
-          Some("invalid drink type name given")
+          Some("invalid bar name given")
         else
           None
       }
@@ -54,14 +65,26 @@ class EditBarActivity extends TypedActivity
 
     submit.setOnClickListener((v: View) => {
       val intent = new Intent()
-
-      /* TODO: build intent extras */
+      intent.putExtras(getResultBundle)
 
       setResult(Activity.RESULT_OK, intent)
       finish
     })
 
     logI("onCreate")
+  }
+
+  private def getResultBundle = {
+    val bundle = new Bundle()
+
+    if (id > 0)
+      bundle.putLong(DrinksDatabase.KEY_ID, id)
+
+    bundle.putString(BarsCursor.KEY_NAME, editName.getText.toString)
+
+    /* TODO: longitude, latitude */
+
+    bundle
   }
 }
 

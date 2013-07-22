@@ -16,13 +16,26 @@
 
 package com.kongo2002.android.prost
 
+
+/**
+ * Various constants to identify different
+ * activities.
+ */
 object Activities {
   val SETTINGS     = 11
   val EDIT_DRINK   = 12
   val CREATE_DRINK = 13
+  val EDIT_BAR     = 14
+  val CREATE_BAR   = 15
 }
 
+/**
+ * Various constants to identify different
+ * menu options.
+ */
 object Options {
   val DELETE_DRINK = 1
   val DELETE_BAR   = 2
 }
+
+/* vim: set et sw=2 sts=2: */

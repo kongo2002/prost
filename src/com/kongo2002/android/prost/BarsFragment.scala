@@ -16,6 +16,7 @@
 
 package com.kongo2002.android.prost
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.CursorAdapter
 import android.support.v4.widget.SimpleCursorAdapter
@@ -103,9 +104,25 @@ class BarsFragment extends TypedFragment
     registerForContextMenu(barsList)
 
     barsList.setOnItemClickListener((p: AdapterView[_], v: View, pos: Int, id: Long) => {
-      /* TODO: edit bar */
-      logI("edit bar" + id)
+      /* position cursor */
+      cursor.moveToPosition(pos)
+
+      /* build intent and start edit activity */
+      val intent = getIntent(id)
+
+      startActivityForResult(intent, Activities.EDIT_BAR)
     })
+  }
+
+  private def getIntent(id: Long) = {
+    val intent = new Intent(activity, classOf[EditBarActivity])
+
+    intent.putExtra(DrinksDatabase.KEY_ID, id)
+    intent.putExtra(BarsCursor.KEY_NAME, cursor.getBarName)
+    intent.putExtra(BarsCursor.KEY_LONGITUDE, cursor.getBarLongitude)
+    intent.putExtra(BarsCursor.KEY_LATITUDE, cursor.getBarLatitude)
+
+    intent
   }
 
   override def onPause {
