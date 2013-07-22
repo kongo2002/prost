@@ -148,7 +148,7 @@ class DrinksFragment extends TypedFragment
 
       request match {
         case Activities.CREATE_DRINK => db.addDrinkType(drinkType)
-        case Activities.EDIT_DRINK => db.updateDrinkType(drinkType)
+        case Activities.EDIT_DRINK   => db.updateDrinkType(drinkType)
       }
 
       refreshView

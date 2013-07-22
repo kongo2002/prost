@@ -289,7 +289,31 @@ object DrinksDatabase {
       val db = getWritableDatabase
 
       val remove = "DELETE FROM bars WHERE _id=%d;".format(id)
-      executeSql(db, remove)
+      db.execSQL(remove)
+    }
+
+    /**
+     * Add a new Bar instance into the database.
+     * @param bar  Bar instance to insert
+     */
+    def addBar(bar: Bar) {
+      val db = getWritableDatabase
+      val insert = BarsCursor.insertQuery(bar.name, bar.longitude, bar.latitude)
+
+      db.execSQL(insert)
+    }
+
+    /**
+     * Update the given Bar instance.
+     * @param bar  Bar instance to update
+     */
+    def updateBar(bar: Bar) {
+      if (bar.id > 0) {
+        val db = getWritableDatabase
+        val update = BarsCursor.updateQuery(bar.id, bar.name, bar.longitude, bar.latitude)
+
+        db.execSQL(update)
+      }
     }
 
     /**

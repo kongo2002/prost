@@ -16,6 +16,7 @@
 
 package com.kongo2002.android.prost
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.CursorAdapter
@@ -23,6 +24,8 @@ import android.support.v4.widget.SimpleCursorAdapter
 import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -112,6 +115,39 @@ class BarsFragment extends TypedFragment
 
       startActivityForResult(intent, Activities.EDIT_BAR)
     })
+  }
+
+  override def onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    inflater.inflate(R.menu.bar, menu)
+
+    super.onCreateOptionsMenu(menu, inflater)
+  }
+
+  override def onOptionsItemSelected(item: MenuItem) = {
+    item.getItemId match {
+      case R.id.menu_add_bar => {
+        val intent = new Intent(activity, classOf[EditBarActivity])
+        startActivityForResult(intent, Activities.CREATE_BAR)
+        true
+      }
+      case _ => super.onOptionsItemSelected(item)
+    }
+  }
+
+  override def onActivityResult(request: Int, result: Int, data: Intent) {
+    super.onActivityResult(request, result, data)
+
+    if (result == Activity.RESULT_OK) {
+      val extras = data.getExtras
+      val bar = Bar.fromBundle(extras)
+
+      request match {
+        case Activities.CREATE_BAR => db.addBar(bar)
+        case Activities.EDIT_BAR   => db.updateBar(bar)
+      }
+
+      refreshView
+    }
   }
 
   private def getIntent(id: Long) = {
