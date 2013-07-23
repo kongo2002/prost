@@ -57,6 +57,21 @@ object DrinksDatabase {
   private final def DEFAULT_KORN = DrinkTypesCursor.QUERY_INSERT.format("Korn", 200, 1, 150, 0)
 
   /**
+   * Iterate a given SQLite cursor using the specified function.
+   * @param cursor  Cursor to iterate over
+   * @param func    Function to use for each cursor row
+   */
+  def iter[T <: SQLiteCursor](cursor: T, func: T => Unit) {
+    try {
+      while (cursor.moveToNext) {
+        func(cursor)
+      }
+    } finally {
+      cursor.close
+    }
+  }
+
+  /**
    * Inner database class that wraps a sqlite connection helper.
    * @param context   Context the database operates on
    */
@@ -194,7 +209,7 @@ object DrinksDatabase {
      */
     def getDrinkType(id: Long) = {
       val query = DrinkTypesCursor.QUERY_ONE.format(id)
-      val db = getReadableDatabase()
+      val db = getReadableDatabase
       val cursor = db.rawQueryWithFactory(new DrinkTypesCursor.Factory(), query, null, null).asInstanceOf[DrinkTypesCursor]
 
       try {
@@ -205,6 +220,16 @@ object DrinksDatabase {
       } finally {
         cursor.close
       }
+    }
+
+    /**
+     * Get a DrinkTypesCursor for a specified bar.
+     * @param bar  Bar ID to get all drink types for
+     */
+    def getDrinkTypesForBar(bar: Long) = {
+      val query = DrinkTypesCursor.QUERY_FOR_BAR.format(bar)
+      val db = getReadableDatabase
+      db.rawQueryWithFactory(new DrinkTypesCursor.Factory(), query, null, null).asInstanceOf[DrinkTypesCursor]
     }
 
     /**
@@ -444,6 +469,7 @@ object DrinksDatabase {
     final val KEY_BAR = "bar"
 
     final val QUERY_ALL = "SELECT _id,name,unit,type,price,bar FROM drink_types ORDER BY name ASC;"
+    final val QUERY_FOR_BAR = "SELECT _id,name,unit,type,price,bar FROM drink_types WHERE bar=%d ORDER BY name ASC;"
     final val QUERY_ONE = "SELECT _id,name,unit,type,price,bar FROM drink_types WHERE _id=%d;"
     final val QUERY_UPDATE = "UPDATE drink_types SET name='%s',unit=%d,type=%d,price=%d,bar=%d WHERE _id=%d;"
     final val QUERY_INSERT = "INSERT INTO drink_types (name,unit,type,price,bar) VALUES('%s',%d,%d,%d,%d);"
@@ -551,7 +577,7 @@ object DrinksDatabase {
   class BarsCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
     extends SQLiteCursor(db, driver, table, query) {
 
-    def getBarId = getLong(getColumnIndexOrThrow("id"))
+    def getBarId = getLong(getColumnIndexOrThrow("_id"))
     def getBarName = getString(getColumnIndexOrThrow("name"))
     def getBarLongitude = getLong(getColumnIndexOrThrow("long"))
     def getBarLatitude = getLong(getColumnIndexOrThrow("lat"))
