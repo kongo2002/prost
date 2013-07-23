@@ -79,8 +79,8 @@ class DrinksFragment extends TypedFragment
     registerForContextMenu(drinksList)
 
     drinksList.setOnItemClickListener((p: AdapterView[_], v: View, pos: Int, id: Long) => {
-      /* position cursor */
-      cursor.moveToPosition(pos)
+      /* get cursor */
+      val cursor = groupAdapter.getItem(pos).asInstanceOf[DrinkTypesCursor]
 
       /* build intent with its extra contents */
       val intent = new Intent(activity, classOf[EditDrinkActivity])
