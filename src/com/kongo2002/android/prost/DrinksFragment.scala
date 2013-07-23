@@ -62,8 +62,6 @@ class DrinksFragment extends TypedFragment
     val selectedFields = Array(DrinkTypesCursor.KEY_NAME)
     val bindResources = Array(R.id.drink_text)
 
-    /* TODO: add implicit 'no bar' adapter */
-
     /* create adapter */
     val groupAdapter = new GroupedListAdapter(activity)
 
@@ -100,7 +98,7 @@ class DrinksFragment extends TypedFragment
 
   private def getAllBars = {
     val barsCursor = db.getAllBarsCursor
-    val bars = Map[Long, Bar]()
+    val bars = Map(0L -> new Bar(0L, "No bar", 0, 0))
 
     DrinksDatabase.iter(barsCursor, { (c: BarsCursor) =>
       val bar = c.get

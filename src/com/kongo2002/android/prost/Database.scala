@@ -51,8 +51,6 @@ object DrinksDatabase {
   private final def BARS_TABLE = "CREATE TABLE bars (" +
     "_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, long INTEGER, lat INTEGER);"
 
-  private final def NO_BAR = BarsCursor.QUERY_INSERT.format("No bar", 0, 0)
-
   private final def DEFAULT_PINT = DrinkTypesCursor.QUERY_INSERT.format("Pint", 500, 0, 350, 0)
   private final def DEFAULT_KORN = DrinkTypesCursor.QUERY_INSERT.format("Korn", 200, 1, 150, 0)
 
@@ -93,8 +91,7 @@ object DrinksDatabase {
           DRINK_TYPES_TABLE,
           BARS_TABLE,
           DEFAULT_PINT,
-          DEFAULT_KORN,
-          NO_BAR)
+          DEFAULT_KORN)
 
         db.setTransactionSuccessful()
       } catch {
@@ -126,8 +123,7 @@ object DrinksDatabase {
           DRINK_TYPES_TABLE,
           BARS_TABLE,
           DEFAULT_PINT,
-          DEFAULT_KORN,
-          NO_BAR)
+          DEFAULT_KORN)
 
         db.setTransactionSuccessful()
       } catch {
