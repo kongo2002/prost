@@ -78,7 +78,14 @@ class StatisticsFragment extends TypedFragment
       val drinkTypes = db.getAllDrinkTypesCursor
       val key = DrinksDatabase.DrinkTypesCursor.KEY_NAME
 
-      UI.listSelect(activity, R.string.select_drink_type, drinkTypes, key, -1, { (di: DialogInterface, i: Int) =>
+      /* determine cursor position of current drink type */
+      var pos = 0
+      drinkTypes.moveToFirst
+      while (drinkTypes.getTypeId != currentDrinkType && drinkTypes.moveToNext) {
+        pos += 1
+      }
+
+      UI.listSelect(activity, R.string.select_drink_type, drinkTypes, key, pos, { (di: DialogInterface, i: Int) =>
         logI("selected: " + i)
 
         drinkTypes.moveToPosition(i)
