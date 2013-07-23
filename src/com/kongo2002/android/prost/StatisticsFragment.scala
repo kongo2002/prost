@@ -31,6 +31,7 @@ import android.view.ViewGroup
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
 
+import DrinksDatabase.DrinkTypesCursor
 import Implicits._
 
 class StatisticsFragment extends TypedFragment
@@ -76,19 +77,14 @@ class StatisticsFragment extends TypedFragment
 
     button.setOnLongClickListener { v: View =>
       val drinkTypes = db.getAllDrinkTypesCursor
-      val key = DrinksDatabase.DrinkTypesCursor.KEY_NAME
+      val key = DrinkTypesCursor.KEY_NAME
 
       /* determine cursor position of current drink type */
-      var pos = 0
-      drinkTypes.moveToFirst
-      while (drinkTypes.getTypeId != currentDrinkType && drinkTypes.moveToNext) {
-        pos += 1
-      }
+      val pos = getDrinkTypeIndex(drinkTypes, currentDrinkType)
 
       UI.listSelect(activity, R.string.select_drink_type, drinkTypes, key, pos, { (di: DialogInterface, i: Int) =>
-        logI("selected: " + i)
-
         drinkTypes.moveToPosition(i)
+
         val id = drinkTypes.getTypeId
         val name = drinkTypes.getTypeName
 
@@ -97,6 +93,7 @@ class StatisticsFragment extends TypedFragment
 
         di.dismiss
       })
+
       true
     }
 
@@ -111,6 +108,17 @@ class StatisticsFragment extends TypedFragment
     addHandlers
 
     super.onViewCreated(v, b)
+  }
+
+  private def getDrinkTypeIndex(cursor: DrinkTypesCursor, id: Long) = {
+    var pos = 0
+    cursor.moveToFirst
+
+    while (cursor.getTypeId != id && cursor.moveToNext) {
+      pos += 1
+    }
+
+    pos
   }
 
   private def getCommandIndex(cmds: Array[String], pos: Tiles.Tiles) = {
