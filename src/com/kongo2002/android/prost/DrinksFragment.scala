@@ -105,7 +105,8 @@ class DrinksFragment extends TypedFragment
 
   private def getAllBars = {
     val barsCursor = db.getAllBarsCursor
-    val bars = Map(0L -> new Bar(0L, "No bar", 0, 0))
+    val noBar = activity.getString(R.string.no_bar)
+    val bars = Map(0L -> new Bar(0L, noBar, 0, 0))
 
     DrinksDatabase.iter(barsCursor, { (c: BarsCursor) =>
       val bar = c.get

@@ -68,6 +68,7 @@
     <string name="select_drink_type">Select drink type</string>
     <string name="bars_name">Name</string>
     <string name="add_bar">Add bar</string>
+    <string name="no_bar">No bar</string>
     <string-array name="drink_types">
         <item >Beer</item>
         <item >Shot</item>
