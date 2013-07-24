@@ -29,6 +29,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
 import android.widget.AdapterView
 import android.widget.AdapterView.AdapterContextMenuInfo
 
@@ -58,6 +59,32 @@ class DrinksFragment extends TypedFragment
   }
 
   override def onViewCreated(view: View, bundle: Bundle) {
+    /* create and apply adapter */
+    applyAdapter
+
+    /* hook into list events */
+    registerForContextMenu(drinksList)
+
+    drinksList.setOnItemClickListener((p: AdapterView[_], v: View, pos: Int, id: Long) => {
+      /* get cursor */
+      val adapter = drinksList.getAdapter
+      val cursor = adapter.getItem(pos).asInstanceOf[DrinkTypesCursor]
+
+      /* build intent with its extra contents */
+      val intent = new Intent(activity, classOf[EditDrinkActivity])
+      intent.putExtra(DrinksDatabase.KEY_ID, id)
+      intent.putExtra(DrinkTypesCursor.KEY_NAME, cursor.getTypeName)
+      intent.putExtra(DrinkTypesCursor.KEY_TYPE, cursor.getType.id)
+      intent.putExtra(DrinkTypesCursor.KEY_UNIT, cursor.getTypeUnit)
+      intent.putExtra(DrinkTypesCursor.KEY_PRICE, cursor.getPrice)
+      intent.putExtra(DrinkTypesCursor.KEY_BAR, cursor.getDrinkTypeBar)
+
+      /* start edit activity */
+      startActivityForResult(intent, Activities.EDIT_DRINK)
+    })
+  }
+
+  private def applyAdapter {
     val bars = getAllBars
     val selectedFields = Array(DrinkTypesCursor.KEY_NAME)
     val bindResources = Array(R.id.drink_text)
@@ -74,26 +101,6 @@ class DrinksFragment extends TypedFragment
 
     /* attach list adapter */
     drinksList.setAdapter(groupAdapter)
-
-    /* hook into list events */
-    registerForContextMenu(drinksList)
-
-    drinksList.setOnItemClickListener((p: AdapterView[_], v: View, pos: Int, id: Long) => {
-      /* get cursor */
-      val cursor = groupAdapter.getItem(pos).asInstanceOf[DrinkTypesCursor]
-
-      /* build intent with its extra contents */
-      val intent = new Intent(activity, classOf[EditDrinkActivity])
-      intent.putExtra(DrinksDatabase.KEY_ID, id)
-      intent.putExtra(DrinkTypesCursor.KEY_NAME, cursor.getTypeName)
-      intent.putExtra(DrinkTypesCursor.KEY_TYPE, cursor.getType.id)
-      intent.putExtra(DrinkTypesCursor.KEY_UNIT, cursor.getTypeUnit)
-      intent.putExtra(DrinkTypesCursor.KEY_PRICE, cursor.getPrice)
-      intent.putExtra(DrinkTypesCursor.KEY_BAR, cursor.getDrinkTypeBar)
-
-      /* start edit activity */
-      startActivityForResult(intent, Activities.EDIT_DRINK)
-    })
   }
 
   private def getAllBars = {
@@ -136,7 +143,7 @@ class DrinksFragment extends TypedFragment
         UI.confirm(activity, title, getMessage(id),
             (_, _) => {
               db.removeDrinkType(id)
-              refreshView
+              applyAdapter
             })
 
         true
@@ -174,16 +181,8 @@ class DrinksFragment extends TypedFragment
         case Activities.EDIT_DRINK   => db.updateDrinkType(drinkType)
       }
 
-      refreshView
+      applyAdapter
     }
-  }
-
-  private def refreshView {
-    val adapter = drinksList.getAdapter.asInstanceOf[CursorAdapter]
-    cursor = db.getAllDrinkTypesCursor
-
-    adapter.changeCursor(cursor)
-    adapter.notifyDataSetChanged
   }
 
   override def onPause {
