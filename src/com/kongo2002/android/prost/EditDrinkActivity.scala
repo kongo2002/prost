@@ -30,10 +30,13 @@ import Implicits._
 class EditDrinkActivity extends TypedActivity
   with Loggable {
 
+  lazy val db = new DrinksDatabase.DrinksDatabase(this)
+
   lazy val editName = findView(TR.editDrinkName)
   lazy val editUnit = findView(TR.editDrinkUnit)
   lazy val editPrice = findView(TR.editDrinkPrice)
   lazy val selectType = findView(TR.selectDrinkType)
+  lazy val selectBar = findView(TR.selectDrinkBar)
   lazy val submit = findView(TR.submitDrinkType)
 
   var id = 0L
@@ -43,10 +46,19 @@ class EditDrinkActivity extends TypedActivity
 
     setContentView(R.layout.edit_drink_activity)
 
-    val adapter = ArrayAdapter.createFromResource(this, R.array.drink_types, android.R.layout.simple_spinner_item)
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+    /* drink types adapter */
+    val dtAdapter = ArrayAdapter.createFromResource(this, R.array.drink_types, android.R.layout.simple_spinner_item)
+    dtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-    selectType.setAdapter(adapter)
+    selectType.setAdapter(dtAdapter)
+
+    /* bars adapter */
+    val allBars = db.getAllBarMap(getString(R.string.no_bar))
+    val barNames = Array(allBars.values.map { b => b.name })
+    val barAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, barNames)
+    barAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+    selectBar.setAdapter(barAdapter)
 
     /* load intent contents if specified */
     val extras = getIntent.getExtras

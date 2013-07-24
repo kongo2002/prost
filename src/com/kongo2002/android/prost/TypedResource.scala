@@ -58,6 +58,7 @@ object TR {
   val editDrinkUnit = TypedResource[EditText](R.id.edit_drink_unit)
   val editDrinkPrice = TypedResource[EditText](R.id.edit_drink_price)
   val selectDrinkType = TypedResource[Spinner](R.id.select_drink_type)
+  val selectDrinkBar = TypedResource[Spinner](R.id.select_drink_bar)
   val submitDrinkType = TypedResource[Button](R.id.submit_drink_type)
 
   /* edit bar activity */

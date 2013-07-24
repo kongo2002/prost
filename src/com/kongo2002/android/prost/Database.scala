@@ -28,6 +28,7 @@ import android.database.SQLException
 import android.util.Log
 
 import java.util.Date
+import scala.collection.mutable.Map
 
 
 /**
@@ -267,6 +268,21 @@ object DrinksDatabase {
     def getAllBarsCursor = {
       val db = getReadableDatabase
       db.rawQueryWithFactory(new BarsCursor.Factory(), BarsCursor.QUERY_ALL, null, null).asInstanceOf[BarsCursor]
+    }
+
+    /**
+     * Get a map of all bars available.
+     * @param noBar  Name of the 'no bar'
+     */
+    def getAllBarMap(noBar: String) = {
+      val bars = Map(0L -> new Bar(0L, noBar, 0, 0))
+
+      DrinksDatabase.iter(getAllBarsCursor, { (c: BarsCursor) =>
+        val bar = c.get
+        bars(bar.id) = bar
+      })
+
+      bars
     }
 
     /**

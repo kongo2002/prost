@@ -82,6 +82,23 @@
 
     <TableRow
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_yellow"
+            android:text="@string/drinks_bar" />
+
+        <Spinner
+            android:id="@+id/select_drink_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:weightSum="2" >
 

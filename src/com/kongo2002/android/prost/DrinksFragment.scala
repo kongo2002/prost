@@ -33,8 +33,6 @@ import android.widget.BaseAdapter
 import android.widget.AdapterView
 import android.widget.AdapterView.AdapterContextMenuInfo
 
-import scala.collection.mutable.Map
-
 import DrinksDatabase.BarsCursor
 import DrinksDatabase.DrinkTypesCursor
 import Implicits._
@@ -85,7 +83,8 @@ class DrinksFragment extends TypedFragment
   }
 
   private def applyAdapter {
-    val bars = getAllBars
+    val noBar = activity.getString(R.string.no_bar)
+    val bars = db.getAllBarMap(noBar)
     val selectedFields = Array(DrinkTypesCursor.KEY_NAME)
     val bindResources = Array(R.id.drink_text)
 
@@ -101,19 +100,6 @@ class DrinksFragment extends TypedFragment
 
     /* attach list adapter */
     drinksList.setAdapter(groupAdapter)
-  }
-
-  private def getAllBars = {
-    val barsCursor = db.getAllBarsCursor
-    val noBar = activity.getString(R.string.no_bar)
-    val bars = Map(0L -> new Bar(0L, noBar, 0, 0))
-
-    DrinksDatabase.iter(barsCursor, { (c: BarsCursor) =>
-      val bar = c.get
-      bars(bar.id) = bar
-    })
-
-    bars
   }
 
   override def onCreateContextMenu(menu: ContextMenu, view: View, info: ContextMenuInfo) {
