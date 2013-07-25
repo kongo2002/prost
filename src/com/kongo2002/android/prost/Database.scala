@@ -61,6 +61,7 @@ object DrinksDatabase {
    * @param func    Function to use for each cursor row
    */
   def iter[T <: SQLiteCursor](cursor: T, func: T => Unit) {
+    cursor.moveToPosition(-1)
     try {
       while (cursor.moveToNext) {
         func(cursor)
@@ -453,6 +454,10 @@ object DrinksDatabase {
   /**
    * Convenience cursor wrapper class to centralize all access to
    * the 'drinks' table.
+   * @param db      SQLite database to operate on
+   * @param driver  SQLite driver
+   * @param table   Table name
+   * @param query   SQL query to associate the cursor with
    */
   class DrinksCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
     extends SQLiteCursor(db, driver, table, query) {
@@ -524,9 +529,13 @@ object DrinksDatabase {
   /**
    * Convenience cursor wrapper class to centralize all access to the
    * 'drink_types' table.
+   * @param db      SQLite database to operate on
+   * @param driver  SQLite driver
+   * @param table   Table name
+   * @param query   SQL query to associate the cursor with
    */
   class DrinkTypesCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
-    extends SQLiteCursor(db, driver, table, query) {
+    extends ProstCursor[DrinkType](db, driver, table, query) {
 
     def getTypeId = getLong(getColumnIndexOrThrow("_id"))
     def getTypeName = getString(getColumnIndexOrThrow("name"))
@@ -535,7 +544,7 @@ object DrinksDatabase {
     def getPrice = getInt(getColumnIndexOrThrow("price"))
     def getDrinkTypeBar = getLong(getColumnIndexOrThrow("bar"))
 
-    def get = DrinkType(getTypeId, getTypeName, getTypeUnit, getType, getPrice, getDrinkTypeBar)
+    override def get = DrinkType(getTypeId, getTypeName, getTypeUnit, getType, getPrice, getDrinkTypeBar)
   }
 
   /**
@@ -585,16 +594,43 @@ object DrinksDatabase {
   /**
    * Convenience cursor wrapper class to centralize all access to
    * the 'drinks' table.
+   * @param db      SQLite database to operate on
+   * @param driver  SQLite driver
+   * @param table   Table name
+   * @param query   SQL query to associate the cursor with
    */
   class BarsCursor(db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
-    extends SQLiteCursor(db, driver, table, query) {
+    extends ProstCursor[Bar](db, driver, table, query) {
 
     def getBarId = getLong(getColumnIndexOrThrow("_id"))
     def getBarName = getString(getColumnIndexOrThrow("name"))
     def getBarLongitude = getLong(getColumnIndexOrThrow("long"))
     def getBarLatitude = getLong(getColumnIndexOrThrow("lat"))
 
-    def get = Bar(getBarId, getBarName, getBarLongitude, getBarLatitude)
+    override def get = Bar(getBarId, getBarName, getBarLongitude, getBarLatitude)
+  }
+
+  /**
+   * Abstract SQLite cursor class to encapsulate some functionality
+   * regarding classes implementing the 'Id' trait.
+   * @param db      SQLite database to operate on
+   * @param driver  SQLite driver
+   * @param table   Table name
+   * @param query   SQL query to associate the cursor with
+   */
+  abstract class ProstCursor[T <: Id](db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
+    extends SQLiteCursor(db, driver, table, query) {
+
+    def get : T
+
+    def toMap = {
+      val map = Map[Long, T]()
+      DrinksDatabase.iter(this, { x: ProstCursor[T] =>
+        val elem = get
+        map(elem.id) = elem
+      })
+      map
+    }
   }
 }
 
