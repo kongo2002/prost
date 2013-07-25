@@ -28,6 +28,7 @@ import android.database.SQLException
 import android.util.Log
 
 import java.util.Date
+import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Map
 
 
@@ -618,7 +619,7 @@ object DrinksDatabase {
    * @param table   Table name
    * @param query   SQL query to associate the cursor with
    */
-  abstract class ProstCursor[T <: Id](db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
+  abstract class ProstCursor[T <: Id : ClassManifest](db: SQLiteDatabase, driver: SQLiteCursorDriver, table: String, query: SQLiteQuery)
     extends SQLiteCursor(db, driver, table, query) {
 
     def get : T
@@ -630,6 +631,12 @@ object DrinksDatabase {
         map(elem.id) = elem
       })
       map
+    }
+
+    def toArray = {
+      val buffer = ListBuffer[T]()
+      DrinksDatabase.iter(this, { x: ProstCursor[T] => buffer.append(get) })
+      buffer.toArray
     }
   }
 }

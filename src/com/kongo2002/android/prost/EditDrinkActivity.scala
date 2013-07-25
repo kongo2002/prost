@@ -54,8 +54,7 @@ class EditDrinkActivity extends TypedActivity
 
     /* bars adapter */
     val allBars = db.getAllBarMap(getString(R.string.no_bar))
-    val barNames = allBars.values.map { b => b.name }
-    val barAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, barNames.toArray)
+    val barAdapter = new IdArrayAdapter(this, android.R.layout.simple_spinner_item, allBars.values.toArray, { b: Bar => b.name })
     barAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
     selectBar.setAdapter(barAdapter)
@@ -73,7 +72,7 @@ class EditDrinkActivity extends TypedActivity
       editUnit.setText(dt.unit.toString)
       editPrice.setText(dt.price.toString)
       selectType.setSelection(dt.baseType.id)
-      selectBar.setSelection(dt.bar.toInt)
+      selectBar.setSelection(barAdapter.getPosition(dt.bar))
     }
 
     /* add validation callbacks */
@@ -116,10 +115,11 @@ class EditDrinkActivity extends TypedActivity
     bundle.putInt(DrinkTypesCursor.KEY_UNIT, editUnit.getText.toString.toInt)
     bundle.putInt(DrinkTypesCursor.KEY_TYPE, selectType.getSelectedItemPosition)
     bundle.putInt(DrinkTypesCursor.KEY_PRICE, editPrice.getText.toString.toInt)
-    bundle.putLong(DrinkTypesCursor.KEY_BAR, selectBar.getSelectedItemPosition)
+    bundle.putLong(DrinkTypesCursor.KEY_BAR, selectBar.getSelectedItemId)
 
-    /* TODO: add bar */
-    bundle.putLong(DrinkTypesCursor.KEY_BAR, 0)
+    logI("pos: " + selectBar.getSelectedItemPosition)
+    logI("id: " + selectBar.getSelectedItemId)
+    logI("obj: " + selectBar.getSelectedItem)
 
     bundle
   }

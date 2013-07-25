@@ -92,8 +92,9 @@ class DrinksFragment extends TypedFragment
     val groupAdapter = new GroupedListAdapter(activity)
 
     for (bar <- bars.values) {
-      val drinks = db.getDrinkTypesForBar(bar.id)
-      val adapter = new SimpleCursorAdapter(activity, R.layout.drinks_row, drinks, selectedFields, bindResources)
+      val cursor = db.getDrinkTypesForBar(bar.id)
+      val drinks = cursor.toArray
+      val adapter = new IdArrayAdapter(activity, android.R.layout.simple_list_item_1, drinks, { d: DrinkType => d.name })
 
       groupAdapter.addSection(bar.name, adapter)
     }
