@@ -73,6 +73,7 @@ class EditDrinkActivity extends TypedActivity
       editUnit.setText(dt.unit.toString)
       editPrice.setText(dt.price.toString)
       selectType.setSelection(dt.baseType.id)
+      selectBar.setSelection(dt.bar.toInt)
     }
 
     /* add validation callbacks */
@@ -115,6 +116,7 @@ class EditDrinkActivity extends TypedActivity
     bundle.putInt(DrinkTypesCursor.KEY_UNIT, editUnit.getText.toString.toInt)
     bundle.putInt(DrinkTypesCursor.KEY_TYPE, selectType.getSelectedItemPosition)
     bundle.putInt(DrinkTypesCursor.KEY_PRICE, editPrice.getText.toString.toInt)
+    bundle.putLong(DrinkTypesCursor.KEY_BAR, selectBar.getSelectedItemPosition)
 
     /* TODO: add bar */
     bundle.putLong(DrinkTypesCursor.KEY_BAR, 0)
