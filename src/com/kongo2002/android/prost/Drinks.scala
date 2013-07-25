@@ -20,6 +20,7 @@ import android.os.Bundle
 
 import java.util.Date
 
+import DrinksDatabase.BarsCursor
 import DrinksDatabase.DrinkTypesCursor
 
 
@@ -60,6 +61,15 @@ case class Shot(t: DrinkType, date: Date) extends Drink(Drinks.Shot, t, date)
 case class Cocktail(t: DrinkType, date: Date) extends Drink(Drinks.Cocktail, t, date)
 
 /**
+ * Base trait that describes a database related entity with
+ * a unique ID.
+ * @param id  ID of the item
+ */
+trait Id {
+  def id: Long
+}
+
+/**
  * Case class to represent a specific drink type
  * @param id        ID of the drink type
  * @param name      Name of the drink type
@@ -68,7 +78,8 @@ case class Cocktail(t: DrinkType, date: Date) extends Drink(Drinks.Cocktail, t, 
  * @param price     Price of the drink type (in cents)
  * @param bar       ID of the bar the drink type belongs to
  */
-case class DrinkType(id: Long, name: String, unit: Int, baseType: Drinks, price: Int, bar: Long) {
+case class DrinkType(override val id: Long, name: String, unit: Int, baseType: Drinks, price: Int, bar: Long)
+  extends Id {
   def newDrink(date: Date) : Drink = {
     baseType match {
       case Drinks.Beer => Beer(this, date)
@@ -97,6 +108,35 @@ object DrinkType {
     val bar = extras.getLong(DrinkTypesCursor.KEY_BAR)
 
     DrinkType(id, name, unit, Drinks(drink), price, bar)
+  }
+}
+
+/**
+ * Case class representing a bar.
+ * @param id         ID of the bar
+ * @param name       Name of the bar
+ * @param longitude  Longitude position of the bar
+ * @param latitude   Latitude position of the bar
+ */
+case class Bar(override val id: Long, name: String, longitude: Long, latitude: Long)
+  extends Id
+
+/**
+ * Some basic convenience functions regarding
+ * the Bar case class.
+ */
+object Bar {
+  /**
+   * Initialize a Bar instance from a specifed Bundle.
+   * @param extras  Bundle to extract the data from
+   */
+  def fromBundle(extras: Bundle) = {
+    val id = extras.getLong(DrinksDatabase.KEY_ID)
+    val name = extras.getString(BarsCursor.KEY_NAME)
+    val long = extras.getLong(BarsCursor.KEY_LONGITUDE)
+    val lat = extras.getLong(BarsCursor.KEY_LATITUDE)
+
+    Bar(id, name, long, lat)
   }
 }
 
