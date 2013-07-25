@@ -23,7 +23,7 @@ import android.widget.Adapter
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 
-import scala.collection.mutable.Map
+import scala.collection.mutable.LinkedHashMap
 
 
 class GroupedListAdapter(ctx: Context) extends BaseAdapter {
@@ -32,7 +32,7 @@ class GroupedListAdapter(ctx: Context) extends BaseAdapter {
   final val TYPE_CONTENT = 1
 
   private val headers = new ArrayAdapter[String](ctx, R.layout.list_header)
-  private val sections = Map[String, Adapter]()
+  private val sections = LinkedHashMap[String, Adapter]()
 
   def addSection(section: String, adapter: Adapter) {
     headers.add(section)
