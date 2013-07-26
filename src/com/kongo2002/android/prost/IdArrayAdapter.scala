@@ -22,24 +22,42 @@ import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
+import android.widget.TextView
 
 import scala.collection.mutable.Map
 
 
 class IdArrayAdapter[T <: Id](ctx: Context, res: Int, items: Array[T], func: T => String)
-  extends ArrayAdapter[String](ctx, res, items.map(func)) {
+  extends ArrayAdapter[T](ctx, res, items) {
 
+  val texts = items.map(func)
   val (map, revMap) = getMaps(items)
 
-  def getItemObject(id: Long) = map(id)
-
-  def getItemObject(pos: Int) = items(pos)
-
-  def getPosition(item: T) = revMap(item.id)
   def getPosition(id: Long) = revMap(id)
 
   override def getItemId(pos: Int) = {
     items(pos).id
+  }
+
+  override def getView(position: Int, convertView: View, parent: ViewGroup) = {
+    val text = texts(position)
+    val (view, holder) = getHolder(convertView)
+
+    holder.text.setText(text)
+    view
+  }
+
+  private def getHolder(view: View) = {
+    if (view == null) {
+      val newView = View.inflate(ctx, R.layout.list_row, null)
+
+      val holder = ViewHolder(TR.find(newView, TR.rowText))
+      newView.setTag(holder)
+
+      (newView, holder)
+    } else {
+      (view, view.getTag.asInstanceOf[ViewHolder])
+    }
   }
 
   private def getMaps(items: Traversable[T]) = {
@@ -59,5 +77,7 @@ class IdArrayAdapter[T <: Id](ctx: Context, res: Int, items: Array[T], func: T =
     (map, reverseMap)
   }
 }
+
+case class ViewHolder(text: TextView)
 
 /* vim: set et sw=2 sts=2: */

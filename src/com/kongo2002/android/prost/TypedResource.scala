@@ -65,6 +65,9 @@ object TR {
   val editBarName = TypedResource[EditText](R.id.edit_bar_name)
   val submitBar = TypedResource[Button](R.id.submit_bar)
 
+  /* list row */
+  val rowText = TypedResource[TextView](R.id.row_text)
+
   def find[T](v: View, tr: TypedResource[T]) = v.findViewById(tr.id).asInstanceOf[T]
 }
 

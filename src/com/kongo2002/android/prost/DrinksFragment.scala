@@ -66,16 +66,16 @@ class DrinksFragment extends TypedFragment
     drinksList.setOnItemClickListener((p: AdapterView[_], v: View, pos: Int, id: Long) => {
       /* get cursor */
       val adapter = drinksList.getAdapter
-      val cursor = adapter.getItem(pos).asInstanceOf[DrinkTypesCursor]
+      val drink = adapter.getItem(pos).asInstanceOf[DrinkType]
 
       /* build intent with its extra contents */
       val intent = new Intent(activity, classOf[EditDrinkActivity])
       intent.putExtra(DrinksDatabase.KEY_ID, id)
-      intent.putExtra(DrinkTypesCursor.KEY_NAME, cursor.getTypeName)
-      intent.putExtra(DrinkTypesCursor.KEY_TYPE, cursor.getType.id)
-      intent.putExtra(DrinkTypesCursor.KEY_UNIT, cursor.getTypeUnit)
-      intent.putExtra(DrinkTypesCursor.KEY_PRICE, cursor.getPrice)
-      intent.putExtra(DrinkTypesCursor.KEY_BAR, cursor.getDrinkTypeBar)
+      intent.putExtra(DrinkTypesCursor.KEY_NAME, drink.name)
+      intent.putExtra(DrinkTypesCursor.KEY_TYPE, drink.baseType.id)
+      intent.putExtra(DrinkTypesCursor.KEY_UNIT, drink.unit)
+      intent.putExtra(DrinkTypesCursor.KEY_PRICE, drink.price)
+      intent.putExtra(DrinkTypesCursor.KEY_BAR, drink.bar)
 
       /* start edit activity */
       startActivityForResult(intent, Activities.EDIT_DRINK)
