@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
+import android.widget.CheckedTextView
 import android.widget.TextView
 
 import scala.collection.mutable.Map
@@ -41,19 +42,26 @@ class IdArrayAdapter[T <: Id](ctx: Context, res: Int, items: Array[T], func: T =
 
   override def getView(position: Int, convertView: View, parent: ViewGroup) = {
     val text = texts(position)
-    val (view, holder) = getHolder(convertView)
+    val (view, holder) = getHolder[TextView](convertView, android.R.layout.simple_list_item_1)
 
     holder.text.setText(text)
     view
   }
 
-  private def getHolder(view: View) = {
+  override def getDropDownView(position: Int, convertView: View, parent: ViewGroup) = {
+    val text = texts(position)
+    val (view, holder) = getHolder[CheckedTextView](convertView, android.R.layout.simple_spinner_dropdown_item)
+
+    holder.text.setText(text)
+    view
+  }
+
+  private def getHolder[T <: TextView](view: View, res: Int) = {
     if (view == null) {
-      val newView = View.inflate(ctx, R.layout.list_row, null)
+      val newView = View.inflate(ctx, res, null).asInstanceOf[T]
+      val holder = ViewHolder(newView)
 
-      val holder = ViewHolder(TR.find(newView, TR.rowText))
       newView.setTag(holder)
-
       (newView, holder)
     } else {
       (view, view.getTag.asInstanceOf[ViewHolder])
