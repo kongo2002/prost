@@ -55,7 +55,6 @@ class EditDrinkActivity extends TypedActivity
     /* bars adapter */
     val allBars = db.getAllBarMap(getString(R.string.no_bar))
     val barAdapter = new IdArrayAdapter(this, android.R.layout.simple_spinner_item, allBars.values.toArray, { b: Bar => b.name })
-    barAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
     selectBar.setAdapter(barAdapter)
 

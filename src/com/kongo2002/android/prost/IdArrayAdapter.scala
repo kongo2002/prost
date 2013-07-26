@@ -42,7 +42,7 @@ class IdArrayAdapter[T <: Id](ctx: Context, res: Int, items: Array[T], func: T =
 
   override def getView(position: Int, convertView: View, parent: ViewGroup) = {
     val text = texts(position)
-    val (view, holder) = getHolder[TextView](convertView, android.R.layout.simple_list_item_1)
+    val (view, holder) = getHolder[TextView](convertView, res)
 
     holder.text.setText(text)
     view
