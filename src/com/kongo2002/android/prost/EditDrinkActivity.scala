@@ -131,10 +131,6 @@ class EditDrinkActivity extends TypedActivity
     bundle.putInt(DrinkTypesCursor.KEY_PRICE, editPrice.getText.toString.toInt)
     bundle.putLong(DrinkTypesCursor.KEY_BAR, selectBar.getSelectedItemId)
 
-    logI("pos: " + selectBar.getSelectedItemPosition)
-    logI("id: " + selectBar.getSelectedItemId)
-    logI("obj: " + selectBar.getSelectedItem)
-
     bundle
   }
 }
