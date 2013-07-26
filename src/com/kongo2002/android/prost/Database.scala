@@ -57,22 +57,6 @@ object DrinksDatabase {
   private final def DEFAULT_KORN = DrinkTypesCursor.QUERY_INSERT.format("Korn", 200, 1, 150, 0)
 
   /**
-   * Iterate a given SQLite cursor using the specified function.
-   * @param cursor  Cursor to iterate over
-   * @param func    Function to use for each cursor row
-   */
-  def iter[T <: SQLiteCursor](cursor: T, func: T => Unit) {
-    cursor.moveToPosition(-1)
-    try {
-      while (cursor.moveToNext) {
-        func(cursor)
-      }
-    } finally {
-      cursor.close
-    }
-  }
-
-  /**
    * Inner database class that wraps a sqlite connection helper.
    * @param context   Context the database operates on
    */
@@ -277,12 +261,8 @@ object DrinksDatabase {
      * @param noBar  Name of the 'no bar'
      */
     def getAllBarMap(noBar: String) = {
-      val bars = Map(0L -> new Bar(0L, noBar, 0, 0))
-
-      DrinksDatabase.iter(getAllBarsCursor, { (c: BarsCursor) =>
-        val bar = c.get
-        bars(bar.id) = bar
-      })
+      val bars = getAllBarsCursor.toMap
+      bars(0L) = Bar(0L, noBar, 0, 0)
 
       bars
     }
@@ -624,19 +604,40 @@ object DrinksDatabase {
 
     def get : T
 
+    /**
+     * Convert the cursor items into a map with the key
+     * being the ID value.
+     */
     def toMap = {
       val map = Map[Long, T]()
-      DrinksDatabase.iter(this, { x: ProstCursor[T] =>
-        val elem = get
-        map(elem.id) = elem
-      })
+      iter { x: T =>
+        map(x.id) = x
+      }
       map
     }
 
+    /**
+     * Convert the cursor items into an array.
+     */
     def toArray = {
       val buffer = ListBuffer[T]()
-      DrinksDatabase.iter(this, { x: ProstCursor[T] => buffer.append(get) })
+      iter { x: T => buffer.append(x) }
       buffer.toArray
+    }
+
+    /**
+     * Iterate a given SQLite cursor using the specified function.
+     * @param func    Function to use for each cursor item
+     */
+    def iter(func: T => Unit) {
+      moveToPosition(-1)
+      try {
+        while (moveToNext) {
+          func(get)
+        }
+      } finally {
+        close
+      }
     }
   }
 }
