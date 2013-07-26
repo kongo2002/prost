@@ -105,6 +105,20 @@ class EditDrinkActivity extends TypedActivity
     logI("onCreate")
   }
 
+  override def onDestroy {
+    logI("onDestroy")
+    db.close
+
+    super.onDestroy
+  }
+
+  override def onPause {
+    logI("onPause")
+    db.close
+
+    super.onPause
+  }
+
   private def getResultBundle = {
     val bundle = new Bundle()
 
