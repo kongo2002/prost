@@ -41,6 +41,7 @@ class GroupedListAdapter(ctx: Context) extends BaseAdapter {
 
   def getItem(position: Int) : Object = {
     var pos = position
+
     for (sec <- sections.keySet) {
       if (pos == 0) return sec
 
@@ -52,6 +53,7 @@ class GroupedListAdapter(ctx: Context) extends BaseAdapter {
 
       pos -= size
     }
+
     return null
   }
 
@@ -112,7 +114,23 @@ class GroupedListAdapter(ctx: Context) extends BaseAdapter {
     return null
   }
 
-  override def getItemId(position: Int) = position
+  override def getItemId(position: Int) : Long = {
+    var pos = position
+
+    for (sec <- sections.keySet) {
+      if (pos == 0) return 0
+
+      val adapter = sections(sec)
+      val size = adapter.getCount + 1
+
+      if (pos < size)
+        return adapter.getItemId(pos - 1)
+
+      pos -= size
+    }
+
+    return 0
+  }
 }
 
 /* vim: set et sw=2 sts=2: */
