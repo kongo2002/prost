@@ -306,9 +306,9 @@ object DrinksDatabase {
      */
     def removeBar(id: Long) {
       val db = getWritableDatabase
-
       val remove = "DELETE FROM bars WHERE _id=%d;".format(id)
-      db.execSQL(remove)
+
+      executeSql(db, remove)
     }
 
     /**
@@ -319,7 +319,7 @@ object DrinksDatabase {
       val db = getWritableDatabase
       val insert = BarsCursor.insertQuery(bar.name, bar.longitude, bar.latitude)
 
-      db.execSQL(insert)
+      executeSql(db, insert)
     }
 
     /**
@@ -331,7 +331,7 @@ object DrinksDatabase {
         val db = getWritableDatabase
         val update = BarsCursor.updateQuery(bar.id, bar.name, bar.longitude, bar.latitude)
 
-        db.execSQL(update)
+        executeSql(db, update)
       }
     }
 
@@ -357,7 +357,7 @@ object DrinksDatabase {
         val db = getWritableDatabase
         val update = DrinkTypesCursor.updateQuery(dt.id, dt.name, dt.unit, dt.baseType.id, dt.price, dt.bar)
 
-        db.execSQL(update)
+        executeSql(db, update)
       }
     }
 
@@ -369,21 +369,26 @@ object DrinksDatabase {
       val db = getWritableDatabase
       val insert = DrinkTypesCursor.insertQuery(dt.name, dt.unit, dt.baseType.id, dt.price, dt.bar)
 
-      db.execSQL(insert)
+      executeSql(db, insert)
     }
 
     /**
      * Remove all drinks from the database.
      */
     def removeAllDrinks {
-      val db = getReadableDatabase
-      db.execSQL("DELETE FROM drinks;")
+      val db = getWritableDatabase
+      executeSql(db, "DELETE FROM drinks;")
     }
 
     private def drop(table: String) = "DROP TABLE IF EXISTS %s;".format(table)
 
     private def executeSql(db: SQLiteDatabase, sql: String*) = {
-      sql.foreach(s => db.execSQL(s))
+      sql.foreach(s => {
+        if (BuildConfig.DEBUG)
+          Log.d(LOG_TAG, "Query: " + s)
+
+        db.execSQL(s)
+      })
     }
 
     private def query[T](sql: String, args: String*)(func: Cursor => T) = {
