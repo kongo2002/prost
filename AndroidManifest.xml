@@ -52,6 +52,11 @@
             android:label="@string/activity_title_edit_bar" >
         </activity>
 
+        <activity
+            android:name="BarsMapActivity"
+            android:label="@string/activity_title_bars_map" >
+        </activity>
+
     </application>
 
 </manifest>
