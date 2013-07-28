@@ -18,6 +18,8 @@ package com.kongo2002.android.prost;
 
 import android.os.Bundle
 
+import com.google.android.gms.maps.SupportMapFragment
+
 
 /**
  * Main activity of the 'prost' application
@@ -39,6 +41,7 @@ class MainActivity extends TypedFragmentActivity
     adapter.addTab(classOf[StatisticsFragment], R.string.fragment_title_statistics)
     adapter.addTab(classOf[DrinksFragment], R.string.fragment_title_drinks)
     adapter.addTab(classOf[BarsFragment], R.string.fragment_title_bars)
+    adapter.addTab(classOf[SupportMapFragment], "Location")
 
     logI("onCreate")
   }
