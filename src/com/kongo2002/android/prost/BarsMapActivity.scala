@@ -71,17 +71,25 @@ class BarsMapActivity extends TypedFragmentActivity
     /* adjust some settings */
     val settings = map.getUiSettings
 
-    settings.setZoomControlsEnabled(true)     // zoom        ON
-    settings.setMyLocationButtonEnabled(true) // my location ON
-    settings.setScrollGesturesEnabled(true)   // scrolling   ON
-    settings.setCompassEnabled(false)         // compass     OFF
-    settings.setTiltGesturesEnabled(false)    // tilt        OFF
-    settings.setRotateGesturesEnabled(false)  // rotating    OFF
+    settings.setZoomControlsEnabled(true)      // zoom        ON
+    settings.setScrollGesturesEnabled(true)    // scrolling   ON
+    settings.setCompassEnabled(false)          // compass     OFF
+    settings.setMyLocationButtonEnabled(false) // my location OFF
+    settings.setTiltGesturesEnabled(false)     // tilt        OFF
+    settings.setRotateGesturesEnabled(false)   // rotating    OFF
 
     /* adjust map itself */
     map.setMapType(GoogleMap.MAP_TYPE_NORMAL)
-    map.setIndoorEnabled(false)
-    map.setTrafficEnabled(false)
+    map.setMyLocationEnabled(false)            // my location OFF
+    map.setIndoorEnabled(false)                // indoors     OFF
+    map.setTrafficEnabled(false)               // traffic     OFF
+
+    /* hook into map click event */
+    map.setOnMapClickListener(new GoogleMap.OnMapClickListener {
+      override def onMapClick(loc: LatLng) {
+        logI("clicked location: " + loc)
+      }
+    })
   }
 
   override def onDestroy {
