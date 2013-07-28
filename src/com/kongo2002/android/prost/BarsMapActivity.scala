@@ -68,7 +68,17 @@ class BarsMapActivity extends TypedFragmentActivity
     val camera = CameraUpdateFactory.newLatLngZoom(INITIAL_POS, DEFAULT_ZOOM)
     map.moveCamera(camera)
 
-    /* set some settings */
+    /* adjust some settings */
+    val settings = map.getUiSettings
+
+    settings.setZoomControlsEnabled(true)     // zoom        ON
+    settings.setMyLocationButtonEnabled(true) // my location ON
+    settings.setScrollGesturesEnabled(true)   // scrolling   ON
+    settings.setCompassEnabled(false)         // compass     OFF
+    settings.setTiltGesturesEnabled(false)    // tilt        OFF
+    settings.setRotateGesturesEnabled(false)  // rotating    OFF
+
+    /* adjust map itself */
     map.setMapType(GoogleMap.MAP_TYPE_NORMAL)
     map.setIndoorEnabled(false)
     map.setTrafficEnabled(false)
