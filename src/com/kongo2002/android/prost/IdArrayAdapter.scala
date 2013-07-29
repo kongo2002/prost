@@ -88,4 +88,4 @@ class IdArrayAdapter[T <: Id](ctx: Context, res: Int, items: Array[T], func: T =
 
 case class ViewHolder(text: TextView)
 
-/* vim: set et sw=2 sts=2: */
+/* vim: set et sw=2 sts=2 tw=120: */

@@ -127,7 +127,15 @@ class BarsFragment extends TypedFragment
     item.getItemId match {
       case R.id.menu_add_bar => {
         val intent = new Intent(activity, classOf[EditBarActivity])
+
         startActivityForResult(intent, Activities.CREATE_BAR)
+        true
+      }
+      case R.id.menu_locations => {
+        val intent = new Intent(activity, classOf[BarsMapActivity])
+
+        /* TODO: get result like longitude, latitude */
+        startActivity(intent)
         true
       }
       case _ => super.onOptionsItemSelected(item)
@@ -176,4 +184,4 @@ class BarsFragment extends TypedFragment
   }
 }
 
-/* vim: set et sw=2 sts=2: */
+/* vim: set et sw=2 sts=2 tw=120: */

@@ -26,4 +26,4 @@ object Currencies extends Enumeration {
 }
 import Currencies._
 
-/* vim: set et sw=2 sts=2: */
+/* vim: set et sw=2 sts=2 tw=120: */

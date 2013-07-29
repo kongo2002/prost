@@ -16,26 +16,26 @@
 
 package com.kongo2002.android.prost
 
+import android.app.Activity
+import android.app.Dialog
+import android.os.Bundle
+import android.support.v4.app.DialogFragment
 
-/**
- * Various constants to identify different
- * activities.
- */
-object Activities {
-  val SETTINGS     = 11
-  val EDIT_DRINK   = 12
-  val CREATE_DRINK = 13
-  val EDIT_BAR     = 14
-  val CREATE_BAR   = 15
+import com.google.android.gms.common.GooglePlayServicesUtil
+
+
+class ErrorDialog(dialog: Dialog) extends DialogFragment {
+
+  override def onCreateDialog(state: Bundle) = dialog
+
 }
 
-/**
- * Various constants to identify different
- * menu options.
- */
-object Options {
-  val DELETE_DRINK = 1
-  val DELETE_BAR   = 2
+object ErrorDialog {
+
+  def fromGooglePlay(activity: Activity, errorCode: Int, requestCode: Int) = {
+    val dialog = GooglePlayServicesUtil.getErrorDialog(errorCode, activity, requestCode)
+    new ErrorDialog(dialog)
+  }
 }
 
 /* vim: set et sw=2 sts=2 tw=120: */

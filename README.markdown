@@ -28,6 +28,15 @@ plugin][plugin].
 - Android SDK(s)
 - Maven 3.0.3+
 
+In order to build using the *Google Maps API V2* you need to have the *maps API*
+in your local maven repository. You can either do this manually or by using the
+[maven android SDK deployer][deployer]:
+
+	git clone https://github.com/mosabua/maven-android-sdk-deployer deployer
+	cd deployer
+	mvn install
+
+
 ### Building the android package
 
 	mvn install
@@ -79,5 +88,6 @@ form.  Feel free to join :-)
 [gamification]: http://en.wikipedia.org/wiki/Gamification
 [maven]: http://maven.apache.org
 [plugin]: http://code.google.com/p/maven-android-plugin
+[deployer]: https://github.com/mosabua/maven-android-sdk-deployer
 
 <!-- vim: set noet ts=4 sw=4 sts=4 tw=80: -->

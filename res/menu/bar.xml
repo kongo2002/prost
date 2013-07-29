@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/menu_add_bar" android:title="@string/add_bar" android:icon="@android:drawable/ic_menu_add"></item>
+    <item android:id="@+id/menu_locations" android:title="@string/locations" android:icon="@android:drawable/ic_menu_mapmode"></item>
 </menu>
