@@ -37,6 +37,8 @@ import Implicits._
 class StatisticsFragment extends TypedFragment
   with Loggable {
 
+  private val DRINK_TYPE_KEY = "drinkType"
+
   lazy val tiles = Tiles.values.map(t => Tiles.get(t, this))
   lazy val button = findView(TR.newDrinkTile)
   lazy val buttonText = findView(TR.newDrinkLabel)
@@ -134,7 +136,7 @@ class StatisticsFragment extends TypedFragment
   override def onSaveInstanceState(state: Bundle) {
     super.onSaveInstanceState(state)
 
-    state.putInt("drinkType", currentDrinkType)
+    state.putInt(DRINK_TYPE_KEY, currentDrinkType)
 
     logI("onSaveInstanceState: stored 'drinkType=" + currentDrinkType + "'")
   }
@@ -291,7 +293,7 @@ class StatisticsFragment extends TypedFragment
   private def getDrinkType(state: Bundle) = {
     /* read last drink type from state */
     if (state != null) {
-      val drinkType = state.getInt("drinkType")
+      val drinkType = state.getInt(DRINK_TYPE_KEY)
       logI("restored 'drinkType=" + drinkType + "' from state")
       drinkType
     /* or from database */
