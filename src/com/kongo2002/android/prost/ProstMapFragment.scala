@@ -76,6 +76,9 @@ class ProstMapFragment extends SupportMapFragment
       /* map setup if we successfully got the map */
       if (map != null) {
         Maps.setUpMap(map)
+
+        val barLocation = new BarLocationProvider(getActivity)
+        map.setLocationSource(barLocation)
       }
     }
   }
