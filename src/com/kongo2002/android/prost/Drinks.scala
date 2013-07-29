@@ -140,4 +140,4 @@ object Bar {
   }
 }
 
-/* vim: set et sw=2 sts=2: */
+/* vim: set et sw=2 sts=2 tw=120: */
