@@ -30,9 +30,6 @@ import com.google.android.gms.maps.model.LatLng
 class ProstMapFragment extends SupportMapFragment
   with Loggable {
 
-  val INITIAL_POS = new LatLng(51.49, 7.45)
-  val DEFAULT_ZOOM = 16f
-
   var map : GoogleMap = null
 
   override def onCreate(state: Bundle) {
@@ -78,38 +75,9 @@ class ProstMapFragment extends SupportMapFragment
 
       /* map setup if we successfully got the map */
       if (map != null) {
-        setUpMap
+        Maps.setUpMap(map)
       }
     }
-  }
-
-  private def setUpMap {
-    /* update initial position */
-    val camera = CameraUpdateFactory.newLatLngZoom(INITIAL_POS, DEFAULT_ZOOM)
-    map.moveCamera(camera)
-
-    /* adjust some settings */
-    val settings = map.getUiSettings
-
-    settings.setZoomControlsEnabled(true)      // zoom        ON
-    settings.setScrollGesturesEnabled(true)    // scrolling   ON
-    settings.setCompassEnabled(false)          // compass     OFF
-    settings.setMyLocationButtonEnabled(false) // my location OFF
-    settings.setTiltGesturesEnabled(false)     // tilt        OFF
-    settings.setRotateGesturesEnabled(false)   // rotating    OFF
-
-    /* adjust map itself */
-    map.setMapType(GoogleMap.MAP_TYPE_NORMAL)
-    map.setMyLocationEnabled(false)            // my location OFF
-    map.setIndoorEnabled(false)                // indoors     OFF
-    map.setTrafficEnabled(false)               // traffic     OFF
-
-    /* hook into map click event */
-    map.setOnMapClickListener(new GoogleMap.OnMapClickListener {
-      override def onMapClick(loc: LatLng) {
-        logI("clicked location: " + loc)
-      }
-    })
   }
 }
 
