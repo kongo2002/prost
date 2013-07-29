@@ -39,6 +39,7 @@ class MainActivity extends TypedFragmentActivity
     adapter.addTab(classOf[StatisticsFragment], R.string.fragment_title_statistics)
     adapter.addTab(classOf[DrinksFragment], R.string.fragment_title_drinks)
     adapter.addTab(classOf[BarsFragment], R.string.fragment_title_bars)
+    adapter.addTab(classOf[ProstMapFragment], R.string.activity_title_bars_map)
 
     logI("onCreate")
   }
