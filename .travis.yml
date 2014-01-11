@@ -1,6 +1,10 @@
 language: java
 
 before_install:
+  # install necessary 32bit libraries
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libstdc++6:i386 lib32z1
+
   # download and extract android SDK
   - wget http://dl.google.com/android/android-sdk_r22.3-linux.tgz
   - tar xf android-sdk_r22.3-linux.tgz
@@ -10,4 +14,4 @@ before_install:
   - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
   # update android to specific version
-  - echo y | android update sdk --filter platform-tools,android-18,extra-android-support --no-ui -a --force
+  - echo y | android update sdk --filter platform-tools,extra-android-support,android-18,addon-google_apis-google-18,extra-google-google_play_services,extra-google-m2repository,extra-android-m2repository --no-ui -a --force
