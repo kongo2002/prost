@@ -99,7 +99,7 @@
                     <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
                     <sdk>
-                        <platform>18</platform>
+                        <platform>19</platform>
                     </sdk>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                     <proguard>
