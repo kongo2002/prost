@@ -1,5 +1,7 @@
 # prost
 
+[![build status](https://api.travis-ci.org/kongo2002/prost.png)][travis]
+
 *Prost* is a "beer-counter"-like app for [android][android] that keeps track of
 your drinks in a bar and provides some nice statistics about your expenses and
 the *"drinking performance"*.
@@ -26,7 +28,7 @@ plugin][plugin].
 
 - JDK 1.6+
 - Android SDK(s)
-- Maven 3.0.3+
+- Maven 3.1.1+
 
 In order to build using the *Google Maps API V2* you need to have the *maps API*
 in your local maven repository. You can either do this manually or by using the
@@ -89,5 +91,6 @@ form.  Feel free to join :-)
 [maven]: http://maven.apache.org
 [plugin]: http://code.google.com/p/maven-android-plugin
 [deployer]: https://github.com/mosabua/maven-android-sdk-deployer
+[travis]: https://travis-ci.org/kongo2002/prost/
 
 <!-- vim: set noet ts=4 sw=4 sts=4 tw=80: -->
