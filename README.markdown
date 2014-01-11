@@ -8,7 +8,7 @@ the *"drinking performance"*.
 
 This project is a *fun and learning experiment* and can therefore be seen as
 work-in-progress. The app is written in [scala][scala] and targets the
-[android][android] SDKs from version 8 to 17.
+[android][android] SDKs from version 8 to 19.
 
 
 ## Intentions
